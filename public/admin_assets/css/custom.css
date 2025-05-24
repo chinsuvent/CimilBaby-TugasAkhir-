@@ -1,0 +1,28 @@
+.table-primary {
+    background-color: #8E7DBE !important;
+    color: white;
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: #8E7DBE;
+}
+
+span {
+    font-size: 1rem !important;
+}
+
+.sidebar-brand-text {
+    font-size: 1.5rem !important;
+    text-transform: none !important;
+}
+
+.text-title {
+    color: #7D65EC;
+    font-weight: 500;
+}
+
+
+
+
+
