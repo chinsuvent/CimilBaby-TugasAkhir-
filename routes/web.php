@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnakController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PenggunaController;
 use Illuminate\Support\Facades\Route;
@@ -32,5 +33,15 @@ Route::middleware('auth')->group(function () {
         Route::get('edit/{id}','edit')->name('penggunas.edit');
         Route::put('update/{id}','update')->name('penggunas.update');
         Route::delete('destroy/{id}','destroy')->name('penggunas.destroy');
+    });
+
+    Route::controller(AnakController::class)->prefix('anaks')->group(function () {
+        Route::get('', 'index')->name('anaks');
+        Route::get('create','create')->name('anaks.create');
+        Route::post('store','store')->name('anaks.store');
+        Route::get('show/{id}','show')->name('anaks.show');
+        Route::get('edit/{id}','edit')->name('anaks.edit');
+        Route::put('update/{id}','update')->name('anaks.update');
+        Route::delete('/anaks/{id}', [AnakController::class, 'destroy'])->name('anaks.destroy');
     });
 });

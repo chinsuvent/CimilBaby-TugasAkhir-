@@ -9,3 +9,8 @@
 /.github export-ignore
 CHANGELOG.md export-ignore
 .styleci.yml export-ignore
+
+*.php text eol=lf
+*.js text eol=lf
+*.css text eol=lf
+

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('contents')
-    <h1 class="mb-0">Edit Pengguna</h1>
+    <h1 class="mb-0 text-title">Edit Pengguna</h1>
     <hr>
     <form action="{{ route('penggunas.update', $pengguna->id) }}" method="POST">
     @csrf
@@ -23,7 +23,7 @@
             </div>
             <div class="col mb-3">
                 <label class="form-label">Email</label>
-                <input type="email" name="Email" class="form-control" placeholder="Email" value="{{ $pengguna->email }}">
+                <input type="email" name="email" class="form-control" placeholder="Email" value="{{ $pengguna->email }}">
             </div>
         </div>
         <div class="row">

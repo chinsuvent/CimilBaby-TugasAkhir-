@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('contents')
-    <h1 class="mb-0">Tambah Pengguna</h1>
+    <h1 class="mb-0 text-title">Tambah Pengguna</h1>
     <hr>
     <form action="{{ route('penggunas.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
