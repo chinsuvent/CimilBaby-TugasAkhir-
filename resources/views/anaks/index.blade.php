@@ -42,11 +42,6 @@
                         <td class="align-middle">
                             <div class="btn-group" role="group" aria-label="Basic example">
                                 <a href="{{ route('anaks.edit', $an->id) }}" type="button" class="btn btn-warning">Edit</a>
-                                <form action="{{ route('anaks.destroy', $an->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')" class="btn btn-danger">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-danger m-0">Hapus</button>
-                                </form>
                             </div>
                         </td>
                     </tr>
