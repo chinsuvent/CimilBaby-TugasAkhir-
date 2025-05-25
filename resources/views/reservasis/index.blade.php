@@ -2,8 +2,8 @@
 
 @section('contents')
     <div class="d-flex align-items-center justify-content-between">
-        <h1 class="mb-0 text-title">Data Anak</h1>
-        <a href="{{ route('anaks.create') }}" class="btn btn-primary">Tambah Anak</a>
+        <h1 class="mb-0 text-title">Data Reservasi</h1>
+        <a href="{{ route('reservasis.create') }}" class="btn btn-primary">Tambah Reservasi</a>
     </div>
     <hr />
 
@@ -56,41 +56,50 @@
         <thead class="table-primary">
             <tr>
                 <th>No</th>
-                <th>Nama Anak</th>
-                <th>Tempat Lahir</th>
-                <th>Tanggal Lahir</th>
+                {{-- <th>Nama Anak</th>
                 <th>Jenis Kelamin</th>
                 <th>Usia</th>
-                {{-- <th>Nama Orang Tua</th> --}}
-                {{-- <th>No. HP</th> --}}
+                <th>Nama Orang Tua</th>
+                <th>No. Hp</th>
+                <th>Alamat</th>
                 <th>Alergi</th>
+                <th>Jenis Layanan</th> --}}
+                <th>Tanggal Masuk</th>
+                <th>Tanggal Keluar</th>
+                <th>Total</th>
+                <th>Metode Pembayaran</th>
+                <th>Status</th>
                 <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
-            @if ($anak->count() > 0)
-                @foreach ($anak as $an)
+            @if ($reservasi->count() > 0)
+                @foreach ($reservasi as $rs)
                     <tr>
                         <td class="align-middle">{{ $loop->iteration }}</td>
-                        <td class="align-middle">{{ $an->nama_anak }}</td>
-                        <td class="align-middle">{{ $an->tempat_lahir }}</td>
-                        <td class="align-middle">{{ $an->tanggal_lahir }}</td>
-                        <td class="align-middle">{{ $an->jenis_kelamin }}</td>
-                        <td class="align-middle">{{ $an->usia }}</td>
-                        {{-- <td class="align-middle">{{ $an->pengguna->nama ?? '-' }}</td> 
-                        <td class="align-middle">{{ $an->pengguna->nomor_hp ?? '-' }}</td>  --}}
-                        <td class="align-middle">{{ $an->alergi }}</td>
+                        <td class="align-middle">{{ $rs->tgl_masuk }}</td>
+                        <td class="align-middle">{{ $rs->tgl_keluar }}</td>
+                        <td class="align-middle">{{ $rs->total }}</td>
+                        <td class="align-middle">{{ $rs->metode_pembayaran }}</td>
+                        <td class="align-middle">{{ $rs->status }}</td>
                         <td class="align-middle">
-                            <div class="btn-group" role="group" aria-label="Basic example">
-                                <a href="{{ route('anaks.edit', $an->id) }}" type="button" class="btn btn-warning">Edit</a>
-                                <form action="{{ route('anaks.destroy', $an->id) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="button" onclick="hapus(this)" class="btn btn-danger m-0">Hapus</button>
-                                </form>
-                            </div>
-
-                        </td>
+                        @if ($rs->status == 'Pending')
+                            <form action="{{ route('reservasis.konfirmasi', $rs->id) }}" method="POST" class="d-inline">
+                                @csrf
+                                @method('PUT')
+                                <input type="hidden" name="status" value="Diterima">
+                                <button type="submit" class="btn btn-success btn-sm">Terima</button>
+                            </form>
+                            <form action="{{ route('reservasis.konfirmasi', $rs->id) }}" method="POST" class="d-inline">
+                                @csrf
+                                @method('PUT')
+                                <input type="hidden" name="status" value="Ditolak">
+                                <button type="submit" class="btn btn-danger btn-sm">Tolak</button>
+                            </form>
+                        @else
+                            <span class="text-muted">Sudah dikonfirmasi</span>
+                        @endif
+                    </td>
                     </tr>
                 @endforeach
             @else

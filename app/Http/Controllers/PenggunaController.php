@@ -32,7 +32,7 @@ class PenggunaController extends Controller
     {
         Pengguna::create($request->all());
 
-        return redirect()->route('penggunas')->with('success','Pengguna Berhasil Ditambahkan');
+        return redirect()->route('penggunas')->with('added', true);
     }
 
     /**
@@ -64,7 +64,7 @@ class PenggunaController extends Controller
 
         $pengguna->update($request->all());
 
-        return redirect()->route('penggunas')->with('success','Data Pengguna Berhasil Diubah');
+        return redirect()->route('penggunas')->with('edited', true);
     }
 
     /**
@@ -76,6 +76,6 @@ class PenggunaController extends Controller
 
         $pengguna->delete();
 
-        return redirect()->route('penggunas')->with('success','Pengguna Berhasil Dihapus');
+        return redirect()->route('penggunas')->with('deleted', true);
     }
 }

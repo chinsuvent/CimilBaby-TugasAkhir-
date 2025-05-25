@@ -2,11 +2,12 @@
 
 @section('contents')
     <div class="d-flex align-items-center justify-content-between">
-        <h1 class="mb-0 text-title">Data Pengguna</h1>
-        <a href="{{ route('penggunas.create') }}" class="btn btn-primary">Tambah Pengguna</a>
+        <h1 class="mb-0 text-title">Data Layanan</h1>
+        <a href="{{ route('layanans.create') }}" class="btn btn-primary">Tambah Layanan</a>
     </div>
     <hr />
-        @push('scripts')
+
+    @push('scripts')
     <script>
         @if (session('added'))
             Swal.fire({
@@ -50,40 +51,35 @@
     </script>
     @endpush
 
+
     <table class="table table-hover">
         <thead class="table-primary">
             <tr>
                 <th>No</th>
-                <th>Nama Lengkap</th>
-                <th>Username</th>
-                <th>Email</th>
-                <th>No. HP</th>
-                <th>Alamat</th>
-                {{-- <th>Jumlah Anak</th> --}}
+                <th>Jenis Layanan</th>
+                <th>Durasi</th>
+                <th>Biaya</th>
                 <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
-            @if ($pengguna->count() > 0)
-                @foreach ($pengguna as $pg)
+            @if ($layanan->count() > 0)
+                @foreach ($layanan as $la)
                     <tr>
                         <td class="align-middle">{{ $loop->iteration }}</td>
-                        <td class="align-middle">{{ $pg->nama_orang_tua }}</td>
-                        <td class="align-middle">{{ $pg->username }}</td>
-                        <td class="align-middle">{{ $pg->email }}</td>
-                        <td class="align-middle">{{ $pg->no_hp }}</td>
-                        <td class="align-middle">{{ $pg->alamat }}</td>
-                        {{-- <td class="align-middle">{{ $pg->anak->count() }}</td> --}}
+                        <td class="align-middle">{{ $la->jenis_layanan }}</td>
+                        <td class="align-middle">{{ $la->durasi }}</td>
+                        <td class="align-middle">{{ $la->biaya }}</td>
                         <td class="align-middle">
                             <div class="btn-group" role="group" aria-label="Basic example">
-                                <a href="{{ route('penggunas.show', $pg->id) }}" type="button" class="btn btn-secondary">Lihat</a>
-                                <a href="{{ route('penggunas.edit', $pg->id) }}" type="button" class="btn btn-warning">Edit</a>
-                                <form action="{{ route('penggunas.destroy', $pg->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')" class="btn btn-danger">
+                                <a href="{{ route('layanans.edit', $la->id) }}" type="button" class="btn btn-warning">Edit</a>
+                                <form action="{{ route('layanans.destroy', $la->id) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
                                     <button type="button" onclick="hapus(this)" class="btn btn-danger m-0">Hapus</button>
                                 </form>
                             </div>
+
                         </td>
                     </tr>
                 @endforeach

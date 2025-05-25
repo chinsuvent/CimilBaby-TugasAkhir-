@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\AnakController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\LayananController;
 use App\Http\Controllers\PenggunaController;
+use App\Http\Controllers\ReservasiController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -43,5 +45,26 @@ Route::middleware('auth')->group(function () {
         Route::get('edit/{id}','edit')->name('anaks.edit');
         Route::put('update/{id}','update')->name('anaks.update');
         Route::delete('/anaks/{id}', [AnakController::class, 'destroy'])->name('anaks.destroy');
+    });
+
+    Route::controller(LayananController::class)->prefix('layanans')->group(function () {
+        Route::get('', 'index')->name('layanans');
+        Route::get('create','create')->name('layanans.create');
+        Route::post('store','store')->name('layanans.store');
+        Route::get('show/{id}','show')->name('layanans.show');
+        Route::get('edit/{id}','edit')->name('layanans.edit');
+        Route::put('update/{id}','update')->name('layanans.update');
+        Route::delete('/layanans/{id}', [LayananController::class, 'destroy'])->name('layanans.destroy');
+    });
+
+    Route::controller(ReservasiController::class)->prefix('reservasis')->group(function () {
+        Route::get('', 'index')->name('reservasis');
+        Route::get('create','create')->name('reservasis.create');
+        Route::post('store','store')->name('reservasis.store');
+        Route::get('show/{id}','show')->name('reservasis.show');
+        Route::get('edit/{id}','edit')->name('reservasis.edit');
+        Route::put('update/{id}','update')->name('reservasis.update');
+        Route::delete('/reservasis/{id}', [LayananController::class, 'destroy'])->name('reservasis.destroy');
+        Route::put('/reservasis/konfirmasi/{id}', [ReservasiController::class, 'konfirmasi'])->name('reservasis.konfirmasi');
     });
 });

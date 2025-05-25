@@ -52,7 +52,7 @@
 
         <div class="row">
             <div class="d-grid">
-                <button type="submit" class="btn btn-warning ml-3">Ubah</button>
+                <button type="submit" class="btn btn-warning ml-3">Simpan</button>
             </div>
         </div>
     </form>

@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Anak;
+use App\Models\Layanan;
 use Illuminate\Http\Request;
 
-class AnakController extends Controller
+class LayananController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-       $anak = Anak::orderBy('created_at','DESC')->get();
+       $layanan = Layanan::orderBy('created_at','DESC')->get();
 
-        return view('anaks.index', compact('anak'));
+        return view('layanans.index', compact('layanan'));
     }
 
     /**
@@ -22,7 +22,7 @@ class AnakController extends Controller
      */
     public function create()
     {
-        return view('anaks.create');
+        return view('layanans.create');
     }
 
     /**
@@ -30,9 +30,9 @@ class AnakController extends Controller
      */
     public function store(Request $request)
     {
-        Anak::create($request->all());
+        Layanan::create($request->all());
 
-        return redirect()->route('anak')->with('added', true);
+        return redirect()->route('layanans')->with('added', true);
     }
 
     /**
@@ -40,9 +40,9 @@ class AnakController extends Controller
      */
     public function show(string $id)
     {
-        $anak = Anak::findOrFail($id);
+        $layanan = Layanan::findOrFail($id);
 
-        return view('anaks.show', compact('anak'));
+        return view('layanans.show', compact('layanans'));
     }
 
     /**
@@ -50,9 +50,9 @@ class AnakController extends Controller
      */
     public function edit(string $id)
     {
-        $anak = Anak::findOrFail($id);
+        $layanan = Layanan::findOrFail($id);
 
-        return view('anaks.edit', compact('anak'));
+        return view('layanans.edit', compact('layanan'));
     }
 
     /**
@@ -60,11 +60,11 @@ class AnakController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $anak = Anak::findOrFail($id);
+        $layanan = Layanan::findOrFail($id);
 
-        $anak->update($request->all());
+        $layanan->update($request->all());
 
-        return redirect()->route('anaks')->with('edited', true);
+        return redirect()->route('layanans')->with('edited', true);
     }
 
     /**
@@ -72,9 +72,11 @@ class AnakController extends Controller
      */
     public function destroy($id)
     {
-        $anak = Anak::findOrFail($id);
-        $anak->delete();
-        return redirect()->route('anaks')->with('deleted',true);
+        $layanan = Layanan::findOrFail($id);
+
+        $layanan->delete();
+
+        return redirect()->route('layanans')->with('deleted', true);
     }
 
 }
