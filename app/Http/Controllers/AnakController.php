@@ -12,10 +12,12 @@ class AnakController extends Controller
      */
     public function index()
     {
-       $anak = Anak::orderBy('created_at','DESC')->get();
+        // Ambil semua data anak dan ikutkan data pengguna (relasi)
+        $anak = Anak::with('pengguna')->orderBy('created_at', 'DESC')->get();
 
         return view('anaks.index', compact('anak'));
     }
+
 
     /**
      * Show the form for creating a new resource.

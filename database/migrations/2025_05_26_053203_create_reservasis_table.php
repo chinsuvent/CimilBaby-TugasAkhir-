@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('reservasis', function (Blueprint $table) {
@@ -16,18 +13,19 @@ return new class extends Migration
             $table->foreignId('anaks_id')->constrained('anaks')->onDelete('cascade');
             $table->foreignId('penggunas_id')->constrained('penggunas')->onDelete('cascade');
             $table->foreignId('layanans_id')->constrained('layanans')->onDelete('cascade');
+
+            // FK ke jadwal_layanans
+            $table->foreignId('jadwal_layanan_id')->constrained('jadwal_layanans')->onDelete('cascade');
+
             $table->date('tgl_masuk');
             $table->date('tgl_keluar');
-            $table->decimal('total',10,2);
+            $table->decimal('total', 10, 2);
             $table->string('metode_pembayaran');
             $table->enum('status', ['Pending', 'Diterima', 'Ditolak']);
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('reservasis');

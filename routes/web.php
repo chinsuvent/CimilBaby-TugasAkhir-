@@ -5,6 +5,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LayananController;
 use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\ReservasiController;
+use App\Http\Controllers\FasilitasController;
+use App\Http\Controllers\JadwalLayananController;
+
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -64,7 +67,32 @@ Route::middleware('auth')->group(function () {
         Route::get('show/{id}','show')->name('reservasis.show');
         Route::get('edit/{id}','edit')->name('reservasis.edit');
         Route::put('update/{id}','update')->name('reservasis.update');
-        Route::delete('/reservasis/{id}', [LayananController::class, 'destroy'])->name('reservasis.destroy');
+        Route::delete('/reservasis/{id}', [ReservasiController::class, 'destroy'])->name('reservasis.destroy');
         Route::put('/reservasis/konfirmasi/{id}', [ReservasiController::class, 'konfirmasi'])->name('reservasis.konfirmasi');
+    });
+
+    Route::controller(FasilitasController::class)->prefix('fasilitas')->group(function () {
+        Route::get('', 'index')->name('fasilitas');
+        Route::get('create','create')->name('fasilitas.create');
+        Route::post('store','store')->name('fasilitas.store');
+        Route::get('show/{id}','show')->name('fasilitas.show');
+        Route::get('edit/{id}','edit')->name('fasilitas.edit');
+        Route::put('update/{id}','update')->name('fasilitas.update');
+        Route::delete('/fasilitas/{id}', [FasilitasController::class, 'destroy'])->name('fasilitas.destroy');
+        Route::put('/fasilitas/konfirmasi/{id}', [FasilitasController::class, 'konfirmasi'])->name('fasilitas.konfirmasi');
+    });
+
+    Route::controller(JadwalLayananController::class)->prefix('jadwal_layanans')->group(function () {
+        Route::get('', 'index')->name('jadwal_layanans');
+        Route::get('create','create')->name('jadwal_layanans.create');
+        Route::post('store','store')->name('jadwal_layanans.store');
+        Route::get('show/{id}','show')->name('jadwal_layanans.show');
+        Route::get('edit/{id}','edit')->name('jadwal_layanans.edit');
+        Route::put('update/{id}','update')->name('jadwal_layanans.update');
+        Route::delete('/jadwal_layanans/{id}', [JadwalLayananController::class, 'destroy'])->name('jadwal_layanans.destroy');
+        Route::put('/jadwal_layanans/konfirmasi/{id}', [JadwalLayananController::class, 'konfirmasi'])->name('jadwal_layanans.konfirmasi');
+        Route::get('/generate-jadwal', [JadwalLayananController::class, 'generateJadwal'])->name('jadwal_layanans.generateJadwal');
+        Route::get('/jadwal-layanans', [JadwalLayananController::class, 'index'])->name('jadwal_layanans.index');
+
     });
 });

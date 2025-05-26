@@ -52,7 +52,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('penggunas') }}">
+                <a class="nav-link" href="{{ route('jadwal_layanans') }}">
                     <span>Jadwal Layanan</span>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 2048 2048">
                         <path fill="#fff" d="M1792 993q60 41 107 93t81 114t50 131t18 141q0 119-45 224t-124 183t-183 123t-224 46q-91 0-176-27t-156-78t-126-122t-85-157H128V128h256V0h128v128h896V0h128v128h256zM256 256v256h1408V256h-128v128h-128V256H512v128H384V256zm643 1280q-3-31-3-64q0-86 24-167t73-153h-97v-128h128v86q41-51 91-90t108-67t121-42t128-15q100 0 192 33V640H256v896zm573 384q93 0 174-35t142-96t96-142t36-175q0-93-35-174t-96-142t-142-96t-175-36q-93 0-174 35t-142 96t-96 142t-36 175q0 93 35 174t96 142t142 96t175 36m64-512h192v128h-320v-384h128zM384 1024h128v128H384zm256 0h128v128H640zm0-256h128v128H640zm-256 512h128v128H384zm256 0h128v128H640zm384-384H896V768h128zm256 0h-128V768h128zm256 0h-128V768h128z" />
@@ -61,7 +61,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('penggunas') }}">
+                <a class="nav-link" href="{{ route('fasilitas') }}">
                     <span>Data Fasilitas</span>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 64 64">
                         <path fill="#fff" d="M32 2C15.432 2 2 15.432 2 32c0 16.566 13.432 30 30 30s30-13.434 30-30C62 15.432 48.568 2 32 2m-5 12.5c0-1.25 1.25-2.5 2.5-2.5h5c1.25 0 2.5 1.25 2.5 2.5v5c0 1.25-1.25 2.502-2.5 2.5h-5c-1.25.002-2.5-1.25-2.5-2.5zM29 51l-3 1l-3-7l3-7l5 3l-4 4zm9 1l-3-1l2-6l-4-4l5-3l3 7zm0-24v6q0 3-3 3h-6q-3 0-3-3v-6l-7-5l1-2l7.946 3H36l8-3l1 2z" />
@@ -95,17 +95,6 @@
                     </svg>
                 </a>
             </li>
-
-
-
-            <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
-
-            <!-- Sidebar Toggler (Sidebar) -->
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
-
             
 
 </ul>

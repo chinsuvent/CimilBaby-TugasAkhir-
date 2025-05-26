@@ -22,7 +22,24 @@ span {
     font-weight: 500;
 }
 
+.sidebar-dark hr.sidebar-divider {
+    border-top: 2px solid white;
+}
 
+.btn-primary {
+    background-color: #8E7DBE !important;
+    border-color: #fff;
+}
 
+.btn-primary:hover {
+    background-color: #8873e6 !important;
+    border-color: #8873e6 !important;
+}
 
+.align-middle {
+    background-color: #fff;
+}
 
+.table-bordered,th {
+    border: 1px solid #e0d7d7 !important;
+}

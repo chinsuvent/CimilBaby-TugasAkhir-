@@ -40,4 +40,10 @@ class Pengguna extends Model
             'password' => 'hashed',
         ];
     }
+
+    public function anak()
+    {
+        return $this->hasMany(Anak::class, 'penggunas_id'); // pastikan foreign key-nya benar
+    }
+
 }

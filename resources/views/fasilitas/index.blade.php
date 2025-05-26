@@ -2,8 +2,8 @@
 
 @section('contents')
     <div class="d-flex align-items-center justify-content-between">
-        <h1 class="mb-0 text-title">Data Anak</h1>
-        <a href="{{ route('anaks.create') }}" class="btn btn-primary">Tambah Anak</a>
+        <h1 class="mb-0 text-title">Data Fasilitas</h1>
+        <a href="{{ route('fasilitas.create') }}" class="btn btn-primary">Tambah Fasilitas</a>
     </div>
     <hr />
 
@@ -56,39 +56,26 @@
         <thead class="table-primary text-center">
             <tr>
                 <th>No</th>
-                <th>Nama Anak</th>
-                <th>Tempat Lahir</th>
-                <th>Tanggal Lahir</th>
-                <th>Jenis Kelamin</th>
-                <th>Usia</th>
-                <th>Nama Orang Tua</th>
-                <th>No. HP</th>
-                <th>Alergi</th>
+                <th>Nama Fasilitas</th>
+                <th>Deskripsi</th>
                 <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
-            @if ($anak->count() > 0)
-                @foreach ($anak as $an)
+            @if ($fasilitas->count() > 0)
+                @foreach ($fasilitas as $fs)
                     <tr class="text-center">
                         <td class="align-middle">{{ $loop->iteration }}</td>
-                        <td class="align-middle">{{ $an->nama_anak }}</td>
-                        <td class="align-middle">{{ $an->tempat_lahir }}</td>
-                        <td class="align-middle">{{ $an->tanggal_lahir }}</td>
-                        <td class="align-middle">{{ $an->jenis_kelamin }}</td>
-                        <td class="align-middle">{{ $an->usia }}</td>
-                        <td class="align-middle">{{ $an->pengguna->nama_orang_tua ?? '-' }}</td> 
-                        <td class="align-middle">{{ $an->pengguna->no_hp ?? '-' }}</td> 
-                        <td class="align-middle">{{ $an->alergi }}</td>
+                        <td class="align-middle">{{ $fs->nama_fasilitas }}</td>
+                        <td class="align-middle">{{ $fs->deskripsi }}</td>
                         <td class="align-middle">
                             <div class="d-flex justify-content-center align-items-center gap-2">
-                                <a href="{{ route('anaks.edit', $an->id) }}" class="btn btn-warning d-flex align-items-center justify-content-center mr-2">
+                                <a href="{{ route('fasilitas.edit', $fs->id) }}" class="btn btn-warning d-flex align-items-center justify-content-center mr-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                                         <path fill="#fff" d="m21.561 5.318l-2.879-2.879A1.5 1.5 0 0 0 17.621 2c-.385 0-.768.146-1.061.439L13 6H4a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h13a1 1 0 0 0 1-1v-9l3.561-3.561c.293-.293.439-.677.439-1.061s-.146-.767-.439-1.06M11.5 14.672L9.328 12.5l6.293-6.293l2.172 2.172zm-2.561-1.339l1.756 1.728L9 15zM16 19H5V8h6l-3.18 3.18c-.293.293-.478.812-.629 1.289c-.16.5-.191 1.056-.191 1.47V17h3.061c.414 0 1.108-.1 1.571-.29c.464-.19.896-.347 1.188-.64L16 13zm2.5-11.328L16.328 5.5l1.293-1.293l2.171 2.172z" />
                                     </svg>
                                 </a>
-
-                                <form action="{{ route('anaks.destroy', $an->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                                <form action="{{ route('fasilitas.destroy', $fs->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="button" onclick="hapus(this)" class="btn btn-danger d-flex align-items-center justify-content-center">

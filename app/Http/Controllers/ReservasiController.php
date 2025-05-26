@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Reservasi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Models\JadwalLayanan;
 
 class ReservasiController extends Controller
 {
@@ -12,10 +14,12 @@ class ReservasiController extends Controller
      */
     public function index()
     {
-       $reservasi = Reservasi::orderBy('created_at','DESC')->get();
+        // Eager load relasi anak, pengguna, layanan
+        $reservasi = Reservasi::with(['anak', 'pengguna', 'layanan'])->orderBy('created_at', 'desc')->get();
 
         return view('reservasis.index', compact('reservasi'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -30,9 +34,44 @@ class ReservasiController extends Controller
      */
     public function store(Request $request)
     {
-        Reservasi::create($request->all());
+        DB::beginTransaction();
 
-        return redirect()->route('reservasi')->with('added', true);
+        try {
+            // Cari jadwal layanan yang masih tersedia
+            $jadwal = JadwalLayanan::where('tanggal', $request->tgl_masuk)
+                        ->where('status', 'Tersedia')
+                        ->whereColumn('terisi', '<', 'kapasitas')
+                        ->orderBy('slot_number')
+                        ->first();
+
+            if (!$jadwal) {
+                return back()->with('error', 'Jadwal pada tanggal tersebut sudah penuh.');
+            }
+
+            // Buat reservasi
+            $reservasi = Reservasi::create([
+                // ... isian data reservasi ...
+                'jadwal_layanan_id' => $jadwal->id,
+                'tgl_masuk' => $request->tgl_masuk,
+                'tgl_keluar' => $request->tgl_keluar,
+                'status' => 'Pending',
+                // Tambahkan isian lain sesuai kebutuhan
+            ]);
+
+            // Update slot jadwal
+            $jadwal->increment('terisi');
+            if ($jadwal->terisi >= $jadwal->kapasitas) {
+                $jadwal->status = 'Tidak Tersedia';
+            }
+            $jadwal->save();
+
+            DB::commit();
+
+            return redirect()->route('jadwal_layanans.index')->with('added', true);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Gagal membuat reservasi: ' . $e->getMessage());
+        }
     }
 
     /**

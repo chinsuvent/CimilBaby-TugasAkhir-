@@ -52,18 +52,15 @@
     @endpush
 
 
-    <table class="table table-hover">
-        <thead class="table-primary">
+    <table class="table table-hover table-bordered">
+        <thead class="table-primary text-center">
             <tr>
                 <th>No</th>
-                {{-- <th>Nama Anak</th>
+                <th>Nama Anak</th>
                 <th>Jenis Kelamin</th>
-                <th>Usia</th>
+                {{-- <th>Usia</th> --}}
                 <th>Nama Orang Tua</th>
-                <th>No. Hp</th>
-                <th>Alamat</th>
-                <th>Alergi</th>
-                <th>Jenis Layanan</th> --}}
+                <th>Jenis Layanan</th>
                 <th>Tanggal Masuk</th>
                 <th>Tanggal Keluar</th>
                 <th>Total</th>
@@ -75,38 +72,48 @@
         <tbody>
             @if ($reservasi->count() > 0)
                 @foreach ($reservasi as $rs)
-                    <tr>
+                    <tr class="text-center">
                         <td class="align-middle">{{ $loop->iteration }}</td>
+                        <td class="align-middle">{{ $rs->anak->nama_anak ?? '-' }}</td>
+                        <td class="align-middle">{{ $rs->anak->jenis_kelamin ?? '-' }}</td>
+                        {{-- <td class="align-middle">{{ $rs->anak->usia ?? '-' }}</td> --}}
+                        <td class="align-middle">{{ $rs->pengguna->nama_orang_tua ?? '-' }}</td>
+                        <td class="align-middle">{{ $rs->layanan->jenis_layanan ?? '-' }}</td>
                         <td class="align-middle">{{ $rs->tgl_masuk }}</td>
                         <td class="align-middle">{{ $rs->tgl_keluar }}</td>
-                        <td class="align-middle">{{ $rs->total }}</td>
+                        <td class="align-middle">{{ $rs->layanan->biaya ?? '-' }}</td>
                         <td class="align-middle">{{ $rs->metode_pembayaran }}</td>
                         <td class="align-middle">{{ $rs->status }}</td>
                         <td class="align-middle">
-                        @if ($rs->status == 'Pending')
-                            <form action="{{ route('reservasis.konfirmasi', $rs->id) }}" method="POST" class="d-inline">
-                                @csrf
-                                @method('PUT')
-                                <input type="hidden" name="status" value="Diterima">
-                                <button type="submit" class="btn btn-success btn-sm">Terima</button>
-                            </form>
-                            <form action="{{ route('reservasis.konfirmasi', $rs->id) }}" method="POST" class="d-inline">
-                                @csrf
-                                @method('PUT')
-                                <input type="hidden" name="status" value="Ditolak">
-                                <button type="submit" class="btn btn-danger btn-sm">Tolak</button>
-                            </form>
-                        @else
-                            <span class="text-muted">Sudah dikonfirmasi</span>
-                        @endif
-                    </td>
+                            @if ($rs->status == 'Pending')
+                                <div class="d-flex justify-content-center gap-2">
+                                    <form action="{{ route('reservasis.konfirmasi', $rs->id) }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <input type="hidden" name="status" value="Diterima">
+                                        <button type="submit" class="btn btn-success btn-sm mr-2">Terima</button>
+                                    </form>
+
+                                    <form action="{{ route('reservasis.konfirmasi', $rs->id) }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <input type="hidden" name="status" value="Ditolak">
+                                        <button type="submit" class="btn btn-danger btn-sm">Tolak</button>
+                                    </form>
+                                </div>
+                            @else
+                                <span class="text-muted">Sudah dikonfirmasi</span>
+                            @endif
+                        </td>
+
                     </tr>
                 @endforeach
             @else
-                    <tr>
-                        <td class="text-center" colspan="8">Data Tidak Ditemukan</td>
-                    </tr>
+                <tr>
+                    <td class="text-center" colspan="15">Data Tidak Ditemukan</td>
+                </tr>
             @endif
         </tbody>
+
     </table>
 @endsection
