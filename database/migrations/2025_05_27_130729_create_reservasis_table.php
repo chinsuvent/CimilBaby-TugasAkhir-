@@ -13,10 +13,7 @@ return new class extends Migration
             $table->foreignId('anaks_id')->constrained('anaks')->onDelete('cascade');
             $table->foreignId('penggunas_id')->constrained('penggunas')->onDelete('cascade');
             $table->foreignId('layanans_id')->constrained('layanans')->onDelete('cascade');
-
-            // FK ke jadwal_layanans
-            $table->foreignId('jadwal_layanan_id')->constrained('jadwal_layanans')->onDelete('cascade');
-
+            $table->foreignId('jadwal_layanans_id')->constrained('jadwal_layanans')->onDelete('cascade');
             $table->date('tgl_masuk');
             $table->date('tgl_keluar');
             $table->decimal('total', 10, 2);

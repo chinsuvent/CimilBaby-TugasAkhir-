@@ -72,9 +72,11 @@ class JadwalLayananController extends Controller
      */
     public function index()
     {
-        $jadwal_layanan = JadwalLayanan::orderBy('created_at','DESC')->get();
+        // $jadwal_layanan = JadwalLayanan::orderBy('created_at','DESC')->get();
+        $jadwal_layanan = JadwalLayanan::with(['anak', 'layanan', 'reservasi'])->get();
 
         return view('jadwal_layanans.index', compact('jadwal_layanan'));
+    
     }
 
     /**

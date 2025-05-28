@@ -31,7 +31,7 @@ class Reservasi extends Model
     // Relasi ke jadwal layanan (many to one)
     public function jadwalLayanan()
     {
-        return $this->belongsTo(JadwalLayanan::class, 'jadwal_layanan_id');
+        return $this->belongsTo(JadwalLayanan::class, 'jadwal_layanans_id');
     }
 
     // Relasi ke anak
@@ -51,4 +51,5 @@ class Reservasi extends Model
     {
         return $this->belongsTo(Layanan::class, 'layanans_id');
     }
+
 }

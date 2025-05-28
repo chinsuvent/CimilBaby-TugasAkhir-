@@ -7,6 +7,7 @@ use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\ReservasiController;
 use App\Http\Controllers\FasilitasController;
 use App\Http\Controllers\JadwalLayananController;
+use App\Http\Controllers\LaporanController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -95,4 +96,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/jadwal-layanans', [JadwalLayananController::class, 'index'])->name('jadwal_layanans.index');
 
     });
+
+    
+
 });

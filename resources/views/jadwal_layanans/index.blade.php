@@ -3,7 +3,6 @@
 @section('contents')
     <div class="d-flex align-items-center justify-content-between">
         <h1 class="mb-0 text-title">Jadwal Layanan</h1>
-        <a href="{{ route('jadwal_layanans.generateJadwal') }}" class="btn btn-primary">Generate Jadwal</a>
     </div>
     <hr />
 
@@ -60,39 +59,56 @@
     </script>
     @endpush
 
-<table class="table table-bordered table-striped mt-3">
-    <thead class="table-secondary text-center">
+<table class="table table-hover table-bordered">
+    <thead class="table-primary text-center">
         <tr>
             <th>No</th>
-            <th>Tanggal</th>
-            <th>Kapasitas</th>
-            <th>Terisi</th>
+            <th>Nama Anak</th>
+            <th>Jenis Layanan</th>
+            <th>Tanggal Masuk</th>
+            <th>Tanggal Keluar</th>
             <th>Status</th>
         </tr>
     </thead>
-    <tbody>
-        @if ($jadwal_layanan->count() > 0)
-            @foreach ($jadwal_layanan as $jadwal)
-                <tr class="text-center">
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ \Carbon\Carbon::parse($jadwal->tanggal)->translatedFormat('d F Y') }}</td>
-                    <td>{{ $jadwal->kapasitas }}</td>
-                    <td>{{ $jadwal->terisi }}</td>
-                    <td>
-                        @if ($jadwal->status == 'Tersedia')
-                            <span class="badge bg-success text-white">{{ $jadwal->status }}</span>
-                        @else
-                            <span class="badge bg-danger text-white">{{ $jadwal->status }}</span>
-                        @endif
-                    </td>
-                </tr>
-            @endforeach
-        @else
-            <tr>
-                <td colspan="6" class="text-center">Belum ada jadwal layanan</td>
-            </tr>
-        @endif
-    </tbody>
+   <tbody>
+    @if ($jadwal_layanan->count() > 0)
+        @foreach ($jadwal_layanan as $jadwal)
+            <tr class="text-center">
+                <td class="align-middle">{{ $loop->iteration }}</td>
+                <td class="align-middle">{{ $jadwal->anak->nama_anak ?? '-' }}</td>
+                <td class="align-middle">{{ $jadwal->layanan->jenis_layanan ?? '-' }}</td>
+                <td class="align-middle">
+                    @forelse ($jadwal->reservasi ?? [] as $reservasi)
+                        {{ \Carbon\Carbon::parse($reservasi->tgl_masuk)->format('d-m-Y') }}<br>
+                    @empty
+                        -
+                    @endforelse
+                </td>
+                <td class="align-middle">
+                    @forelse ($jadwal->reservasi ?? [] as $reservasi)
+                        {{ \Carbon\Carbon::parse($reservasi->tgl_keluar)->format('d-m-Y') }}<br>
+                    @empty
+                        -
+                    @endforelse
+                </td>
+
+                <td class="align-middle">
+                    @if ($jadwal->status == 'Tersedia')
+                        <span class="badge bg-success text-white">{{ $jadwal->status }}</span>
+                    @else
+                        <span class="badge bg-danger text-white">{{ $jadwal->status }}</span>
+                    @endif
+                </td>
+        </tr>
+    @endforeach
+@else
+    <tr>
+        <td colspan="7" class="text-center">Data Tidak Ditemukan</td>
+    </tr>
+@endif
+</tbody>
+
+
 </table>
 
 @endsection

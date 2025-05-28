@@ -79,8 +79,8 @@
                         {{-- <td class="align-middle">{{ $rs->anak->usia ?? '-' }}</td> --}}
                         <td class="align-middle">{{ $rs->pengguna->nama_orang_tua ?? '-' }}</td>
                         <td class="align-middle">{{ $rs->layanan->jenis_layanan ?? '-' }}</td>
-                        <td class="align-middle">{{ $rs->tgl_masuk }}</td>
-                        <td class="align-middle">{{ $rs->tgl_keluar }}</td>
+                        <td class="align-middle">{{ \Carbon\Carbon::parse($rs->tgl_masuk)->format('d-m-Y') }}</td>
+                        <td class="align-middle">{{ \Carbon\Carbon::parse($rs->tgl_keluar)->format('d-m-Y') }}</td>
                         <td class="align-middle">{{ $rs->layanan->biaya ?? '-' }}</td>
                         <td class="align-middle">{{ $rs->metode_pembayaran }}</td>
                         <td class="align-middle">{{ $rs->status }}</td>
