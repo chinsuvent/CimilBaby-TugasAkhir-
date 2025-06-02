@@ -46,9 +46,30 @@
                                     @enderror
                                 </div>
                                 <div class="form-group">
+                                    <input name="username" type="text" class="form-control form-control-user @error('username')is-invalid @enderror" id="exampleNamaLengkap"
+                                        placeholder="Username">
+                                    @error('username')
+                                        <span class="invalid-feedback">{{$message}}</span>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
                                     <input name="email" type="email" class="form-control form-control-user @error('email')is-invalid @enderror" id="exampleEmail"
                                         placeholder="Email">
                                     @error('email')
+                                        <span class="invalid-feedback">{{$message}}</span>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <input name="no_hp" type="number" class="form-control form-control-user @error('no_hp')is-invalid @enderror" id="exampleNamaLengkap"
+                                        placeholder="Nomor Hp">
+                                    @error('no_hp')
+                                        <span class="invalid-feedback">{{$message}}</span>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <input name="alamat" type="text" class="form-control form-control-user @error('alamat')is-invalid @enderror" id="exampleNamaLengkap"
+                                        placeholder="Alamat">
+                                    @error('alamat')
                                         <span class="invalid-feedback">{{$message}}</span>
                                     @enderror
                                 </div>

@@ -3,18 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Pengguna;
+use App\Models\User;
 
-class PenggunaController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $pengguna = Pengguna::orderBy('created_at','DESC')->get();
+        $user = User::orderBy('created_at','DESC')->get();
 
-        return view('penggunas.index', compact('pengguna'));
+        return view('users.index', compact('user'));
     }
 
     /**
@@ -22,7 +22,7 @@ class PenggunaController extends Controller
      */
     public function create()
     {
-        return view('penggunas.create');
+        return view('users.create');
     }
 
     /**
@@ -30,9 +30,9 @@ class PenggunaController extends Controller
      */
     public function store(Request $request)
     {
-        Pengguna::create($request->all());
+        User::create($request->all());
 
-        return redirect()->route('penggunas')->with('added', true);
+        return redirect()->route('users')->with('added', true);
     }
 
     /**
@@ -40,9 +40,9 @@ class PenggunaController extends Controller
      */
     public function show(string $id)
     {
-        $pengguna = Pengguna::findOrFail($id);
+        $user = User::findOrFail($id);
 
-        return view('penggunas.show', compact('pengguna'));
+        return view('users.show', compact('user'));
     }
 
     /**
@@ -50,9 +50,9 @@ class PenggunaController extends Controller
      */
     public function edit(string $id)
     {
-        $pengguna = Pengguna::findOrFail($id);
+        $user = User::findOrFail($id);
 
-        return view('penggunas.edit', compact('pengguna'));
+        return view('users.edit', compact('user'));
     }
 
     /**
@@ -60,11 +60,11 @@ class PenggunaController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $pengguna = Pengguna::findOrFail($id);
+        $user = User::findOrFail($id);
 
-        $pengguna->update($request->all());
+        $user->update($request->all());
 
-        return redirect()->route('penggunas')->with('edited', true);
+        return redirect()->route('users')->with('edited', true);
     }
 
     /**
@@ -72,10 +72,10 @@ class PenggunaController extends Controller
      */
     public function destroy(string $id)
     {
-        $pengguna = Pengguna::findOrFail($id);
+        $user = User::findOrFail($id);
 
-        $pengguna->delete();
+        $user->delete();
 
-        return redirect()->route('penggunas')->with('deleted', true);
+        return redirect()->route('users')->with('deleted', true);
     }
 }

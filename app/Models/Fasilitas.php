@@ -13,4 +13,5 @@ class Fasilitas extends Model
         'nama_fasilitas',
         'deskripsi'
     ];
+    
 }

@@ -15,6 +15,7 @@ class LayananController extends Controller
        $layanan = Layanan::orderBy('created_at','DESC')->get();
 
         return view('layanans.index', compact('layanan'));
+
     }
 
     /**

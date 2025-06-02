@@ -43,3 +43,44 @@ span {
 .table-bordered,th {
     border: 1px solid #e0d7d7 !important;
 }
+
+.card-dashboard {
+    gap: 2rem;
+}
+
+.card-reservasi {
+    background-color: #FF8282 !important;
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.card-konfirmasi {
+    background-color: #FF9D3D !important;
+    color: white;
+    font-size: 17.5px;
+    font-weight: 600;
+}
+
+.card-jumlah {
+    background-color: #7AA2E3 !important;
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.chart-area {
+    width: 100% !important;
+    height: auto;
+    overflow-x: auto;
+}
+canvas {
+    width: 100% !important;
+    height: auto !important;
+}
+
+#genderChart {
+    max-width: 300px;
+    max-height: 300px;
+    margin: 0 auto; 
+}

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\JadwalLayanan;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 
 class ReservasiController extends Controller
@@ -20,6 +21,8 @@ class ReservasiController extends Controller
         $reservasi = Reservasi::with(['anak', 'pengguna', 'layanan'])->orderBy('created_at', 'desc')->get();
 
         return view('reservasis.index', compact('reservasi'));
+
+        
     }
 
 
@@ -112,22 +115,28 @@ class ReservasiController extends Controller
     }
 
     public function konfirmasi(Request $request, $id)
-    {
-        // Validasi status harus Diterima atau Ditolak
-        $request->validate([
-            'status' => 'required|in:Diterima,Ditolak',
+{
+    // Validasi status harus Diterima atau Ditolak
+    $request->validate([
+        'status' => 'required|in:Diterima,Ditolak',
+    ]);
+
+    // Temukan data reservasi berdasarkan ID
+    $reservasi = \App\Models\Reservasi::findOrFail($id);
+
+    // Ubah status reservasi
+    $reservasi->status = $request->status;
+    $reservasi->save();
+
+    // Jika status Diterima, buat data jadwal layanan
+    if ($request->status === 'Diterima') {
+        \App\Models\JadwalLayanan::create([
+            'anaks_id'       => $reservasi->anaks_id,
+            'reservasis_id'  => $reservasi->id,
+            'layanans_id'   => $reservasi->layanans_id,
         ]);
-
-        // Temukan data reservasi berdasarkan ID
-        $reservasi = Reservasi::findOrFail($id);
-
-        // Ubah status reservasi
-        $reservasi->status = $request->status;
-        $reservasi->save();
-
-        // Redirect kembali ke halaman sebelumnya dengan notifikasi berhasil
-        return redirect()->back()->with('edited', true);
     }
 
-
+    return redirect()->back()->with('edited', true);
+}
 }

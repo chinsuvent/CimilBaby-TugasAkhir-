@@ -3,7 +3,7 @@
 @section('contents')
     <h1 class="mb-0 text-title">Tambah Pengguna</h1>
     <hr>
-    <form action="{{ route('penggunas.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('users.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="row mb-3">
             <div class="col">

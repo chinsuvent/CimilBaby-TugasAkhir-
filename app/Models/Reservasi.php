@@ -43,7 +43,7 @@ class Reservasi extends Model
     // Relasi ke pengguna
     public function pengguna()
     {
-        return $this->belongsTo(Pengguna::class, 'penggunas_id');
+        return $this->belongsTo(User::class, 'users_id');
     }
 
     // Relasi ke layanan

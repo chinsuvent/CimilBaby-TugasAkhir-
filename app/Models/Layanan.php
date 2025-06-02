@@ -14,4 +14,6 @@ class Layanan extends Model
         'durasi',
         'biaya'
     ];
+
+    
 }

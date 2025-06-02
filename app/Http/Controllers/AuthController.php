@@ -21,18 +21,24 @@ class AuthController extends Controller
     {
         Validator::make($request->all(), [
             'name' => 'required',
+            'username' => 'required',
             'email' => 'required|email',
+            'no_hp' => 'required',
+            'alamat' => 'required',
             'password' => 'required|confirmed'
         ])->validate();
 
         User::create([
             'name' => $request->name,
+            'username' => $request->username,
             'email' => $request->email,
+            'no_hp' => $request->no_hp,
+            'alamat' => $request->alamat,
             'password' => Hash::make($request->password),
             'level' => 'Admin'
         ]);
 
-        return redirect()->route('login');
+        return redirect()->route('login')->with('register','Silahkan Login Terlebih Dahulu!');
     }
 
     public function login()
@@ -43,19 +49,20 @@ class AuthController extends Controller
     public function loginAction(Request $request)
     {
         Validator::make($request->all(), [
-            'email' => 'required|email',
+            'username' => 'required',
             'password' => 'required'
         ])->validate();
 
-        if (!Auth::attempt($request->only('email','password'), $request->boolean('remember'))) {
+        if (!Auth::attempt($request->only('username','password'), $request->boolean('remember'))) {
             throw ValidationException::withMessages([
-                'email' => trans('auth.failed')
+                'username' => trans('auth.failed')
             ]);
         }
 
         $request->session()->regenerate();
 
-        return redirect()->route('dashboard');
+        return redirect()->route('dashboard')->with('success', 'Selamat Anda Berhasil Login');
+
     }
 
     public function logout(Request $request)
@@ -64,6 +71,17 @@ class AuthController extends Controller
 
         $request->session()->invalidate();
 
-        return redirect('/');
+        return redirect()->route('logout')->with('success', 'Anda Telah Logout');
+    }
+
+    public function destroy(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/login')->with('success', 'Anda Telah Logout'); 
     }
 }

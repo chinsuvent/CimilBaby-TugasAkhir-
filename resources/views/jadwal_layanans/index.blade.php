@@ -58,57 +58,42 @@
         }
     </script>
     @endpush
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered">
+            <thead class="table-primary text-center">
+                <tr>
+                    <th>No</th>
+                    <th>Nama Anak</th>
+                    <th>Jenis Layanan</th>
+                    <th>Tanggal Masuk</th>
+                </tr>
+            </thead>
+        <tbody>
+            @if ($jadwal_layanan->count() > 0)
+                @foreach ($jadwal_layanan as $jadwal)
+                    <tr class="text-center">
+                        <td class="align-middle">{{ $loop->iteration }}</td>
+                        <td class="align-middle">{{ $jadwal->anak->nama_anak ?? '-' }}</td>
+                        <td class="align-middle">{{ $jadwal->layanan->jenis_layanan ?? '-' }}</td>
+                        {{-- <td class="align-middle">
+                            @forelse ($jadwal->reservasi ?? [] as $reservasi)
+                                {{ \Carbon\Carbon::parse($reservasi->tgl_masuk)->format('d-m-Y') }}<br>
+                            @empty
+                                -
+                            @endforelse
+                        </td> --}}
+                        
 
-<table class="table table-hover table-bordered">
-    <thead class="table-primary text-center">
-        <tr>
-            <th>No</th>
-            <th>Nama Anak</th>
-            <th>Jenis Layanan</th>
-            <th>Tanggal Masuk</th>
-            <th>Tanggal Keluar</th>
-            <th>Status</th>
-        </tr>
-    </thead>
-   <tbody>
-    @if ($jadwal_layanan->count() > 0)
-        @foreach ($jadwal_layanan as $jadwal)
-            <tr class="text-center">
-                <td class="align-middle">{{ $loop->iteration }}</td>
-                <td class="align-middle">{{ $jadwal->anak->nama_anak ?? '-' }}</td>
-                <td class="align-middle">{{ $jadwal->layanan->jenis_layanan ?? '-' }}</td>
-                <td class="align-middle">
-                    @forelse ($jadwal->reservasi ?? [] as $reservasi)
-                        {{ \Carbon\Carbon::parse($reservasi->tgl_masuk)->format('d-m-Y') }}<br>
-                    @empty
-                        -
-                    @endforelse
-                </td>
-                <td class="align-middle">
-                    @forelse ($jadwal->reservasi ?? [] as $reservasi)
-                        {{ \Carbon\Carbon::parse($reservasi->tgl_keluar)->format('d-m-Y') }}<br>
-                    @empty
-                        -
-                    @endforelse
-                </td>
-
-                <td class="align-middle">
-                    @if ($jadwal->status == 'Tersedia')
-                        <span class="badge bg-success text-white">{{ $jadwal->status }}</span>
-                    @else
-                        <span class="badge bg-danger text-white">{{ $jadwal->status }}</span>
-                    @endif
-                </td>
-        </tr>
-    @endforeach
-@else
-    <tr>
-        <td colspan="7" class="text-center">Data Tidak Ditemukan</td>
-    </tr>
-@endif
-</tbody>
-
-
-</table>
+                        
+                </tr>
+            @endforeach
+        @else
+            <tr>
+                <td colspan="7" class="text-center">Data Tidak Ditemukan</td>
+            </tr>
+        @endif
+        </tbody>
+    </table>
+    </div>
 
 @endsection

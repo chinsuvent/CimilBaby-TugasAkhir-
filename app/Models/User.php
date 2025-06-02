@@ -18,7 +18,10 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'username',
         'email',
+        'no_hp',
+        'alamat',
         'password',
         'level',
     ];
@@ -44,5 +47,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function anak()
+    {
+        return $this->hasMany(Anak::class, 'users_id'); 
     }
 }

@@ -20,7 +20,7 @@ class Anak extends Model
 
     public function pengguna()
     {
-        return $this->belongsTo(Pengguna::class, 'penggunas_id');
+        return $this->belongsTo(User::class, 'users_id');
     }
 }
 

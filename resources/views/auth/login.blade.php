@@ -19,6 +19,7 @@
     <!-- Custom styles for this template-->
     <link href="{{ asset('admin_assets/css/sb-admin-2.min.css') }}" rel="stylesheet">
 
+
 </head>
 
 <body class="bg-gradient-primary">
@@ -38,7 +39,7 @@
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">Selamat Datang</h1>
                                     </div>
                                     <form action="{{ route('login.action') }}" method="POST" class="user">
                                         @csrf
@@ -52,9 +53,9 @@
                                             </div>
                                         @endif
                                         <div class="form-group">
-                                            <input name="email"  type="email" class="form-control form-control-user"
-                                                id="exampleInputEmail" aria-describedby="emailHelp"
-                                                placeholder="Enter Email Address...">
+                                            <input name="username"  type="text" class="form-control form-control-user"
+                                                id="exampleInputUsername" aria-describedby="emailHelp"
+                                                placeholder="Enter Username...">
                                         </div>
                                         <div class="form-group">
                                             <input name="password" type="password" class="form-control form-control-user"
@@ -97,6 +98,35 @@
 
     <!-- Custom scripts for all pages-->
     <script src="{{ asset('admin_assets/js/sb-admin-2.min.js') }}"></script>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if (session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Logout Berhasil',
+            text: '{{ session('success') }}',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'OK'
+        });
+    </script>
+    @endif
+
+    @if (session('register'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Registrasi Berhasil',
+                text: '{{ session('register') }}',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'OK'
+            });
+        </script>
+        
+    @endif
+
 
 </body>
 
