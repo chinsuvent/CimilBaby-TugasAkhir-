@@ -8,6 +8,7 @@
     background-color: #8E7DBE;
 }
 
+/* Font dan Umum */
 span {
     font-size: 1rem !important;
 }
@@ -40,7 +41,8 @@ span {
     background-color: #fff;
 }
 
-.table-bordered,th {
+.table-bordered,
+th {
     border: 1px solid #e0d7d7 !important;
 }
 
@@ -74,6 +76,7 @@ span {
     height: auto;
     overflow-x: auto;
 }
+
 canvas {
     width: 100% !important;
     height: auto !important;
@@ -82,5 +85,145 @@ canvas {
 #genderChart {
     max-width: 300px;
     max-height: 300px;
-    margin: 0 auto; 
+    margin: 0 auto;
+}
+
+/* Tombol hamburger */
+/* .mobile-menu-toggle {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 1100;
+    background-color: white;
+    color: #8E7DBE;
+    border: none;
+    padding: 10px 15px;
+    font-size: 24px;
+    border-radius: 4px;
+    cursor: pointer;
+} */
+
+
+
+/* Backdrop gelap saat sidebar aktif */
+.sidebar-backdrop {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 1040;
+}
+
+.sidebar-backdrop.show {
+    display: block;
+}
+
+/* Kunci scroll saat sidebar aktif */
+body.sidebar-open {
+    overflow: hidden;
+}
+
+.btn-purple {
+    background-color: #8979FF;
+    color: white;
+}
+.btn-purple:hover {
+    background-color: #6353db;
+    color: white;
+}
+.rounded-full {
+    border-radius: 9999px;
+}
+
+.search-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  margin: 20px auto;
+}
+
+.search-wrapper input {
+  width: 100%;
+  height: 40px;
+  padding-left: 2.5rem; 
+  padding-right: 1rem;
+  border-radius: 9999px;
+  border: 1px solid #fdfdfd !important;
+  box-sizing: border-box;
+  background-color: #8979FF;
+  color: white;
+}
+
+.search-wrapper input::placeholder {
+  color: white; 
+  opacity: 1; 
+}
+
+
+.search-wrapper .search-icon {
+  position: absolute;
+  top: 50%;
+  left: 1rem;
+  transform: translateY(-50%);
+  color: white;
+  pointer-events: none;
+  font-size: 1rem;
+}
+
+
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 250px !important;
+        overflow-y: auto;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-in-out;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        z-index: 1050;
+        background-color: #8E7DBE;
+    }
+
+    .sidebar.show {
+        transform: translateX(0);
+    }
+
+    .sidebar .sidebar-brand-text {
+        display: inline !important;
+        color: #fff;
+    }
+
+    .sidebar .nav-link {
+        display: flex;
+        align-items: center;
+        justify-content: space-between; /* ikon ke kanan */
+        white-space: nowrap;
+        padding: 10px 15px;
+        position: relative; /* Tambahkan ini jika mau gunakan positioning */
+    }
+
+    .sidebar .nav-link span {
+        flex-grow: 1;              /* isi ruang sisa */
+        overflow: visible;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        color: white;
+        font-size: 1rem;
+    }
+
+    .sidebar .nav-link svg {
+        position: absolute;
+        right: -120px;
+        top: 50%;
+        flex-shrink: 0;
+        transform: translateY(-50%);
+        width: 20px;
+        height: 20px;
+        fill: white;              /* jika perlu warnai */
+    }
 }

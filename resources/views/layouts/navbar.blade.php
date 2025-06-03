@@ -2,7 +2,7 @@
 <nav class="navbar navbar-expand  topbar mb-4 static-top shadow">
 
                     <!-- Sidebar Toggle (Topbar) -->
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                    <button id="sidebarToggleTop" class="btn btn-link rounded-circle mr-3 d-md-none" onclick="toggleSidebar()">
                         <i class="fa fa-bars"></i>
                     </button>
 
@@ -25,4 +25,22 @@
                         </li>
                     </ul>
 
-</nav>
+                    
+                </nav>
+                <div id="sidebar-backdrop" class="sidebar-backdrop" onclick="toggleSidebar()"></div>
+
+<script>
+  function toggleSidebar() {
+    const sidebar = document.getElementById("accordionSidebar");
+    const backdrop = document.getElementById("sidebar-backdrop");
+    
+    sidebar.classList.toggle("show");
+    backdrop.classList.toggle("show");
+    
+    if (sidebar.classList.contains("show")) {
+      document.body.classList.add("sidebar-open");
+    } else {
+      document.body.classList.remove("sidebar-open");
+    }
+  }
+</script>

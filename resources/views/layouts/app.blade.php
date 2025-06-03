@@ -25,6 +25,13 @@
 
     <link href="{{ asset('admin_assets/css/custom.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="sweetalert2.min.css">
+
+    {{-- <script>
+        setInterval(function() {
+            window.location.reload();
+        }, 5000); 
+    </script> --}}
+
 </head>
 
 <body id="page-top">
@@ -96,6 +103,10 @@
 
         
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Bootstrap JS dan Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
     
 
     @stack('scripts')

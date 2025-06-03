@@ -8,6 +8,7 @@ use App\Http\Controllers\ReservasiController;
 use App\Http\Controllers\FasilitasController;
 use App\Http\Controllers\JadwalLayananController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LaporanController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -100,8 +101,9 @@ Route::middleware('auth')->group(function () {
         Route::put('/jadwal_layanans/konfirmasi/{id}', [JadwalLayananController::class, 'konfirmasi'])->name('jadwal_layanans.konfirmasi');
         Route::get('/generate-jadwal', [JadwalLayananController::class, 'generateJadwal'])->name('jadwal_layanans.generateJadwal');
         Route::get('/jadwal-layanans', [JadwalLayananController::class, 'index'])->name('jadwal_layanans.index');
-
     });
+    
+    Route::get('/laporans', [LaporanController::class, 'index'])->name('laporans.index');
 
     
 
