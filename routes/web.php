@@ -104,6 +104,8 @@ Route::middleware('auth')->group(function () {
     });
     
     Route::get('/laporans', [LaporanController::class, 'index'])->name('laporans.index');
+    Route::get('/laporans/cetak', [LaporanController::class, 'cetak'])->name('laporans.cetak');
+
 
     
 

@@ -86,7 +86,7 @@
 
     <!-- Kolom 4: Tombol Cetak PDF -->
     <div class="col-md-3 d-flex align-items-end">
-      <a href="#" class="btn btn-purple w-100">Cetak PDF</a>
+      <a href="{{ route('laporans.cetak', request()->all()) }}" target="_blank" class="btn btn-purple w-100">Cetak PDF</a>
     </div>
   </div>
 </form>

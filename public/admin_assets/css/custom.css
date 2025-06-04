@@ -226,4 +226,35 @@ body.sidebar-open {
         height: 20px;
         fill: white;              /* jika perlu warnai */
     }
+
+    .dropdown {
+      width: 100%;
+    }
+
+    .dropdown .btn {
+      width: 100%;
+    }
+
+    .dropdown-menu {
+      width: 100% !important;
+    }
+
+    .search-wrapper {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
+    }
+
+    .search-wrapper input {
+      width: 100%;
+    }
+
+    .row.g-2 > div {
+      margin-bottom: 1rem;
+    }
+
+    .btn-purple {
+      width: 100%;
+    }
+  
 }
