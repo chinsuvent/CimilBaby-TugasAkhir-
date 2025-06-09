@@ -131,9 +131,9 @@ class ReservasiController extends Controller
     // Jika status Diterima, buat data jadwal layanan
     if ($request->status === 'Diterima') {
         \App\Models\JadwalLayanan::create([
-            'anaks_id'       => $reservasi->anaks_id,
+            
             'reservasis_id'  => $reservasi->id,
-            'layanans_id'   => $reservasi->layanans_id,
+
         ]);
     }
 

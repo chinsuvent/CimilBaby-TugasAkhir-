@@ -3,7 +3,7 @@
 @section('contents')
     <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-2 mb-3">
         <h1 class="m-0 text-title text-md-left text-center text-md-h4">Data Fasilitas</h1>
-        <a href="{{ route('fasilitas.create') }}" class="btn btn-primary">Tambah Fasilitas</a>
+        <a href="{{ route('fasilitas.create') }}" class="btn btn-tambah">Tambah Fasilitas</a>
     </div>
     <hr />
 

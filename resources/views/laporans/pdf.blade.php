@@ -1,6 +1,8 @@
 @php
     $totalAnak = $laporan->count();
-    $totalBiaya = $laporan->sum('biaya');
+    $totalBiaya = $laporan->sum(function($item) {
+        return $item->layanan->biaya;
+    });
 @endphp
 
 <!DOCTYPE html>
@@ -47,7 +49,7 @@
             </tr>
             <tr>
                 <th colspan="5" style="text-align: right;">Total Biaya</th>
-                <th>Rp {{ number_format($totalBiaya, 0, ',', '.') }}</th>
+                <th> Rp {{ number_format($totalBiaya, 0, ',', '.') }}</th>
             </tr>
         </tfoot>
 

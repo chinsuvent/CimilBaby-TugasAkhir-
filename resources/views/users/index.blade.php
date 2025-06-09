@@ -3,7 +3,7 @@
 @section('contents')
     <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-2 mb-3">
         <h1 class="m-0 text-title text-md-left text-center text-md-h4">Data Pengguna</h1>
-        <a href="{{ route('users.create') }}" class="btn btn-primary ">Tambah Pengguna</a>
+        <a href="{{ route('users.create') }}" class="btn btn-tambah ">Tambah Pengguna</a>
     </div>
     <hr />
         @push('scripts')

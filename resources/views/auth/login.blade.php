@@ -1,92 +1,105 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Login</title>
+    <title>Ci'mil Baby - Login</title>
 
     <!-- Custom fonts for this template-->
     <link href="{{ asset('admin_assets/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" 
     rel="stylesheet">
 
-    <!-- Custom styles for this template-->
-    <link href="{{ asset('admin_assets/css/sb-admin-2.min.css') }}" rel="stylesheet">
-
+    <!-- Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ asset('admin_assets/css/custom.css') }}" rel="stylesheet">
 
 </head>
 
-<body class="bg-gradient-primary">
-
-    <div class="container">
-
-        <!-- Outer Row -->
-        <div class="row justify-content-center">
-
-            <div class="col-xl-10 col-lg-12 col-md-9">
-
-                <div class="card o-hidden border-0 shadow-lg my-5">
-                    <div class="card-body p-0">
-                        <!-- Nested Row within Card Body -->
-                        <div class="row">
-                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
-                            <div class="col-lg-6">
-                                <div class="p-5">
-                                    <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Selamat Datang</h1>
-                                    </div>
-                                    <form action="{{ route('login.action') }}" method="POST" class="user">
-                                        @csrf
-                                        @if ($errors->any())
-                                            <div class="alert alert-danger">
-                                                <ul>
-                                                    @foreach ( $errors->all() as $error )
-                                                        <li>{{ $error }}</li>
-                                                    @endforeach
-                                                </ul>
-                                            </div>
-                                        @endif
-                                        <div class="form-group">
-                                            <input name="username"  type="text" class="form-control form-control-user"
-                                                id="exampleInputUsername" aria-describedby="emailHelp"
-                                                placeholder="Enter Username...">
+<body>
+    <div class="container-fluid p-0">
+        <div class="row g-0 min-vh-100">
+            <div class="col-12">
+                <div class="main-card">
+                    <div class="row g-0 h-100">
+                        <!-- Left Section -->
+                        <div class="col-lg-6 left-section">
+                            <div class="decorative-shapes">
+                                <div class="shape shape1"></div>
+                                <div class="shape shape2"></div>
+                            </div>
+                            
+                            <div class="musical-note">
+                                <i class="fas fa-music"></i>
+                            </div>
+                            
+                            <h1 class="welcome-text">
+                                Selamat Datang di<br>
+                                Ci'mil Baby
+                            </h1>
+                            
+                            <div class="illustration">
+                                <img src="{{ asset('admin_assets/img/login.png') }}" alt="Ilustrasi Login" class="img-login">
+                            </div>
+                        </div>
+                        
+                        <!-- Right Section -->
+                        <div class="col-lg-6 right-section">
+                            <div class="form-container">
+                                <div class="text-start">
+                                    <h1 class="form-title">Masuk</h1>
+                                </div>
+                                
+                                <form action="{{ route('login.action') }}" method="POST" class="user">
+                                    @csrf
+                                    @if ($errors->any())
+                                        <div class="alert alert-danger">
+                                            <ul>
+                                                @foreach ( $errors->all() as $error )
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
                                         </div>
-                                        <div class="form-group">
+                                    @endif
+                                    
+                                    <div class="form-group">
+                                        <label class="form-label">Username</label>
+                                        <input name="username" type="text" class="form-control form-control-user"
+                                            id="exampleInputUsername" aria-describedby="emailHelp"
+                                            placeholder="Masukkan username Anda" required>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="form-label">Password</label>
+                                        <div class="password-field">
                                             <input name="password" type="password" class="form-control form-control-user"
-                                                id="exampleInputPassword" placeholder="Password">
+                                                id="exampleInputPassword" placeholder="Masukkan password" required>
+                                            <button type="button" class="password-toggle" onclick="togglePassword()">
+                                                <i class="far fa-eye" id="eye-icon"></i>
+                                            </button>
                                         </div>
-                                        <div class="form-group">
-                                            <div class="custom-control custom-checkbox small">
-                                                <input type="checkbox" class="custom-control-input" id="customCheck">
-                                                <label class="custom-control-label" for="customCheck">Remember
-                                                    Me</label>
-                                            </div>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary btn-user btn-block">
-                                             Login
-                                        </button>
-                                        <hr>
-                                    </form>
-                                    <hr>
-                                    <div class="text-center">
-                                        <a class="small" href="{{ route('register') }}">Create an Account!</a>
                                     </div>
+                                    
+                                    <button type="submit" class="btn btn-primary btn-user btn-block">
+                                        Masuk
+                                    </button>
+                                </form>
+                                
+                                <hr>
+                                <div class="register-link">
+                                    <a href="{{ route('register') }}">Belum punya akun? <b>Daftar sekarang!</b></a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
-
         </div>
-
     </div>
 
     <!-- Bootstrap core JavaScript-->
@@ -102,13 +115,30 @@
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <script>
+        function togglePassword() {
+            const passwordField = document.getElementById('exampleInputPassword');
+            const eyeIcon = document.getElementById('eye-icon');
+            
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordField.type = 'password';
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+            }
+        }
+    </script>
+    
     @if (session('success'))
     <script>
         Swal.fire({
             icon: 'success',
             title: 'Logout Berhasil',
             text: '{{ session('success') }}',
-            confirmButtonColor: '#3085d6',
+            confirmButtonColor: '#8B7FB8',
             confirmButtonText: 'OK'
         });
     </script>
@@ -120,13 +150,11 @@
                 icon: 'success',
                 title: 'Registrasi Berhasil',
                 text: '{{ session('register') }}',
-                confirmButtonColor: '#3085d6',
+                confirmButtonColor: '#8B7FB8',
                 confirmButtonText: 'OK'
             });
         </script>
-        
     @endif
-
 
 </body>
 

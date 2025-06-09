@@ -31,8 +31,9 @@ class JadwalLayanan extends Model
 
     public function reservasi()
     {
-        return $this->hasMany(Reservasi::class, 'jadwal_layanans_id');
+        return $this->hasMany(Reservasi::class); // jika relasi hasMany
     }
+
 
 
 

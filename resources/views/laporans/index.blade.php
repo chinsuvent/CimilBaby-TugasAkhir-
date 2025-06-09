@@ -148,7 +148,7 @@
           <input 
             type="text" 
             name="cari" 
-            class="form-control text-white border-0" 
+            class="text-white border-0" 
             placeholder="Cari"
             value="{{ request('cari') }}"
             id="searchInput"

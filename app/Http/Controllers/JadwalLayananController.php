@@ -2,84 +2,67 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Reservasi;
 use Illuminate\Http\Request;
-use App\Models\JadwalLayanan;
-
 
 class JadwalLayananController extends Controller
 {
+   public function index(Request $request)
+{
+    $search = $request->input('cari'); 
 
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        // $jadwal_layanan = JadwalLayanan::orderBy('created_at','DESC')->get();
-        $jadwal_layanan = JadwalLayanan::with(['anak', 'layanan', ])->get();
+    $query = Reservasi::query();
 
-        return view('jadwal_layanans.index', compact('jadwal_layanan'));
-    
+    if (!empty($search)) {
+        $query->where(function ($q) use ($search) {
+            $q->whereHas('pengguna', function ($q2) use ($search) {
+                $q2->where('name', 'like', "%$search%");
+            })->orWhereHas('anak', function ($q3) use ($search) {
+                $q3->where('nama_anak', 'like', "%$search%");
+            });
+        });
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    $reservasi = $query->get(); // ambil data setelah query disiapkan
+
+    return view('jadwal_layanans.index', compact('reservasi'));
+}
+
+
+
+
+    // Jika ingin filter berdasarkan status tertentu
+    public function filterByStatus($status = null)
     {
-        return view('jadwal_layanans.create');
+        $query = Reservasi::with(['anak', 'layanan']);
+        
+        if ($status) {
+            $query->where('status', $status);
+        }
+        
+        $reservasi = $query->orderBy('tgl_masuk', 'desc')->get();
+
+        return view('jadwal_layanans.index', compact('reservasi'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    // Jika ingin filter berdasarkan tanggal
+    public function filterByDate(Request $request)
     {
-        JadwalLayanan::create($request->all());
+        $tanggal_mulai = $request->input('tanggal_mulai');
+        $tanggal_akhir = $request->input('tanggal_akhir');
 
-        return redirect()->route('jadwal_layanans')->with('added', true);
-    }
+        $query = Reservasi::with(['anak', 'layanan']);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        $jadwal_layanan = JadwalLayanan::findOrFail($id);
+        if ($tanggal_mulai) {
+            $query->where('tgl_masuk', '>=', $tanggal_mulai);
+        }
 
-        return view('jadwal_layanans.show', compact('jadwal_layanan'));
-    }
+        if ($tanggal_akhir) {
+            $query->where('tgl_masuk', '<=', $tanggal_akhir);
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        $jadwal_layanan = JadwalLayanan::findOrFail($id);
+        $reservasi = $query->orderBy('tgl_masuk', 'desc')->get();
 
-        return view('jadwal_layanans.edit', compact('jadwal_layanan'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        $jadwal_layanan = JadwalLayanan::findOrFail($id);
-
-        $jadwal_layanan->update($request->all());
-
-        return redirect()->route('jadwal_layanans')->with('edited', true);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        $jadwal_layanan = JadwalLayanan::findOrFail($id);
-
-        $jadwal_layanan->delete();
-
-        return redirect()->route('jadwal_layanans')->with('deleted', true);
+        return view('jadwal_layanans.index', compact('reservasi'));
     }
 }

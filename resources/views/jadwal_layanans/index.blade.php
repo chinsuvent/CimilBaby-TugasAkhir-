@@ -3,7 +3,27 @@
 @section('contents')
     <div class="d-flex align-items-center justify-content-between">
         <h1 class="mb-0 text-title">Jadwal Layanan</h1>
+        <div class="d-flex justify-content-end mb-3">
+            <div class="col-12 d-flex justify-content-end">
+                <form method="GET" action="{{ route('jadwal_layanans.index') }}" id="searchForm">
+                    <div class="search-wrapper d-flex align-items-center">
+                        <i class="fas fa-search search-icon me-2"></i>
+                        <input 
+                            type="text" 
+                            name="cari" 
+                            class="text-white border-0" 
+                            placeholder="Cari"
+                            value="{{ request('cari') }}"
+                            id="searchInput"
+                            style="width: 300px;"
+                        />
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
+
+
     <hr />
 
     @push('scripts')
@@ -58,6 +78,8 @@
         }
     </script>
     @endpush
+    
+
     <div class="table-responsive">
         <table class="table table-hover table-bordered">
             <thead class="table-primary text-center">
@@ -69,22 +91,13 @@
                 </tr>
             </thead>
         <tbody>
-            @if ($jadwal_layanan->count() > 0)
-                @foreach ($jadwal_layanan as $jadwal)
+            @if ($reservasi->count() > 0)
+                @foreach ($reservasi as $jadwal)
                     <tr class="text-center">
                         <td class="align-middle">{{ $loop->iteration }}</td>
                         <td class="align-middle">{{ $jadwal->anak->nama_anak ?? '-' }}</td>
                         <td class="align-middle">{{ $jadwal->layanan->jenis_layanan ?? '-' }}</td>
-                        {{-- <td class="align-middle">
-                            @forelse ($jadwal->reservasi ?? [] as $reservasi)
-                                {{ \Carbon\Carbon::parse($reservasi->tgl_masuk)->format('d-m-Y') }}<br>
-                            @empty
-                                -
-                            @endforelse
-                        </td> --}}
-                        
-
-                        
+                        <td class="align-middle">{{ $jadwal->tgl_masuk ? \Carbon\Carbon::parse($jadwal->tgl_masuk)->format('d-m-Y') : '-' }}</td>
                 </tr>
             @endforeach
         @else
