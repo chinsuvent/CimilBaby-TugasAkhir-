@@ -28,11 +28,25 @@
             </div>
         </div>
 
+        {{-- Pilih Fasilitas --}}
+        <div class="mb-3">
+            <label class="form-label">Pilih Fasilitas</label>
+            <div class="row">
+                @foreach($fasilitas as $f)
+                    <div class="col-md-4">
+                        <div class="form-check">
+                            <input type="checkbox" name="fasilitas[]" value="{{ $f->id }}" class="form-check-input" id="fasilitas{{ $f->id }}">
+                            <label class="form-check-label" for="fasilitas{{ $f->id }}">{{ $f->nama_fasilitas }}</label>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
 
         {{-- Tombol Kirim --}}
         <div class="row">
             <div class="d-grid">
-                <button type="submit" class="btn btn-primary ml-3">Kirim</button>
+                <button type="submit" class="btn btn-tambah ml-3">Kirim</button>
             </div>
         </div>
     </form>

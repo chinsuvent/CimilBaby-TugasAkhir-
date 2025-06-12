@@ -21,7 +21,7 @@
 
 </head>
 
-<body>
+<body style="background: linear-gradient(135deg, #8B7FB8 0%, #A896C7 100%);">
     <div class="container-fluid p-0">
         <div class="row g-0 min-vh-100">
             <div class="col-12">
@@ -59,42 +59,42 @@
                                     @csrf
 
                                     <div class="form-group">
-                                        <input name="name" type="text" class="form-control form-control-user @error('name') is-invalid @enderror" placeholder="Nama Lengkap">
+                                        <input name="name" type="text" class="form-control form-control-user @error('name') is-invalid @enderror" placeholder="Nama Lengkap" style="padding: 0.75rem 1rem;">
                                         @error('name')
                                             <span class="invalid-feedback d-block">{{ $message }}</span>
                                         @enderror
                                     </div>
 
                                     <div class="form-group">
-                                        <input name="username" type="text" class="form-control form-control-user @error('username') is-invalid @enderror" placeholder="Username">
+                                        <input name="username" type="text" class="form-control form-control-user @error('username') is-invalid @enderror" placeholder="Username" style="padding: 0.75rem 1rem;">
                                         @error('username')
                                             <span class="invalid-feedback d-block">{{ $message }}</span>
                                         @enderror
                                     </div>
 
                                     <div class="form-group">
-                                        <input name="email" type="email" class="form-control form-control-user @error('email') is-invalid @enderror" placeholder="Email">
+                                        <input name="email" type="email" class="form-control form-control-user @error('email') is-invalid @enderror" placeholder="Email" style="padding: 0.75rem 1rem;">
                                         @error('email')
                                             <span class="invalid-feedback d-block">{{ $message }}</span>
                                         @enderror
                                     </div>
 
                                     <div class="form-group">
-                                        <input name="no_hp" type="number" class="form-control form-control-user @error('no_hp') is-invalid @enderror" placeholder="Nomor HP">
+                                        <input name="no_hp" type="number" class="form-control form-control-user @error('no_hp') is-invalid @enderror" placeholder="Nomor HP" style="padding: 0.75rem 1rem;">
                                         @error('no_hp')
                                             <span class="invalid-feedback d-block">{{ $message }}</span>
                                         @enderror
                                     </div>
 
                                     <div class="form-group">
-                                        <input name="alamat" type="text" class="form-control form-control-user @error('alamat') is-invalid @enderror" placeholder="Alamat">
+                                        <input name="alamat" type="text" class="form-control form-control-user @error('alamat') is-invalid @enderror" placeholder="Alamat" style="padding: 0.75rem 1rem;">
                                         @error('alamat')
                                             <span class="invalid-feedback d-block">{{ $message }}</span>
                                         @enderror
                                     </div>
 
                                     <div class="form-group">
-                                        <input name="password" type="password" class="form-control form-control-user @error('password') is-invalid @enderror" placeholder="Password">
+                                        <input name="password" type="password" class="form-control form-control-user @error('password') is-invalid @enderror" placeholder="Password" style="padding: 0.75rem 1rem;" id="exampleInputPassword">
                                         @error('password')
                                             <span class="invalid-feedback d-block">{{ $message }}</span>
                                         @enderror

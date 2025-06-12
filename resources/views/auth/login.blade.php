@@ -21,7 +21,7 @@
 
 </head>
 
-<body>
+<body style="background: linear-gradient(135deg, #8B7FB8 0%, #A896C7 100%);">
     <div class="container-fluid p-0">
         <div class="row g-0 min-vh-100">
             <div class="col-12">
@@ -71,14 +71,14 @@
                                         <label class="form-label">Username</label>
                                         <input name="username" type="text" class="form-control form-control-user"
                                             id="exampleInputUsername" aria-describedby="emailHelp"
-                                            placeholder="Masukkan username Anda" required>
+                                            placeholder="Masukkan username Anda" style="padding: 0.75rem 1rem;" required>
                                     </div>
                                     
                                     <div class="form-group">
                                         <label class="form-label">Password</label>
                                         <div class="password-field">
                                             <input name="password" type="password" class="form-control form-control-user"
-                                                id="exampleInputPassword" placeholder="Masukkan password" required>
+                                                id="exampleInputPassword" placeholder="Masukkan password" style="padding: 0.75rem 1rem;" required>
                                             <button type="button" class="password-toggle" onclick="togglePassword()">
                                                 <i class="far fa-eye" id="eye-icon"></i>
                                             </button>

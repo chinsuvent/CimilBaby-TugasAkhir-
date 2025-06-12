@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Layanan;
+use App\Models\Fasilitas;
 use Illuminate\Http\Request;
 
 class LayananController extends Controller
@@ -23,7 +24,8 @@ class LayananController extends Controller
      */
     public function create()
     {
-        return view('layanans.create');
+        $fasilitas = Fasilitas::all(); // ambil semua fasilitas
+        return view('layanans.create', compact('fasilitas'));
     }
 
     /**
@@ -31,19 +33,33 @@ class LayananController extends Controller
      */
     public function store(Request $request)
     {
-        Layanan::create($request->all());
+        $request->validate([
+            'jenis_layanan' => 'required|string|max:255',
+            'durasi' => 'required|string|max:255',
+            'biaya' => 'required|numeric',
+            'fasilitas' => 'array|nullable'
+        ]);
 
-        return redirect()->route('layanans')->with('added', true);
+        $layanan = Layanan::create([
+            'jenis_layanan' => $request->jenis_layanan,
+            'durasi' => $request->durasi,
+            'biaya' => $request->biaya
+        ]);
+
+        if ($request->has('fasilitas')) {
+            $layanan->fasilitas()->attach($request->fasilitas);
+        }
+
+        return redirect()->route('layanans')->with('success', true);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        $layanan = Layanan::findOrFail($id);
-
-        return view('layanans.show', compact('layanans'));
+        $layanan = Layanan::with('fasilitas')->findOrFail($id);
+        return view('layanans.show', compact('layanan'));
     }
 
     /**

@@ -39,35 +39,18 @@ class ReservasiController extends Controller
      */
     public function store(Request $request)
 {
-    // cari jadwal yang tersedia sesuai tanggal
-    $jadwal = JadwalLayanan::where('tgl_layanan', $request->tgl_masuk)
-        ->where('status', 'Tersedia')
-        ->whereColumn('terisi', '<', 'kapasitas')
-        ->first();
 
-    if (!$jadwal) {
-        return back()->with('error', 'Tanggal tidak tersedia untuk reservasi');
-    }
 
     // buat reservasi
     Reservasi::create([
         'anaks_id' => $request->anaks_id,
         'penggunas_id' => Auth::id(),
-        'layanans_id' => $jadwal->layanans_id,
-        'jadwal_layanan_id' => $jadwal->id,
         'tgl_masuk' => $request->tgl_masuk,
         'tgl_keluar' => $request->tgl_keluar,
         'total' => $request->total,
         'metode_pembayaran' => $request->metode_pembayaran,
         'status' => 'Pending',
     ]);
-
-    // update slot terisi
-    $jadwal->increment('terisi');
-    if ($jadwal->terisi >= $jadwal->kapasitas) {
-        $jadwal->status = 'Tidak Tersedia';
-        $jadwal->save();
-    }
 
     return redirect()->route('reservasi.index')->with('success', 'Reservasi berhasil dibuat');
 }
