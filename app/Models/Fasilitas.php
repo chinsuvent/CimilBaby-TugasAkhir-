@@ -13,7 +13,8 @@ class Fasilitas extends Model
 
     protected $fillable = [
         'nama_fasilitas',
-        'deskripsi'
+        'deskripsi',
+        'gambar'
     ];
 
     // Relationship many-to-many dengan Layanan

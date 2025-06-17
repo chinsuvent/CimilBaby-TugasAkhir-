@@ -18,6 +18,20 @@
                 <textarea id="deskripsi" name="deskripsi" rows="2" cols="132" placeholder="Tulis deskripsi di sini..." class="form-control">{{ $fasilitas->deskripsi }}</textarea>
             </div>
         </div>
+        <div class="row">
+        <div class="col mb-3">
+            <label for="gambar" class="form-label">Gambar Fasilitas</label>
+            <input type="file" name="gambar" id="gambar" class="form-control" accept=".jpg,.jpeg,.png">
+
+            @if ($fasilitas->gambar)
+                <div class="mt-2">
+                    <p class="mb-1">Gambar Saat Ini:</p>
+                    <img src="{{ asset('uploads/fasilitas/' . $fasilitas->gambar) }}" alt="Gambar Fasilitas" style="max-width: 150px; border-radius: 8px;">
+                </div>
+            @endif
+        </div>
+    </div>
+
 
     
 

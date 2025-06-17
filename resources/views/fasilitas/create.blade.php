@@ -21,11 +21,19 @@
             </div>
         </div>
 
+       <div class="row mb-3">
+            <div class="col">
+                <label for="gambar" class="form-label">Upload Gambar</label>
+                <input type="file" name="gambar" id="gambar" accept=".jpg,.jpeg,.png,image/jpeg,image/png">
+            </div>
+       </div>
+
+
 
         {{-- Tombol Kirim --}}
         <div class="row">
             <div class="d-grid">
-                <button type="submit" class="btn btn-primary ml-3">Kirim</button>
+                <button type="submit" class="btn btn-tambah ml-3">Kirim</button>
             </div>
         </div>
     </form>

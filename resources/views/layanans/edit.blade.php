@@ -13,13 +13,13 @@
             </div>
         </div>
         <div class="row">
-            <div class="col mb-3">
+            {{-- <div class="col mb-3">
                 <label class="form-label">Durasi</label>
                 <select name="durasi" class="form-control">
                     <option value="1 hari" {{ $layanan->durasi == '1 hari' ? 'selected' : '' }}>1 Hari</option>
                     <option value="1 bulan" {{ $layanan->durasi == '1 bulan' ? 'selected' : '' }}>1 Bulan</option>
                 </select>
-            </div>
+            </div> --}}
             <div class="col mb-3">
                 <label class="form-label">Biaya</label>
                 <input type="text" name="biaya" class="form-control" placeholder="Biaya" value="{{ $layanan->biaya }}">

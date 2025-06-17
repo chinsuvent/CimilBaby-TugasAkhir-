@@ -30,10 +30,31 @@ class FasilitasController extends Controller
      */
     public function store(Request $request)
     {
-        Fasilitas::create($request->all());
+        // Validasi dulu
+        $request->validate([
+            'nama_fasilitas' => 'required',
+            'deskripsi' => 'required',
+            'gambar' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
+        ]);
 
+        // Siapkan data
+        $data = $request->only(['nama_fasilitas', 'deskripsi']);
+
+        // Jika ada gambar, simpan
+        if ($request->hasFile('gambar')) {
+            $file = $request->file('gambar');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/fasilitas'), $filename);
+            $data['gambar'] = $filename;
+        }
+
+        // Simpan ke DB
+        Fasilitas::create($data);
+
+        // Redirect
         return redirect()->route('fasilitas')->with('added', true);
     }
+
 
     /**
      * Display the specified resource.
@@ -58,14 +79,35 @@ class FasilitasController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
         $fasilitas = Fasilitas::findOrFail($id);
 
-        $fasilitas->update($request->all());
+        $data = $request->only(['nama_fasilitas', 'deskripsi']);
 
-        return redirect()->route('fasilitas')->with('edited', true);
+        if ($request->hasFile('gambar')) {
+            $request->validate([
+                'gambar' => 'image|mimes:jpeg,jpg,png|max:2048',
+            ]);
+
+            // Hapus gambar lama (jika ada)
+            if ($fasilitas->gambar && file_exists(public_path('uploads/fasilitas/' . $fasilitas->gambar))) {
+                unlink(public_path('uploads/fasilitas/' . $fasilitas->gambar));
+            }
+
+            // Simpan gambar baru
+            $gambar = $request->file('gambar');
+            $namaGambar = time() . '_' . $gambar->getClientOriginalName();
+            $gambar->move(public_path('uploads/fasilitas'), $namaGambar);
+
+            $data['gambar'] = $namaGambar;
+        }
+
+        $fasilitas->update($data);
+
+        return redirect()->route('fasilitas')->with('success', 'Data berhasil diperbarui');
     }
+
 
     /**
      * Remove the specified resource from storage.

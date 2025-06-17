@@ -10,7 +10,6 @@ return new class extends Migration {
         Schema::create('layanans', function (Blueprint $table) {
             $table->id();
             $table->string('jenis_layanan');
-            $table->string('durasi'); 
             $table->decimal('biaya', 10, 2);
             $table->timestamps();
         });

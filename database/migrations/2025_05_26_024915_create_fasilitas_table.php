@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama_fasilitas');
             $table->string('deskripsi');
+            $table->binary('gambar');
             $table->timestamps();
         });
     }

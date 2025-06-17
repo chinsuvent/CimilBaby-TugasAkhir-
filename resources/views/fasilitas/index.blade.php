@@ -58,6 +58,7 @@
                     <th>No</th>
                     <th>Nama Fasilitas</th>
                     <th>Deskripsi</th>
+                    <th>Gambar</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -68,6 +69,13 @@
                             <td class="align-middle">{{ $loop->iteration }}</td>
                             <td class="align-middle">{{ $fs->nama_fasilitas }}</td>
                             <td class="align-middle">{{ $fs->deskripsi }}</td>
+                            <td class="align-middle">
+                                @if ($fs->gambar)
+                                    <img src="{{ asset('uploads/fasilitas/' . $fs->gambar) }}" alt="{{ $fs->nama_fasilitas }}" style="width: 80px; height: auto; border-radius: 8px;">
+                                @else
+                                    <span class="text-muted">Tidak ada gambar</span>
+                                @endif
+                            </td>
                             <td class="align-middle">
                                 <div class="d-flex justify-content-center align-items-center gap-2">
                                     <a href="{{ route('fasilitas.edit', $fs->id) }}" class="btn btn-warning d-flex align-items-center justify-content-center mr-2">

@@ -12,10 +12,13 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user = User::orderBy('created_at','DESC')->get();
+        $user = User::where('level', '!=', 'admin')
+                    ->orderBy('created_at', 'DESC')
+                    ->get();
 
         return view('users.index', compact('user'));
     }
+
 
     /**
      * Show the form for creating a new resource.

@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('tempat_lahir');
             $table->date('tanggal_lahir');
             $table->enum('jenis_kelamin', ['Laki-laki','Perempuan']);
-            $table->integer('usia');
             $table->string('alergi');
             $table->timestamps();
         });

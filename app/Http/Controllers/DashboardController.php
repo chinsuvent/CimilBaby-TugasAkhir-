@@ -23,8 +23,10 @@ class DashboardController extends Controller
 
     // Hitung jumlah anak yang reservasi hari ini
     $jumlahAnakHariIni = Reservasi::whereDate('tgl_masuk', today())
-                         ->distinct('anaks_id')
-                         ->count('anaks_id');
+        ->where('status', 'Diterima')
+        ->distinct('anaks_id')
+        ->count('anaks_id');
+
 
     // Jumlah anak laki-laki
     $jumlahLaki = Anak::where('jenis_kelamin', 'Laki-laki')->count();
@@ -67,56 +69,4 @@ class DashboardController extends Controller
     ));
 }
 
-
-
-
-   
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }

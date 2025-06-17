@@ -63,7 +63,7 @@
                     <th>Nama Orang Tua</th>
                     <th>No. HP</th>
                     <th>Alergi</th>
-                    <th>Aksi</th>
+                    {{-- <th>Aksi</th> --}}
                 </tr>
             </thead>
             <tbody>
@@ -75,11 +75,11 @@
                             <td class="align-middle">{{ $an->tempat_lahir }}</td>
                             <td class="align-middle">{{ $an->tanggal_lahir }}</td>
                             <td class="align-middle">{{ $an->jenis_kelamin }}</td>
-                            <td class="align-middle">{{ $an->usia }}</td>
+                            <td class="align-middle">{{ $an->hitungUsia() }}</td>
                             <td class="align-middle">{{ $an->pengguna->name ?? '-' }}</td> 
                             <td class="align-middle">{{ $an->pengguna->no_hp ?? '-' }}</td> 
                             <td class="align-middle">{{ $an->alergi }}</td>
-                            <td class="align-middle">
+                            {{-- <td class="align-middle">
                                 <div class="d-flex justify-content-center align-items-center gap-2">
                                     <a href="{{ route('anaks.edit', $an->id) }}" class="btn btn-warning d-flex align-items-center justify-content-center mr-2">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -97,7 +97,7 @@
                                         </button>
                                     </form>
                                 </div>
-                            </td>
+                            </td> --}}
                         </tr>
                     @endforeach
                 @else

@@ -50,7 +50,7 @@
         }
 
         // Function untuk menampilkan detail layanan
-        function lihatDetail(id, jenisLayanan, durasi, biaya, fasilitas) {
+        function lihatDetail(id, jenisLayanan, biaya, fasilitas) {
             let fasilitasHtml = '';
             
             if (fasilitas && fasilitas.length > 0) {
@@ -82,10 +82,6 @@
                         
                         <div class="row mb-3">
                             <div class="col-6">
-                                <strong>Durasi:</strong><br>
-                                <span class="badge bg-info text-white">${durasi}</span>
-                            </div>
-                            <div class="col-6">
                                 <strong>Biaya:</strong><br>
                                 <span class="badge bg-success text-white">Rp ${new Intl.NumberFormat('id-ID').format(biaya)}</span>
                             </div>
@@ -114,7 +110,6 @@
                 <tr>
                     <th>No</th>
                     <th>Jenis Layanan</th>
-                    <th>Durasi</th>
                     <th>Biaya</th>
                     <th>Aksi</th>
                 </tr>
@@ -125,7 +120,7 @@
                         <tr class="text-center">
                             <td class="align-middle">{{ $loop->iteration }}</td>
                             <td class="align-middle">{{ $la->jenis_layanan }}</td>
-                            <td class="align-middle">{{ $la->durasi }}</td>
+                            {{-- <td class="align-middle">{{ $la->hitungDurasi() }}</td> --}}
                             <td class="align-middle">Rp {{ number_format($la->biaya, 0, ',', '.') }}</td>
                             <td class="align-middle">
                                 <div class="d-flex justify-content-center align-items-center gap-2">
@@ -134,7 +129,6 @@
                                         onclick='lihatDetail(
                                             {{ $la->id }}, 
                                             @json($la->jenis_layanan), 
-                                            @json($la->durasi), 
                                             {{ $la->biaya }}, 
                                             @json($la->fasilitas)
                                         )' 

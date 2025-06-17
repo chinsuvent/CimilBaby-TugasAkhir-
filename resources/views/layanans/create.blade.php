@@ -16,13 +16,13 @@
 
 
         <div class="row mb-3">
-            <div class="col">
+            {{-- <div class="col">
                 <select name="durasi" class="form-control" required>
                     <option value="" disabled selected>Pilih Durasi</option>
                     <option value="1 hari">1 Hari</option>
                     <option value="1 bulan">1 Bulan</option>
                 </select>
-            </div>
+            </div> --}}
             <div class="col">
                 <input type="number" name="biaya" class="form-control" placeholder="Biaya" required>
             </div>

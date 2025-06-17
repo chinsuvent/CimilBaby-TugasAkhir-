@@ -16,9 +16,8 @@ return new class extends Migration
             // $table->foreignId('jadwal_layanans_id')->constrained('jadwal_layanans')->onDelete('cascade');
             $table->date('tgl_masuk');
             $table->date('tgl_keluar');
-            $table->decimal('total', 10, 2);
             $table->string('metode_pembayaran');
-            $table->enum('status', ['Pending', 'Diterima', 'Ditolak']);
+            $table->enum('status', ['Pending', 'Diterima', 'Ditolak', 'Dibatalkan']);
             $table->timestamps();
         });
     }

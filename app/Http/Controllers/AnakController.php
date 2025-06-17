@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Anak;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class AnakController extends Controller
 {
@@ -78,5 +79,7 @@ class AnakController extends Controller
         $anak->delete();
         return redirect()->route('anaks')->with('deleted',true);
     }
+
+    // The getUsiaAttribute accessor should be placed in the Anak model, not in the controller.
 
 }

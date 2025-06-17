@@ -35,14 +35,12 @@ class LayananController extends Controller
     {
         $request->validate([
             'jenis_layanan' => 'required|string|max:255',
-            'durasi' => 'required|string|max:255',
             'biaya' => 'required|numeric',
             'fasilitas' => 'array|nullable'
         ]);
 
         $layanan = Layanan::create([
             'jenis_layanan' => $request->jenis_layanan,
-            'durasi' => $request->durasi,
             'biaya' => $request->biaya
         ]);
 

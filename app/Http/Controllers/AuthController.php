@@ -35,7 +35,7 @@ class AuthController extends Controller
             'no_hp' => $request->no_hp,
             'alamat' => $request->alamat,
             'password' => Hash::make($request->password),
-            'level' => 'Admin'
+            'level' => 'Pengguna'
         ]);
 
         return redirect()->route('login')->with('register','Silahkan Login Terlebih Dahulu!');
@@ -61,9 +61,16 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->route('dashboard')->with('success', 'Selamat Anda Berhasil Login');
+        $user = Auth::user();
 
+        // Arahkan sesuai level
+        if ($user->level === 'Pengguna') {
+            return redirect()->route('beranda')->with('success', 'Selamat Anda Berhasil Login!');
+        }
+
+        return redirect()->route('dashboard')->with('success', 'Selamat Anda Berhasil Login!');
     }
+
 
     public function logout(Request $request)
     {

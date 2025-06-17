@@ -52,4 +52,26 @@ class Reservasi extends Model
         return $this->belongsTo(Layanan::class, 'layanans_id');
     }
 
+    public function hitungDurasi()
+{
+    // Pastikan relasi layanan sudah dimuat
+    if (!$this->layanan || !$this->tgl_masuk || !$this->tgl_keluar) {
+        return null;
+    }
+
+    $jenis = strtolower($this->layanan->jenis_layanan);
+
+    // Hitung jumlah hari antara tgl_masuk dan tgl_keluar
+    $durasiHari = $this->tgl_masuk->diffInDays($this->tgl_keluar);
+
+    if ($jenis === 'bulanan') {
+        return '1 bulan';
+    } elseif ($jenis === 'harian') {
+        return $durasiHari . ' hari';
+    } else {
+        return $durasiHari . ' waktu';
+    }
+}
+
+
 }
