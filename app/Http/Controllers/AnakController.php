@@ -13,11 +13,13 @@ class AnakController extends Controller
      */
     public function index()
     {
-        // Ambil semua data anak dan ikutkan data pengguna (relasi)
-        $anak = Anak::with('pengguna')->orderBy('created_at', 'DESC')->get();
+        $anak = Anak::with('pengguna')
+                    ->orderBy('created_at', 'DESC')
+                    ->paginate(10); // pagination + relasi + sorting
 
         return view('anaks.index', compact('anak'));
     }
+
 
 
     /**

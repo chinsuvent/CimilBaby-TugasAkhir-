@@ -89,6 +89,12 @@ canvas {
     margin: 0 auto;
 }
 
+.page-link {
+    background-color: #8E7DBE !important; 
+    border: none; 
+    cursor: pointer;
+}
+
 /* Tombol hamburger */
 /* .mobile-menu-toggle {
     position: fixed;

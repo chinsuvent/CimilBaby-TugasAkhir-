@@ -68,7 +68,7 @@
                 @if ($user->count() > 0)
                     @foreach ($user as $us)
                         <tr class="text-center">
-                            <td class="align-middle">{{ $loop->iteration }}</td>
+                            <td class="align-middle">{{ $loop->iteration + ($user->currentPage()-1)*$user->perPage() }}</td>
                             <td class="align-middle">{{ $us->name }}</td>
                             <td class="align-middle">{{ $us->username }}</td>
                             <td class="align-middle">{{ $us->email }}</td>
@@ -103,5 +103,17 @@
                 @endif
             </tbody>
         </table>
+    </div>
+    <div class="d-flex justify-content-center mt-3 mb-4">
+        @if ($user->hasPages())
+            {{ $user->links('pagination::bootstrap-5') }}
+        @else
+            {{-- Paksa tampil pagination minimal --}}
+            <nav>
+                <ul class="pagination">
+                    <li class="page-item active"><span class="page-link">1</span></li>
+                </ul>
+            </nav>
+        @endif
     </div>
 @endsection

@@ -73,7 +73,7 @@
                 @if ($reservasi->count() > 0)
                     @foreach ($reservasi as $rs)
                         <tr class="text-center">
-                            <td class="align-middle">{{ $loop->iteration }}</td>
+                            <td class="align-middle">{{ $loop->iteration + ($reservasi->currentPage()-1)*$reservasi->perPage() }}</td>
                             <td class="align-middle">{{ $rs->anak->nama_anak ?? '-' }}</td>
                             <td class="align-middle">{{ $rs->anak->jenis_kelamin ?? '-' }}</td>
                             {{-- <td class="align-middle">{{ $rs->anak->usia ?? '-' }}</td> --}}
@@ -115,7 +115,18 @@
                     </tr>
                 @endif
             </tbody>
-
         </table>
     </div>
+    <div class="d-flex justify-content-center mt-3 mb-4">
+            @if ($reservasi->hasPages())
+                {{ $reservasi->links('pagination::bootstrap-5') }}
+            @else
+                {{-- Paksa tampil pagination minimal --}}
+                <nav>
+                    <ul class="pagination">
+                        <li class="page-item active"><span class="page-link">1</span></li>
+                    </ul>
+                </nav>
+            @endif
+        </div>
 @endsection

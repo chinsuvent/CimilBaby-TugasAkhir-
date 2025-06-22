@@ -118,7 +118,7 @@
                 @if ($layanan->count() > 0)
                     @foreach ($layanan as $la)
                         <tr class="text-center">
-                            <td class="align-middle">{{ $loop->iteration }}</td>
+                            <td class="align-middle">{{ $loop->iteration + ($layanan->currentPage()-1)*$layanan->perPage() }}</td>
                             <td class="align-middle">{{ $la->jenis_layanan }}</td>
                             {{-- <td class="align-middle">{{ $la->hitungDurasi() }}</td> --}}
                             <td class="align-middle">Rp {{ number_format($la->biaya, 0, ',', '.') }}</td>
@@ -169,5 +169,17 @@
                 @endif
             </tbody>
         </table>
+    </div>
+    <div class="d-flex justify-content-center mt-3 mb-4">
+        @if ($layanan->hasPages())
+            {{ $layanan->links('pagination::bootstrap-5') }}
+        @else
+            {{-- Paksa tampil pagination minimal --}}
+            <nav>
+                <ul class="pagination">
+                    <li class="page-item active"><span class="page-link">1</span></li>
+                </ul>
+            </nav>
+        @endif
     </div>
 @endsection

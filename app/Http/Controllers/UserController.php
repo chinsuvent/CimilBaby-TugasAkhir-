@@ -14,7 +14,7 @@ class UserController extends Controller
     {
         $user = User::where('level', '!=', 'admin')
                     ->orderBy('created_at', 'DESC')
-                    ->get();
+                    ->paginate(10);
 
         return view('users.index', compact('user'));
     }

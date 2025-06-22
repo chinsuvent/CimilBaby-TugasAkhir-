@@ -13,7 +13,7 @@ class LayananController extends Controller
      */
     public function index()
     {
-       $layanan = Layanan::orderBy('created_at','DESC')->get();
+       $layanan = Layanan::orderBy('created_at','DESC')->paginate(10);
 
         return view('layanans.index', compact('layanan'));
 

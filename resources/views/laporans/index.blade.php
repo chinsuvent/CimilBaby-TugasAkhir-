@@ -180,7 +180,7 @@
                   @if ($laporan->count() > 0)
                       @foreach ($laporan as $la)
                           <tr class="text-center">
-                              <td class="align-middle">{{ $loop->iteration }}</td>
+                              <td class="align-middle">{{ $loop->iteration + ($laporan->currentPage()-1)*$laporan->perPage() }}</td>
                               <td class="align-middle">{{ $la->pengguna->name ?? '-' }}</td>
                               <td class="align-middle">{{ $la->anak->nama_anak ?? '-' }}</td>
                               <td class="align-middle">{{ $la->layanan->jenis_layanan ?? '-' }}</td>
@@ -199,5 +199,16 @@
       </table>
     </div>
   </div>
-
+  <div class="d-flex justify-content-center mt-3 mb-4">
+          @if ($laporan->hasPages())
+              {{ $laporan->links('pagination::bootstrap-5') }}
+          @else
+              {{-- Paksa tampil pagination minimal --}}
+              <nav>
+                  <ul class="pagination">
+                      <li class="page-item active"><span class="page-link">1</span></li>
+                  </ul>
+              </nav>
+        @endif
+  </div>
 @endsection

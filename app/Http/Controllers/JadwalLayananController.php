@@ -23,7 +23,7 @@ class JadwalLayananController extends Controller
         });
     }
 
-    $reservasi = $query->get(); // ambil data setelah query disiapkan
+    $reservasi = $query->orderBy('created_at', 'DESC')->paginate(10);
 
     return view('jadwal_layanans.index', compact('reservasi'));
 }

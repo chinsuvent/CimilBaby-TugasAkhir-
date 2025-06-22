@@ -66,7 +66,7 @@
                 @if ($fasilitas->count() > 0)
                     @foreach ($fasilitas as $fs)
                         <tr class="text-center">
-                            <td class="align-middle">{{ $loop->iteration }}</td>
+                            <td class="align-middle">{{ $loop->iteration + ($fasilitas->currentPage()-1)*$fasilitas->perPage() }}</td>
                             <td class="align-middle">{{ $fs->nama_fasilitas }}</td>
                             <td class="align-middle">{{ $fs->deskripsi }}</td>
                             <td class="align-middle">
@@ -103,5 +103,17 @@
                 @endif
             </tbody>
         </table>
+    </div>
+    <div class="d-flex justify-content-center mt-3 mb-4">
+        @if ($fasilitas->hasPages())
+            {{ $fasilitas->links('pagination::bootstrap-5') }}
+        @else
+            {{-- Paksa tampil pagination minimal --}}
+            <nav>
+                <ul class="pagination">
+                    <li class="page-item active"><span class="page-link">1</span></li>
+                </ul>
+            </nav>
+        @endif
     </div>
 @endsection

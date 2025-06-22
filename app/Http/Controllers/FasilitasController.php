@@ -12,7 +12,8 @@ class FasilitasController extends Controller
      */
     public function index()
     {
-       $fasilitas = Fasilitas::orderBy('created_at','DESC')->get();
+
+       $fasilitas = Fasilitas::orderBy('created_at','DESC')->paginate(10);
 
         return view('fasilitas.index', compact('fasilitas'));
     }
