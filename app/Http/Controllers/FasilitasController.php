@@ -15,7 +15,7 @@ class FasilitasController extends Controller
 
        $fasilitas = Fasilitas::orderBy('created_at','DESC')->paginate(10);
 
-        return view('fasilitas.index', compact('fasilitas'));
+        return view('admin.fasilitas.index', compact('fasilitas'));
     }
 
     /**
@@ -23,7 +23,7 @@ class FasilitasController extends Controller
      */
     public function create()
     {
-        return view('fasilitas.create');
+        return view('admin.fasilitas.create');
     }
 
     /**
@@ -64,7 +64,7 @@ class FasilitasController extends Controller
     {
         $fasilitas = Fasilitas::findOrFail($id);
 
-        return view('fasilitas.show', compact('fasilitas'));
+        return view('admin.fasilitas.show', compact('fasilitas'));
     }
 
     /**
@@ -74,7 +74,7 @@ class FasilitasController extends Controller
     {
         $fasilitas = Fasilitas::findOrFail($id);
 
-        return view('fasilitas.edit', compact('fasilitas'));
+        return view('admin.fasilitas.edit', compact('fasilitas'));
     }
 
     /**

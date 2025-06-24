@@ -15,7 +15,7 @@ class LayananController extends Controller
     {
        $layanan = Layanan::orderBy('created_at','DESC')->paginate(10);
 
-        return view('layanans.index', compact('layanan'));
+        return view('admin.layanans.index', compact('layanan'));
 
     }
 
@@ -25,7 +25,7 @@ class LayananController extends Controller
     public function create()
     {
         $fasilitas = Fasilitas::all(); // ambil semua fasilitas
-        return view('layanans.create', compact('fasilitas'));
+        return view('admin.layanans.create', compact('fasilitas'));
     }
 
     /**
@@ -57,7 +57,7 @@ class LayananController extends Controller
     public function show($id)
     {
         $layanan = Layanan::with('fasilitas')->findOrFail($id);
-        return view('layanans.show', compact('layanan'));
+        return view('admin.layanans.show', compact('layanan'));
     }
 
     /**
@@ -67,7 +67,7 @@ class LayananController extends Controller
     {
         $layanan = Layanan::findOrFail($id);
 
-        return view('layanans.edit', compact('layanan'));
+        return view('admin.layanans.edit', compact('layanan'));
     }
 
     /**

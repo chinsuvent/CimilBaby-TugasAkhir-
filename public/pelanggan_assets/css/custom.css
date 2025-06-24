@@ -1,0 +1,105 @@
+body {
+    background-color: white !important;
+}
+
+.sitename {
+    color: #7D65EC !important;
+}
+
+.btn-masuk {
+    background-color: white !important;
+    border: 2px solid #8979FF;
+    border-radius: 15px;
+    color: #8979FF;
+    margin-bottom: 1.5rem;
+}
+
+.btn-masuk:hover {
+    transition: background-color 0.3s;
+    background-color: #8979FF !important;
+    border: 2px solid white;
+    color: white;
+}
+
+.header {
+    z-index: 1000;
+    background-color: white;
+}
+
+.bg-beranda {
+    background-color: #ff6363;
+}
+
+.bg-beranda:hover {
+    transition: background-color 0.3s;
+    background-color: #e63333;
+}
+
+.bg-about {
+    background-color: #ffb056;
+}
+
+.bg-about:hover {
+    transition: background-color 0.3s;
+    background-color: #f59528;
+}
+
+.bg-layanan {
+    background-color: #55ad9b;
+}
+
+.bg-layanan:hover {
+    transition: background-color 0.3s;
+    background-color: #3b9b84;
+}
+
+.bg-jadwal {
+    background-color: #7aa2e3;
+}
+
+.bg-jadwal:hover {
+    transition: background-color 0.3s;
+    background-color: #4b79bd;
+}
+
+.bg-fasilitas {
+    background-color: #e78895;
+}
+
+.bg-fasilitas:hover {
+    transition: background-color 0.3s;
+    background-color: #d76a7a;
+}
+
+
+.btn-daftar {
+    background-color: #FF928A;
+}
+
+.btn-daftar:hover {
+    transition: background-color 0.3s;
+    background-color: #f36e65;
+}
+
+.box-harian {
+    background-color: #FF8282 !important;
+}
+
+.box-bulanan {
+    background-color: #81BFDA !important;
+}
+
+.box-khusus {
+    background-color: #FF9D3D !important;
+}
+
+.btn-reservasi {
+    background-color: white;
+    border-radius: 2rem;
+}
+
+.btn-reservasi:hover {
+    background-color: #f0f0f0;
+    box-shadow: black;
+    transition: background-color 0.3s;
+}

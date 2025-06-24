@@ -51,7 +51,7 @@ class LaporanController extends Controller
 
         $laporan = $query->orderBy('tgl_masuk', 'desc')->paginate($limit);
 
-        return view('laporans.index', compact('laporan'));
+        return view('admin.laporans.index', compact('laporan'));
     }
 
     public function cetak(Request $request)

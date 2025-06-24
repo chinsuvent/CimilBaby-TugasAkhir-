@@ -58,7 +58,7 @@ class DashboardController extends Controller
         $dataReservasiPerBulan[$row->bulan] = $row->total;
     }
 
-    return view('dashboard', compact(
+    return view('admin.dashboard', compact(
         'totalReservasiHariIni',
         'totalReservasiPending',
         'jumlahAnakHariIni',

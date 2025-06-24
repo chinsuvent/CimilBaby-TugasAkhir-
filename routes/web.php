@@ -13,7 +13,7 @@ use App\Http\Controllers\LaporanController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('beranda');
 });
 
 Route::controller(AuthController::class)->group(function () {

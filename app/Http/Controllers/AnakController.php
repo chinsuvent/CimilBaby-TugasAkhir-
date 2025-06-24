@@ -17,7 +17,7 @@ class AnakController extends Controller
                     ->orderBy('created_at', 'DESC')
                     ->paginate(10); // pagination + relasi + sorting
 
-        return view('anaks.index', compact('anak'));
+        return view('admin.anaks.index', compact('anak'));
     }
 
 
@@ -27,7 +27,7 @@ class AnakController extends Controller
      */
     public function create()
     {
-        return view('anaks.create');
+        return view('admin.anaks.create');
     }
 
     /**
@@ -47,7 +47,7 @@ class AnakController extends Controller
     {
         $anak = Anak::findOrFail($id);
 
-        return view('anaks.show', compact('anak'));
+        return view('admin.anaks.show', compact('anak'));
     }
 
     /**
@@ -57,7 +57,7 @@ class AnakController extends Controller
     {
         $anak = Anak::findOrFail($id);
 
-        return view('anaks.edit', compact('anak'));
+        return view('admin.anaks.edit', compact('anak'));
     }
 
     /**

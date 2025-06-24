@@ -25,7 +25,7 @@ class JadwalLayananController extends Controller
 
     $reservasi = $query->orderBy('created_at', 'DESC')->paginate(10);
 
-    return view('jadwal_layanans.index', compact('reservasi'));
+    return view('admin.jadwal_layanans.index', compact('reservasi'));
 }
 
 
@@ -42,7 +42,7 @@ class JadwalLayananController extends Controller
         
         $reservasi = $query->orderBy('tgl_masuk', 'desc')->get();
 
-        return view('jadwal_layanans.index', compact('reservasi'));
+        return view('admin.jadwal_layanans.index', compact('reservasi'));
     }
 
     // Jika ingin filter berdasarkan tanggal
@@ -63,6 +63,6 @@ class JadwalLayananController extends Controller
 
         $reservasi = $query->orderBy('tgl_masuk', 'desc')->get();
 
-        return view('jadwal_layanans.index', compact('reservasi'));
+        return view('admin.jadwal_layanans.index', compact('reservasi'));
     }
 }

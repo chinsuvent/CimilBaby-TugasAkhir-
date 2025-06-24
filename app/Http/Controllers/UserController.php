@@ -16,7 +16,7 @@ class UserController extends Controller
                     ->orderBy('created_at', 'DESC')
                     ->paginate(10);
 
-        return view('users.index', compact('user'));
+        return view('admin.users.index', compact('user'));
     }
 
 
@@ -25,7 +25,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('users.create');
+        return view('admin.users.create');
     }
 
     /**
@@ -45,7 +45,7 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        return view('users.show', compact('user'));
+        return view('admin.users.show', compact('user'));
     }
 
     /**
@@ -55,7 +55,7 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        return view('users.edit', compact('user'));
+        return view('admin.users.edit', compact('user'));
     }
 
     /**
