@@ -3,31 +3,11 @@
 
 @section('contents')
 
-  <main class="main">
+
 
     <!-- Hero Section -->
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-        <div class="row align-items-center mb-5">
-          <div class="col-lg-6 mb-4 mb-lg-0">
-
-
-            <h1 class="hero-title mb-4 text-white">Jasa Penitipan Anak<br>Ci'mil Baby</h1>
-
-            <p class="hero-description mb-4 text-white">Ci'mil Baby, tempat aman dan nyaman untuk buah hati Anda. Kami hadir dengan layanan penitipan anak yang penuh kasih sayang dan perhatian.</p>
-
-            <div class="cta-wrapper">
-              <a href="{{ route('register') }}" class="btn btn-daftar text-white">Daftar Untuk Reservasi</a>
-            </div>
-          </div>
-
-          <div class="col-lg-6">
-            <div class="hero-image">
-              <img src="{{ 'pelanggan_assets/img/illustration/gambar_anak.png' }}" alt="Business Growth" class="img-fluid" loading="lazy">
-            </div>
-          </div>
-        </div>
 
         <div class="row feature-boxes">
           <div class="col-lg-4 mb-4 mb-lg-0 d-flex justify-content-center" data-aos="fade-up" data-aos-delay="200">
@@ -105,85 +85,7 @@
                 </a>
               </div>
             </div>
-    </section><!-- /Hero Section -->
-
-    <!-- Services Section -->
-    <section id="services" class="services section">
-
-      <!-- Section Title -->
-      <div class="container section-title" data-aos="fade-up">
-        <h2 style="color: #7D65EC;">Selamat Datang di Jasa Penitipan<br>Anak Ci'mil Baby</h2>
-      </div><!-- End Section Title -->
-
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-        <div class="row justify-content-center g-5">
-          <div class="row align-items-center">
-            <!-- Kiri gambar -->
-            <div class="col-md-4">
-              <!-- Service Item 1 -->
-              <div class="service-item mb-4" data-aos="fade-right" data-aos-delay="100">
-                <div class="service-icon">
-                  <i class="bi bi-clock"></i>
-                </div>
-                <div class="service-content">
-                  <h3>Jam Pelayanan Fleksibel</h3>
-                  <p>Jam pelayanan tersedia dari pukul 07.00 hingga 17.00 untuk kenyamanan Anda</p>
-
-                </div>
-              </div>
-
-              <!-- Service Item 2 -->
-              <div class="service-item" data-aos="fade-right" data-aos-delay="200">
-                <div class="service-icon">
-                  <i class="bi bi-fork-knife"></i>
-                </div>
-                <div class="service-content">
-                  <h3>Makanan Sehat & Gratis</h3>
-                  <p>Tersedia Makan Siang Yang Sehat Di Setiap Layanan</p>
-                </div>
-              </div>
-            </div>
-
-            <!-- Gambar Tengah -->
-            <div class="col-md-4 d-flex justify-content-center my-4">
-              <img src="{{ asset('pelanggan_assets/img/gambar_beranda.png') }}" alt="Service Center" class="img-fluid" style="max-width: 200px;">
-            </div>
-
-            <!-- Kanan gambar -->
-            <div class="col-md-4">
-              <!-- Service Item 3 -->
-              <div class="service-item mb-4" data-aos="fade-left" data-aos-delay="100">
-                <div class="service-icon">
-                  <i class="bi bi-shield-check"></i>
-                </div>
-                <div class="service-content">
-                  <h3>Lingkungan Aman & Menyenangkan</h3>
-                  <p>Lingkungan aman, hangat, dan menyenangkan agar anak nyaman seperti di rumah sendiri</p>
-
-                </div>
-              </div>
-
-              <!-- Service Item 4 -->
-              <div class="service-item" data-aos="fade-left" data-aos-delay="200">
-                <div class="service-icon">
-                  <i class="bi bi-building-check"></i>
-                </div>
-                <div class="service-content">
-                  <h3>Fasilitas Yang Bersih</h3>
-                  <p>Kebersihan fasilitas di Cimil Baby selalu dijaga demi kenyamanan dan kesehatan anak</p>
-
-                </div>
-              </div>
-            </div>
           </div>
-        </div>
 
-      </div>
-
-    </section><!-- /Services Section -->
-
-
-  </main>
 
 @endsection

@@ -16,6 +16,23 @@ Route::get('/', function () {
     return view('beranda');
 });
 
+Route::get('/tentang_kami', function () {
+    return view('tentang_kami');
+});
+
+Route::get('/layanan', function () {
+    return view('layanan');
+});
+
+// Route::get('/jadwal_layanan', function () {
+//     return view('jadwal_layanan');
+// });
+
+Route::get('/menu_fasilitas', function () {
+    return view('menu_fasilitas');
+});
+
+
 Route::controller(AuthController::class)->group(function () {
     Route::get('register','register')->name('register');
     Route::post('register','registerSave')->name('register.save');

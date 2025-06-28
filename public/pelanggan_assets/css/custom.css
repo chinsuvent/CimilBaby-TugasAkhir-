@@ -26,6 +26,8 @@ body {
     background-color: white;
 }
 
+
+
 .bg-beranda {
     background-color: #ff6363;
 }
@@ -103,3 +105,11 @@ body {
     box-shadow: black;
     transition: background-color 0.3s;
 }
+
+.footer {
+    background-color: #A793DF;
+    color: white;
+    font-size: 1rem;
+    margin-top: 2rem !important;
+}
+
