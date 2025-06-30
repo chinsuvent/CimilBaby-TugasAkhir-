@@ -65,7 +65,7 @@ class AuthController extends Controller
 
         // Arahkan sesuai level
         if ($user->level === 'Pengguna') {
-            return redirect()->route('beranda')->with('success', 'Selamat Anda Berhasil Login!');
+            return redirect()->route('pelanggan.dashboard')->with('success', 'Selamat Anda Berhasil Login!');
         }
 
         return redirect()->route('dashboard')->with('success', 'Selamat Anda Berhasil Login!');
@@ -89,6 +89,6 @@ class AuthController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/login')->with('success', 'Anda Telah Logout'); 
+        return redirect('/login')->with('success', 'Anda Telah Logout');
     }
 }

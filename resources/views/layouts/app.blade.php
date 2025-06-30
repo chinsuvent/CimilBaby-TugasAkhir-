@@ -30,6 +30,8 @@
   <!-- Main CSS File -->
   <link href="{{ 'pelanggan_assets/css/main.css' }}" rel="stylesheet">
   <link href="{{ 'pelanggan_assets/css/custom.css' }}" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
   <!-- =======================================================
   * Template Name: Invent
@@ -73,6 +75,7 @@
 
   <!-- Main JS File -->
   <script src="{{ 'pelanggan_assets/js/main.js' }}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </body>
 

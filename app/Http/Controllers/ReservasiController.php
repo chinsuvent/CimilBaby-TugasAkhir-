@@ -27,28 +27,28 @@ class ReservasiController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        return view('admin.reservasis.create');
-    }
+    // public function create()
+    // {
+    //     return view('admin.reservasis.create');
+    // }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        Reservasi::create([
-            'anaks_id' => $request->anaks_id,
-            'penggunas_id' => Auth::id(),
-            'tgl_masuk' => $request->tgl_masuk,
-            'tgl_keluar' => $request->tgl_keluar,
-            'total' => $request->total,
-            'metode_pembayaran' => $request->metode_pembayaran,
-            'status' => 'Pending',
-        ]);
+    // public function store(Request $request)
+    // {
+    //     Reservasi::create([
+    //         'anaks_id' => $request->anaks_id,
+    //         'penggunas_id' => Auth::id(),
+    //         'tgl_masuk' => $request->tgl_masuk,
+    //         'tgl_keluar' => $request->tgl_keluar,
+    //         'total' => $request->total,
+    //         'metode_pembayaran' => $request->metode_pembayaran,
+    //         'status' => 'Pending',
+    //     ]);
 
-        return redirect()->route('reservasis.index')->with('success', 'Reservasi berhasil dibuat');
-    }
+    //     return redirect()->route('reservasis.index')->with('success', 'Reservasi berhasil dibuat');
+    // }
 
     /**
      * Display the specified resource.

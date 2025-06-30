@@ -102,8 +102,18 @@ body {
 
 .btn-reservasi:hover {
     background-color: #f0f0f0;
-    box-shadow: black;
     transition: background-color 0.3s;
+    color: grey;
+}
+
+.btn-khusus {
+    color: #FF9D3D;
+}
+.btn-harian {
+    color: #FF8282;
+}
+.btn-bulanan {
+    color: #81BFDA;
 }
 
 .footer {

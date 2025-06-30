@@ -19,6 +19,14 @@ class LayananController extends Controller
 
     }
 
+    public function beranda()
+{
+    $layanan = Layanan::orderBy('created_at','DESC')->take(3)->get();
+    return view('beranda', compact('layanan'));
+}
+
+
+
     /**
      * Show the form for creating a new resource.
      */
@@ -48,7 +56,7 @@ class LayananController extends Controller
             $layanan->fasilitas()->attach($request->fasilitas);
         }
 
-        return redirect()->route('layanans')->with('success', true);
+        return redirect()->route('layanans')->with('added', true);
     }
 
     /**

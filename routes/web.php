@@ -9,6 +9,11 @@ use App\Http\Controllers\FasilitasController;
 use App\Http\Controllers\JadwalLayananController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\Pelanggan\DashboardPelangganController;
+use App\Http\Middleware\CekLevelPengguna;
+use App\Http\Controllers\Pelanggan\ProfilController;
+use App\Http\Controllers\Pelanggan\AnakPelangganController;
+use App\Http\Controllers\Pelanggan\ReservasiPelangganController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -51,8 +56,6 @@ Route::middleware('auth')->group(function () {
     })->name('dashboard');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    
-
 
 
     Route::controller(UserController::class)->prefix('users')->group(function () {
@@ -119,11 +122,100 @@ Route::middleware('auth')->group(function () {
         Route::get('/generate-jadwal', [JadwalLayananController::class, 'generateJadwal'])->name('jadwal_layanans.generateJadwal');
         Route::get('/jadwal-layanans', [JadwalLayananController::class, 'index'])->name('jadwal_layanans.index');
     });
-    
+
     Route::get('/laporans', [LaporanController::class, 'index'])->name('laporans.index');
     Route::get('/laporans/cetak', [LaporanController::class, 'cetak'])->name('laporans.cetak');
-
-
-    
-
 });
+
+
+
+
+Route::get('/pelanggan/dashboard', [DashboardPelangganController::class, 'index'])
+    ->middleware(['auth', CekLevelPengguna::class])
+    ->name('pelanggan.dashboard');
+
+
+
+Route::get('/pelanggan/profil', [ProfilController::class, 'index'])
+    ->middleware(['auth', CekLevelPengguna::class])
+    ->name('pelanggan.profil');
+
+Route::get('/pelanggan/profil/editProfil', [ProfilController::class, 'editProfil'])
+    ->middleware(['auth', CekLevelPengguna::class])
+    ->name('pelanggan.editProfil');
+
+Route::put('/pelanggan/profil/editProfil', [ProfilController::class, 'updateProfil'])
+    ->middleware(['auth', CekLevelPengguna::class])
+    ->name('pelanggan.updateProfil');
+
+
+Route::get('/pelanggan/anak', [AnakPelangganController::class, 'index'])
+    ->middleware(['auth', CekLevelPengguna::class])
+    ->name('pelanggan.anak');
+
+Route::get('/pelanggan/anak/{id}/edit', [AnakPelangganController::class, 'editAnak'])
+    ->middleware(['auth', CekLevelPengguna::class])
+    ->name('anak.edit');
+
+
+// Proses update anak
+Route::put('/pelanggan/anak/{id}', [AnakPelangganController::class, 'updateAnak'])
+    ->middleware(['auth', CekLevelPengguna::class])
+    ->name('anak.update');
+
+Route::delete('/pelanggan/anak/{id}', [AnakPelangganController::class, 'hapusAnak'])
+    ->middleware(['auth', CekLevelPengguna::class])
+    ->name('anak.hapusAnak');
+
+// Form tambah anak
+Route::get('/pelanggan/anak/tambah', [AnakPelangganController::class, 'tambahAnak'])
+    ->middleware(['auth', CekLevelPengguna::class])
+    ->name('anak.tambahAnak');
+
+// Proses simpan anak baru
+Route::post('/pelanggan/anak/tambah', [AnakPelangganController::class, 'simpanAnak'])
+    ->middleware(['auth', CekLevelPengguna::class])
+    ->name('anak.simpan');
+
+Route::get('/pelanggan/reservasi', [ReservasiPelangganController::class, 'index'])
+    ->middleware(['auth', CekLevelPengguna::class])
+    ->name('pelanggan.reservasi');
+
+Route::get('/pelanggan/reservasi/{id}', [ReservasiPelangganController::class, 'show'])
+    ->middleware(['auth', CekLevelPengguna::class])
+    ->name('pelanggan.reservasi.show');
+
+Route::delete('/pelanggan/reservasi/{id}', [ReservasiPelangganController::class, 'destroy'])
+    ->middleware(['auth', CekLevelPengguna::class])
+    ->name('pelanggan.reservasi.destroy');
+
+Route::patch('/pelanggan/reservasi/{id}/batal', [ReservasiPelangganController::class, 'cancel'])
+    ->middleware(['auth', CekLevelPengguna::class])
+    ->name('pelanggan.cancel');
+
+Route::get('/pelanggan/reservasi/{id}/edit', [ReservasiPelangganController::class, 'edit'])
+    ->middleware(['auth', CekLevelPengguna::class])
+    ->name('pelanggan.edit');
+
+Route::post('/reservasi/store', [ReservasiPelangganController::class, 'store'])
+    ->middleware('auth')
+    ->name('reservasi.store');
+
+
+
+Route::get('/', [LayananController::class, 'beranda'])->name('beranda');
+
+Route::get('/', [ReservasiPelangganController::class, 'beranda'])->name('pelanggan.beranda');
+
+
+
+
+
+
+
+
+
+
+
+
+
