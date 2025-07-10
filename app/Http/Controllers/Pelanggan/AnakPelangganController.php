@@ -10,14 +10,15 @@ class AnakPelangganController extends Controller
 {
     public function index()
     {
-        $pelanggan = Auth::user();
-        $anak = Anak::where('users_id', $pelanggan->id)->paginate(10);
-        return view('pelanggan.anak', compact('pelanggan', 'anak'));
+        $orangTua = Auth::user()->orangTua;
+        $anak = Anak::where('orang_tua_id', $orangTua->id)->paginate(10);
+
+        return view('pelanggan.anak', compact('orangTua', 'anak'));
     }
 
     public function simpanAnak(Request $request)
     {
-        $pelanggan = Auth::user();
+        $orangTua = Auth::user()->orangTua;
 
         // Validasi data
         $validated = $request->validate([
@@ -29,7 +30,7 @@ class AnakPelangganController extends Controller
             'alergi' => 'nullable|string|max:255',
         ]);
 
-        $pelanggan->anak()->create($validated);
+        $orangTua->anaks()->create($validated);
 
         return redirect()->route('pelanggan.anak')->with('added', 'Data anak berhasil ditambahkan.');
     }
@@ -51,7 +52,7 @@ class AnakPelangganController extends Controller
     public function updateAnak(Request $request, $id)
     {
         $pelanggan = Auth::user();
-        $anak = $pelanggan->anak()->findOrFail($id);
+        $anak = $pelanggan->anaks()->findOrFail($id);
 
         $validated = $request->validate([
             'nama_anak' => 'required|string|max:255',
@@ -70,7 +71,7 @@ class AnakPelangganController extends Controller
     public function hapusAnak($id)
     {
         $pelanggan = Auth::user();
-        $anak = $pelanggan->anak()->findOrFail($id);
+        $anak = $pelanggan->anaks()->findOrFail($id);
 
         $anak->delete();
 

@@ -10,16 +10,21 @@ class DashboardPelangganController extends Controller
 {
     public function index()
     {
-        $pelanggan = Auth::user();
+        $pelanggan = Auth::user()->orangTua;
 
         // Ambil data anak milik pelanggan
-        $anakList = Anak::where('users_id', $pelanggan->id)->paginate(10);
+        $anakList = Anak::where('orang_tua_id', $pelanggan->id)->paginate(10);
 
         // Hitung jumlah anak
-        $jumlahAnak = Anak::where('users_id', $pelanggan->id)->count();
+        $jumlahAnak = Anak::where('orang_tua_id', $pelanggan->id)->count();
 
         // Hitung total reservasi yang sudah dilakukan
-        $totalReservasi = Reservasi::where('users_id', $pelanggan->id)->count();
+        $totalReservasi = Reservasi::whereIn('anaks_id', function ($query) use ($pelanggan) {
+    $query->select('id')
+          ->from('anaks')
+          ->where('orang_tua_id', $pelanggan->id);
+})->count();
+
 
         return view('pelanggan.dashboard', compact('anakList', 'jumlahAnak', 'totalReservasi'));
     }

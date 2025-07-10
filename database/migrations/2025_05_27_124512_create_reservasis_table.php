@@ -11,7 +11,6 @@ return new class extends Migration
         Schema::create('reservasis', function (Blueprint $table) {
             $table->id();
             $table->foreignId('anaks_id')->constrained('anaks')->onDelete('cascade');
-            $table->foreignId('users_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('layanans_id')->constrained('layanans')->onDelete('cascade');
             // $table->foreignId('jadwal_layanans_id')->constrained('jadwal_layanans')->onDelete('cascade');
             $table->date('tgl_masuk');

@@ -7,12 +7,12 @@
     </div>
     <div class="col-md-6 col-12">
         <div class="d-flex justify-content-end">
-            <form method="GET" action="{{ route('jadwal_layanans.index') }}" id="searchForm">
+            {{-- <form method="GET" action="{{ route('jadwal_layanans.index') }}" id="searchForm">
                 <div class="search-wrapper d-flex align-items-center">
                     <i class="fas fa-search search-icon me-2"></i>
-                    <input 
-                        type="text" 
-                        name="cari" 
+                    <input
+                        type="text"
+                        name="cari"
                         class="text-white border-0"
                         placeholder="Cari"
                         value="{{ request('cari') }}"
@@ -20,7 +20,7 @@
                         style="max-width: 300px;"
                     />
                 </div>
-            </form>
+            </form> --}}
         </div>
     </div>
 </div>
@@ -80,39 +80,38 @@
         }
     </script>
     @endpush
-    
+
 
     <div class="table-responsive">
         <table class="table table-hover table-bordered">
             <thead class="table-primary text-center">
                 <tr>
                     <th>No</th>
-                    <th>Nama Anak</th>
-                    <th>Jenis Layanan</th>
-                    <th>Tanggal Masuk</th>
+                    <th>Hari</th>
+                    <th>Jam Layanan</th>
                 </tr>
             </thead>
-        <tbody>
-            @if ($reservasi->count() > 0)
-                @foreach ($reservasi as $jadwal)
+            <tbody>
+            @if ($jadwal->count() > 0)
+                @foreach ($jadwal as $item)
                     <tr class="text-center">
-                        <td class="align-middle">{{ $loop->iteration + ($reservasi->currentPage()-1)*$reservasi->perPage() }}</td>
-                        <td class="align-middle">{{ $jadwal->anak->nama_anak ?? '-' }}</td>
-                        <td class="align-middle">{{ $jadwal->layanan->jenis_layanan ?? '-' }}</td>
-                        <td class="align-middle">{{ $jadwal->tgl_masuk ? \Carbon\Carbon::parse($jadwal->tgl_masuk)->format('d-m-Y') : '-' }}</td>
+                        <td class="align-middle">{{ $loop->iteration + ($jadwal->currentPage() - 1) * $jadwal->perPage() }}</td>
+                        <td class="align-middle">{{ $item->hari }}</td>
+                        <td class="align-middle">{{ $item->jam_layanan }}</td>
+                    </tr>
+                @endforeach
+            @else
+                <tr>
+                    <td colspan="3" class="text-center">Data Jadwal Layanan Tidak Ditemukan</td>
                 </tr>
-            @endforeach
-        @else
-            <tr>
-                <td colspan="7" class="text-center">Data Tidak Ditemukan</td>
-            </tr>
-        @endif
+            @endif
         </tbody>
+
     </table>
     </div>
     <div class="d-flex justify-content-center mt-3 mb-4">
-        @if ($reservasi->hasPages())
-            {{ $reservasi->links('pagination::bootstrap-5') }}
+        @if ($jadwal->hasPages())
+            {{ $jadwal->links('pagination::bootstrap-5') }}
         @else
             {{-- Paksa tampil pagination minimal --}}
             <nav>

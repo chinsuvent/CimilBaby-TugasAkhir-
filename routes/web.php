@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Http\Request;
 
 use App\Http\Controllers\AnakController;
 use App\Http\Controllers\AuthController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\FasilitasController;
 use App\Http\Controllers\JadwalLayananController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\PengajuanPembatalanController;
 use App\Http\Controllers\Pelanggan\DashboardPelangganController;
 use App\Http\Middleware\CekLevelPengguna;
 use App\Http\Controllers\Pelanggan\ProfilController;
@@ -128,6 +130,15 @@ Route::middleware('auth')->group(function () {
 });
 
 
+// Pengajuan oleh user
+Route::post('/pengajuan-pembatalan', [PengajuanPembatalanController::class, 'store'])->name('pengajuan.store');
+
+// Untuk admin
+Route::get('/admin/pengajuan-pembatalan', [PengajuanPembatalanController::class, 'index'])->name('pengajuan.index');
+Route::put('/admin/pengajuan-pembatalan/{id}', [PengajuanPembatalanController::class, 'update'])->name('pengajuan.update');
+
+
+
 
 
 Route::get('/pelanggan/dashboard', [DashboardPelangganController::class, 'index'])
@@ -207,6 +218,16 @@ Route::get('/', [LayananController::class, 'beranda'])->name('beranda');
 
 Route::get('/', [ReservasiPelangganController::class, 'beranda'])->name('pelanggan.beranda');
 
+
+Route::get('/lupa-password', [App\Http\Controllers\Auth\ResetPasswordWAController::class, 'showForm']);
+Route::post('/kirim-token', [App\Http\Controllers\Auth\ResetPasswordWAController::class, 'sendToken']);
+Route::get('/verifikasi-token', [App\Http\Controllers\Auth\ResetPasswordWAController::class, 'showInputTokenForm'])->name('form.verifikasi.token');
+Route::get('/verifikasi-token-cari', function (Request $request) {
+    return redirect('/verifikasi/' . $request->token);
+});
+
+Route::get('/verifikasi/{token}', [App\Http\Controllers\Auth\ResetPasswordWAController::class, 'verifyForm']);
+Route::post('/ubah-password', [App\Http\Controllers\Auth\ResetPasswordWAController::class, 'updatePassword']);
 
 
 

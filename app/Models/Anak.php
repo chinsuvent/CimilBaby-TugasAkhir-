@@ -19,10 +19,13 @@ class Anak extends Model
         'alergi'
     ];
 
-    public function pengguna()
+    // App\Models\Anak.php
+
+    public function orangTua()
     {
-        return $this->belongsTo(User::class, 'users_id');
+        return $this->belongsTo(OrangTua::class, 'orang_tua_id');
     }
+
 
 
 

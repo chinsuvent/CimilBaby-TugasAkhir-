@@ -14,12 +14,14 @@ class ReservasiPelangganController extends Controller
 {
     public function index()
     {
-        $pelanggan = Auth::user();
-        $reservasi = Reservasi::where('users_id', $pelanggan->id)
-                        ->orderBy('created_at', 'desc')
-                        ->paginate(10);
+$orangTua = Auth::user()->orangTua;
 
-        return view('pelanggan.riwayat_reservasi', compact('pelanggan', 'reservasi'));
+$reservasi = \App\Models\Reservasi::whereIn('anaks_id', function ($query) use ($orangTua) {
+    $query->select('id')
+          ->from('anaks')
+          ->where('orang_tua_id', $orangTua->id);
+})->orderBy('created_at', 'desc')->paginate(10);
+
     }
 
 

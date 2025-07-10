@@ -12,29 +12,7 @@ class JadwalLayanan extends Model
     protected $table = 'jadwal_layanans';
 
     protected $fillable = [
-        'anaks_id',
-        'reservasis_id',
-        'layanans_id'
+        'hari',
+        'jam_layanan',
     ];
-
-    
-    // Relasi ke reservasi (one to many)
-    public function anak()
-    {
-        return $this->belongsTo(Anak::class, 'anaks_id');
-    }
-
-    public function layanan()
-    {
-        return $this->belongsTo(Layanan::class, 'layanans_id');
-    }
-
-    public function reservasi()
-    {
-        return $this->hasMany(Reservasi::class); // jika relasi hasMany
-    }
-
-
-
-
 }
