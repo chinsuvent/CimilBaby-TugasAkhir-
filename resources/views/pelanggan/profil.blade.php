@@ -44,7 +44,7 @@
         <a href="{{ route('pelanggan.editProfil') }}" class="btn btn-warning mr-3">Edit Profil</a>
 
         {{-- Tombol ubah password --}}
-        <a href="{{ url('/lupa-password') }}" class="btn btn-danger">Ubah Password</a>
+        <a href="{{ url('/ubah-password') }}" class="btn btn-danger">Ubah Password</a>
     </div>
 </div>
 @endsection

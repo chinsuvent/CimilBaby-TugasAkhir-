@@ -51,7 +51,7 @@ class User extends Authenticatable
 
     public function anak()
     {
-        return $this->hasMany(Anak::class, 'users_id');
+        return $this->hasMany(Anak::class, 'orang_tua_id'); // foreign key di tabel anak
     }
 
     public function orangTua()

@@ -19,4 +19,10 @@ class JadwalLayananController extends Controller
         // Kirim ke view jadwal/index.blade.php
         return view('admin.jadwal_layanans.index', compact('jadwal'));
     }
+
+    public function showPublic()
+    {
+        $jadwal = JadwalLayanan::all();
+        return view('jadwal_layanan', compact('jadwal'));
+    }
 }

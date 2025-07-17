@@ -12,7 +12,7 @@
 
     <!-- Custom fonts for this template-->
     <link href="{{ asset('admin_assets/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" 
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
     rel="stylesheet">
 
     <!-- Bootstrap -->
@@ -33,28 +33,28 @@
                                 <div class="shape shape1"></div>
                                 <div class="shape shape2"></div>
                             </div>
-                            
+
                             <div class="musical-note">
                                 <i class="fas fa-music"></i>
                             </div>
-                            
+
                             <h1 class="welcome-text">
                                 Selamat Datang di<br>
                                 Ci'mil Baby
                             </h1>
-                            
+
                             <div class="illustration">
                                 <img src="{{ asset('admin_assets/img/login.png') }}" alt="Ilustrasi Login" class="img-login">
                             </div>
                         </div>
-                        
+
                         <!-- Right Section -->
                         <div class="col-lg-6 right-section">
                             <div class="form-container">
                                 <div class="text-start">
                                     <h1 class="form-title">Masuk</h1>
                                 </div>
-                                
+
                                 <form action="{{ route('login.action') }}" method="POST" class="user">
                                     @csrf
                                     @if ($errors->any())
@@ -66,14 +66,14 @@
                                             </ul>
                                         </div>
                                     @endif
-                                    
+
                                     <div class="form-group">
                                         <label class="form-label">Username</label>
                                         <input name="username" type="text" class="form-control form-control-user"
                                             id="exampleInputUsername" aria-describedby="emailHelp"
                                             placeholder="Masukkan username Anda" style="padding: 0.75rem 1rem;" required>
                                     </div>
-                                    
+
                                     <div class="form-group">
                                         <label class="form-label">Password</label>
                                         <div class="password-field">
@@ -85,13 +85,17 @@
                                         </div>
                                     </div>
 
-                                   
-                                    
+                                    <div class="text-end mt-1 mb-2">
+                                        <a href="{{ url('/wa-lupa-password') }}" class="text-lupa-password">
+                                            <small>Lupa Password?</small>
+                                        </a>
+                                    </div>
+
                                     <button type="submit" class="btn btn-primary btn-user btn-block">
                                         Masuk
                                     </button>
                                 </form>
-                                
+
                                 <hr>
                                 <div class="register-link">
                                     <a href="{{ route('register') }}">Belum punya akun? <b>Daftar sekarang!</b></a>
@@ -121,7 +125,7 @@
         function togglePassword() {
             const passwordField = document.getElementById('exampleInputPassword');
             const eyeIcon = document.getElementById('eye-icon');
-            
+
             if (passwordField.type === 'password') {
                 passwordField.type = 'text';
                 eyeIcon.classList.remove('fa-eye');
@@ -133,7 +137,7 @@
             }
         }
     </script>
-    
+
     @if (session('success'))
     <script>
         Swal.fire({

@@ -9,13 +9,15 @@ use App\Http\Controllers\ReservasiController;
 use App\Http\Controllers\FasilitasController;
 use App\Http\Controllers\JadwalLayananController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\LaporanReservasiController;
+use App\Http\Controllers\LaporanPenitipanController;
 use App\Http\Controllers\PengajuanPembatalanController;
 use App\Http\Controllers\Pelanggan\DashboardPelangganController;
 use App\Http\Middleware\CekLevelPengguna;
 use App\Http\Controllers\Pelanggan\ProfilController;
 use App\Http\Controllers\Pelanggan\AnakPelangganController;
 use App\Http\Controllers\Pelanggan\ReservasiPelangganController;
+use App\Http\Controllers\Auth\ForgotPasswordWAController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -31,9 +33,9 @@ Route::get('/layanan', function () {
     return view('layanan');
 });
 
-// Route::get('/jadwal_layanan', function () {
-//     return view('jadwal_layanan');
-// });
+Route::get('/jadwal_layanan', [App\Http\Controllers\JadwalLayananController::class, 'showPublic']);
+
+
 
 Route::get('/menu_fasilitas', function () {
     return view('menu_fasilitas');
@@ -125,8 +127,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/jadwal-layanans', [JadwalLayananController::class, 'index'])->name('jadwal_layanans.index');
     });
 
-    Route::get('/laporans', [LaporanController::class, 'index'])->name('laporans.index');
-    Route::get('/laporans/cetak', [LaporanController::class, 'cetak'])->name('laporans.cetak');
+    Route::get('/laporans_reservasi', [LaporanReservasiController::class, 'index'])->name('laporans_reservasi.index');
+    Route::get('/laporans_reservasi/cetak', [LaporanReservasiController::class, 'cetak'])->name('laporans_reservasi.cetak');
+
+    Route::get('/laporans_penitipan', [LaporanPenitipanController::class, 'index'])->name('laporans_penitipan.index');
+    Route::get('/laporans_penitipan/cetak', [LaporanPenitipanController::class, 'cetak'])->name('laporans_penitipan.cetak');
 });
 
 
@@ -229,6 +234,12 @@ Route::get('/verifikasi-token-cari', function (Request $request) {
 Route::get('/verifikasi/{token}', [App\Http\Controllers\Auth\ResetPasswordWAController::class, 'verifyForm']);
 Route::post('/ubah-password', [App\Http\Controllers\Auth\ResetPasswordWAController::class, 'updatePassword']);
 
+
+Route::get('/wa-lupa-password', [ForgotPasswordWAController::class, 'formLupaPassword'])->name('wa.form.lupa');
+Route::post('/wa-kirim-token', [ForgotPasswordWAController::class, 'kirimTokenWA'])->name('wa.kirim.token');
+Route::get('/wa-verifikasi-token', [ForgotPasswordWAController::class, 'formVerifikasiToken'])->name('wa.form.verifikasi');
+Route::post('/wa-verifikasi-token', [ForgotPasswordWAController::class, 'prosesVerifikasiToken'])->name('wa.verifikasi');
+Route::post('/wa-reset-password', [ForgotPasswordWAController::class, 'simpanPasswordBaru'])->name('wa.reset.password');
 
 
 

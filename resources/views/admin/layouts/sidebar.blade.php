@@ -20,7 +20,7 @@
                             <path fill="#fff" d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12S6.477 2 12 2m1 2.062V5a1 1 0 0 1-1.993.117L11 5v-.938a8.005 8.005 0 0 0-6.902 6.68L4.062 11H5a1 1 0 0 1 .117 1.993L5 13h-.938a8.001 8.001 0 0 0 15.84.25l.036-.25H19a1 1 0 0 1-.117-1.993L19 11h.938a7.98 7.98 0 0 0-2.241-4.617l-2.424 4.759l-.155.294l-.31.61c-.37.72-.772 1.454-1.323 2.005c-.972.971-2.588 1.089-3.606.07c-1.019-1.018-.901-2.634.07-3.606c.472-.472 1.078-.835 1.696-1.162l.919-.471l.849-.444l4.203-2.135A7.98 7.98 0 0 0 13 4.062m.162 6.776l-.21.112l-.216.113c-.402.209-.822.426-1.172.698l-.201.17l-.073.084c-.193.26-.135.554.003.692s.432.196.692.003l.086-.074l.168-.2c.217-.28.4-.605.571-.93l.127-.242q.112-.22.225-.426" />
                         </g>
                     </svg>
-                    
+
                 </a>
             </li>
 
@@ -81,8 +81,17 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link d-flex align-items-center" href="{{ route('laporans.index') }}">
-                    <span class="mr-2">Laporan</span>
+                <a class="nav-link d-flex align-items-center" href="{{ route('laporans_reservasi.index') }}">
+                    <span class="mr-2">Laporan Reservasi</span>
+                    <svg class="ml-auto" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+                        <path fill="#fff" d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m1 18h2v-6H7zm4 0h2v-8h-2zm4 0h2v-4h-2z" />
+                    </svg>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link d-flex align-items-center" href="{{ route('laporans_penitipan.index') }}">
+                    <span class="mr-2">Laporan Penitipan</span>
                     <svg class="ml-auto" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
                         <path fill="#fff" d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m1 18h2v-6H7zm4 0h2v-8h-2zm4 0h2v-4h-2z" />
                     </svg>
@@ -115,7 +124,7 @@
     //     backdrop.classList.toggle("hidden");
     // }
 
-    
+
 
 
     function confirmLogout(e) {

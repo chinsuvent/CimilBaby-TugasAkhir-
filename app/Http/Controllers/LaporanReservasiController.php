@@ -9,7 +9,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 
 
-class LaporanController extends Controller
+class LaporanReservasiController extends Controller
 {
     public function index(Request $request)
     {
@@ -51,7 +51,7 @@ class LaporanController extends Controller
 
         $laporan = $query->orderBy('tgl_masuk', 'desc')->paginate($limit);
 
-        return view('admin.laporans.index', compact('laporan'));
+        return view('admin.laporans_reservasi.index', compact('laporan'));
     }
 
     public function cetak(Request $request)

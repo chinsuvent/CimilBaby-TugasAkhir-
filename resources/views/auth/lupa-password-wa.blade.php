@@ -2,7 +2,7 @@
 
 @section('contents')
 <div class="container mt-5">
-    <h3>Lupa Password</h3>
+    <h3>Ubah Password</h3>
 
     <form action="{{ url('/kirim-token') }}" method="POST">
         @csrf

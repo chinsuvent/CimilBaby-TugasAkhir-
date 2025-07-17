@@ -2,7 +2,7 @@
 
 @section('contents')
   <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-2 mb-3">
-        <h1 class="m-0 text-title text-md-left text-center text-md-h4">Laporan</h1>
+        <h1 class="m-0 text-title text-md-left text-center text-md-h4">Laporan Penitipan</h1>
   </div>
   <hr />
 
@@ -19,7 +19,7 @@
     document.addEventListener('DOMContentLoaded', function () {
       const currentLimit = document.getElementById('limitInput').value || 10;
       document.getElementById('dropdownShow').textContent = 'Lihat ' + currentLimit;
-      
+
       // Juga set pilihan filter sesuai request saat ini (opsional, kalau pakai blade bisa langsung set value)
       const params = new URLSearchParams(window.location.search);
       const gender = params.get('gender');
@@ -61,7 +61,7 @@
 
 
   <!-- Filter Atas -->
-  <form method="GET" action="{{ route('laporans.index') }}" class="mb-3">
+  <form method="GET" action="{{ route('laporans_penitipan.index') }}" class="mb-3">
   <div class="row g-2">
     <!-- Kolom 1: Label + Input Tanggal Awal -->
     <div class="col-md-3">
@@ -86,7 +86,7 @@
 
     <!-- Kolom 4: Tombol Cetak PDF -->
     <div class="col-md-3 d-flex align-items-end">
-      <a href="{{ route('laporans.cetak', request()->all()) }}" target="_blank" class="btn btn-purple w-100">Cetak PDF</a>
+      <a href="{{ route('laporans_penitipan.cetak', request()->all()) }}" target="_blank" class="btn btn-purple w-100">Cetak PDF</a>
     </div>
   </div>
 </form>
@@ -114,9 +114,9 @@
         Filter
       </button>
       <div class="dropdown-menu p-3" style="min-width: 250px;">
-        <form id="filterForm" method="GET" action="{{ route('laporans.index') }}">
+        <form id="filterForm" method="GET" action="{{ route('laporans_penitipan.index') }}">
           <input type="hidden" name="limit" id="limitInput" value="{{ request('limit', 10) }}">
-          
+
           <div class="mb-2">
             <label class="form-label">Jenis Kelamin</label>
             <select class="form-select" name="gender">
@@ -134,7 +134,7 @@
             </select>
           </div>
           <button type="submit" class="btn btn-sm btn-primary w-100 mt-2">Terapkan Filter</button>
-          <a href="{{ route('laporans.index') }}" class="btn btn-sm btn-secondary w-100 mt-2">Reset</a>
+          <a href="{{ route('laporans_penitipan.index') }}" class="btn btn-sm btn-secondary w-100 mt-2">Reset</a>
 
         </form>
       </div>
@@ -142,13 +142,13 @@
   </div>
     <!-- Kolom 2: Input Cari -->
     <div class="col-12 col-md-6">
-      <form method="GET" action="{{ route('laporans.index') }}" id="searchForm">
+      <form method="GET" action="{{ route('laporans_penitipan.index') }}" id="searchForm">
         <div class="search-wrapper d-flex align-items-center">
           <i class="fas fa-search search-icon me-2"></i>
-          <input 
-            type="text" 
-            name="cari" 
-            class="text-white border-0" 
+          <input
+            type="text"
+            name="cari"
+            class="text-white border-0"
             placeholder="Cari"
             value="{{ request('cari') }}"
             id="searchInput"

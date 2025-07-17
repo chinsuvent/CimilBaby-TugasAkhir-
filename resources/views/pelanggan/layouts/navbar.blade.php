@@ -25,7 +25,7 @@
                         </li>
                     </ul>
 
-                    
+
                 </nav>
                 <div id="sidebar-backdrop" class="sidebar-backdrop" onclick="toggleSidebar()"></div>
 
@@ -33,10 +33,10 @@
   function toggleSidebar() {
     const sidebar = document.getElementById("accordionSidebar");
     const backdrop = document.getElementById("sidebar-backdrop");
-    
+
     sidebar.classList.toggle("show");
     backdrop.classList.toggle("show");
-    
+
     if (sidebar.classList.contains("show")) {
       document.body.classList.add("sidebar-open");
     } else {
