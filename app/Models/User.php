@@ -49,14 +49,27 @@ class User extends Authenticatable
         ];
     }
 
-    public function anak()
+   public function anak()
     {
-        return $this->hasMany(Anak::class, 'orang_tua_id'); // foreign key di tabel anak
+        return $this->hasManyThrough(
+            Anak::class,
+            OrangTua::class,
+            'users_id',     // foreign key di tabel orang_tua yang mengarah ke user
+            'orang_tua_id', // foreign key di tabel anak yang mengarah ke orang_tua
+            'id',           // primary key user
+            'id'            // primary key orang_tua
+        );
     }
+
 
     public function orangTua()
     {
-        return $this->hasOne(OrangTua::class, 'users_id'); // foreign key di tabel orang_tua
+        return $this->hasOne(OrangTua::class, 'users_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'orang_tua_id');
     }
 
 

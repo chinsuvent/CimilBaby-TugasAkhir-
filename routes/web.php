@@ -241,6 +241,7 @@ Route::get('/wa-verifikasi-token', [ForgotPasswordWAController::class, 'formVeri
 Route::post('/wa-verifikasi-token', [ForgotPasswordWAController::class, 'prosesVerifikasiToken'])->name('wa.verifikasi');
 Route::post('/wa-reset-password', [ForgotPasswordWAController::class, 'simpanPasswordBaru'])->name('wa.reset.password');
 
+Route::get('/layanan', [App\Http\Controllers\LayananController::class, 'showLayanan']);
 
 
 

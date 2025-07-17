@@ -23,16 +23,14 @@ class OrangTua extends Model
      * Relasi ke model User
      * Setiap data orang tua dimiliki oleh satu user (anak/siswa).
      */
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'users_id'); // foreign key di tabel orang_tua
-    }
-
-    // App\Models\OrangTua.php
-
     public function anaks()
     {
-        return $this->hasMany(\App\Models\Anak::class, 'orang_tua_id');
+        return $this->hasMany(Anak::class, 'orang_tua_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'users_id'); // jika ada relasi ke user
     }
 
 }

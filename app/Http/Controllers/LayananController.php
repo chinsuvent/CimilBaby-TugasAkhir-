@@ -20,11 +20,18 @@ class LayananController extends Controller
     }
 
     public function beranda()
-{
-    $layanan = Layanan::orderBy('created_at','DESC')->take(3)->get();
-    return view('beranda', compact('layanan'));
-}
+    {
+        $layanan = Layanan::orderBy('created_at','DESC')->take(3)->get();
+        return view('beranda', compact('layanan'));
+    }
 
+
+
+   public function showLayanan()
+    {
+        $layanan = Layanan::all(); // jangan gunakan ->keyBy()
+        return view('layanan', compact('layanan'));
+    }
 
 
     /**

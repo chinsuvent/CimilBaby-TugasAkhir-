@@ -186,7 +186,7 @@
             @endauth
 
 
-
+            </div>
 
 {{--
           <div class="col-lg-4 mb-4 mb-lg-0 d-flex justify-content-center" data-aos="fade-up" data-aos-delay="300">
