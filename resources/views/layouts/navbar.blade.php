@@ -14,7 +14,37 @@
         </a>
 
         <!-- Tombol Get Started (desktop & mobile) -->
-        <a class="btn btn-masuk ms-auto d-sm-inline-block" href="{{ route('login') }}">Masuk</a>
+
+<div class="ms-auto d-sm-inline-block">
+    @auth
+    <div class="dropdown d-inline">
+        <a class="btn btn-masuk dropdown-toggle" href="#" role="button" id="dropdownUserMenu" data-bs-toggle="dropdown" aria-expanded="false">
+            <img class="img-profile rounded-circle"
+                src="https://startbootstrap.github.io/startbootstrap-sb-admin-2/img/undraw_profile.svg"
+                style="width: 40px; height: 40px;">
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUserMenu">
+            <li>
+                <a class="dropdown-item" href="{{ route('pelanggan.dashboard') }}">
+                    Dashboard
+                </a>
+            </li>
+            <li>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="dropdown-item">
+                        Logout
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </div>
+    @else
+    <a class="btn btn-masuk" href="{{ route('login') }}">Masuk</a>
+    @endauth
+</div>
+
+
       </div>
 
       <!-- Baris bawah: Menu navigasi -->

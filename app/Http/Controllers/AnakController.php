@@ -13,9 +13,9 @@ class AnakController extends Controller
      */
     public function index()
     {
-        $anak = Anak::with('pengguna')
-                    ->orderBy('created_at', 'DESC')
-                    ->paginate(10); // pagination + relasi + sorting
+        $anak = Anak::with('orangTua.user')
+                ->orderBy('created_at', 'DESC')
+                ->paginate(10);
 
         return view('admin.anaks.index', compact('anak'));
     }

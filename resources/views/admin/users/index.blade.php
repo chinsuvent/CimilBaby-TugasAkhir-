@@ -72,8 +72,8 @@
                             <td class="align-middle">{{ $us->name }}</td>
                             <td class="align-middle">{{ $us->username }}</td>
                             <td class="align-middle">{{ $us->email }}</td>
-                            <td class="align-middle">{{ $us->no_hp }}</td>
-                            <td class="align-middle">{{ $us->alamat }}</td>
+                            <td class="align-middle">{{ $us->orangTua?->no_hp }}</td>
+                            <td class="align-middle">{{ $us->orangTua?->alamat }}</td>
                             <td class="align-middle">{{ $us->anak->count() }}</td>
                             <td class="align-middle">
                             <div class="d-flex justify-content-center align-items-center gap-2">

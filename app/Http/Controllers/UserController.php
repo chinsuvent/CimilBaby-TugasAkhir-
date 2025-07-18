@@ -10,14 +10,16 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+   public function index()
     {
-        $user = User::where('level', '!=', 'admin')
+        $user = User::with(['orangTua', 'anak']) // eager loading relasi
+                    ->where('level', '!=', 'admin')
                     ->orderBy('created_at', 'DESC')
                     ->paginate(10);
 
         return view('admin.users.index', compact('user'));
     }
+
 
 
     /**

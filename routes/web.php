@@ -244,6 +244,14 @@ Route::post('/wa-reset-password', [ForgotPasswordWAController::class, 'simpanPas
 Route::get('/layanan', [App\Http\Controllers\LayananController::class, 'showLayanan']);
 
 
+Route::get('/riwayat-reservasi', [ReservasiPelangganController::class, 'index'])
+    ->name('pelanggan.riwayat_reservasi');
+
+Route::post('/reservasi/store', [ReservasiPelangganController::class, 'store'])->name('reservasi.store');
+
+
+
+
 
 
 

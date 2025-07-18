@@ -62,7 +62,7 @@
                     <th>Jenis Layanan</th>
                     <th>Tanggal Masuk</th>
                     <th>Tanggal Keluar</th>
-                    <th>Durasi</th>
+                    {{-- <th>Durasi</th> --}}
                     <th>Total</th>
                     <th>Metode Pembayaran</th>
                     <th>Status</th>
@@ -77,11 +77,11 @@
                             <td class="align-middle">{{ $rs->anak->nama_anak ?? '-' }}</td>
                             <td class="align-middle">{{ $rs->anak->jenis_kelamin ?? '-' }}</td>
                             {{-- <td class="align-middle">{{ $rs->anak->usia ?? '-' }}</td> --}}
-                            <td class="align-middle">{{ $rs->pengguna->name ?? '-' }}</td>
+                            <td class="align-middle">{{ $rs->anak->orangTua->user->name ?? '-' }}</td>
                             <td class="align-middle">{{ $rs->layanan->jenis_layanan ?? '-' }}</td>
                             <td class="align-middle">{{ \Carbon\Carbon::parse($rs->tgl_masuk)->format('d-m-Y') }}</td>
                             <td class="align-middle">{{ \Carbon\Carbon::parse($rs->tgl_keluar)->format('d-m-Y') }}</td>
-                            <td class="align-middle">{{ $rs->hitungDurasi() }}</td>
+                            {{-- <td class="align-middle">{{ $rs->hitungDurasi() }}</td> --}}
                             <td class="align-middle">{{ $rs->layanan->biaya ?? '-' }}</td>
                             <td class="align-middle">{{ $rs->metode_pembayaran }}</td>
                             <td class="align-middle">{{ $rs->status }}</td>

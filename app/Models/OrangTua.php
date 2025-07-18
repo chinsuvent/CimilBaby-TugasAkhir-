@@ -30,7 +30,12 @@ class OrangTua extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'users_id'); // jika ada relasi ke user
+        return $this->belongsTo(User::class, 'users_id'); 
+    }
+
+    public function orangTua()
+    {
+        return $this->belongsTo(OrangTua::class, 'orang_tua_id');
     }
 
 }

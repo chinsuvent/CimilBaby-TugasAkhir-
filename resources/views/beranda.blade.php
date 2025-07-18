@@ -50,22 +50,6 @@
 
 @section('contents')
 
-
-    @if(session('success'))
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            Swal.fire({
-                icon: 'success',
-                title: 'Sukses!',
-                text: 'Reservasi Berhasil Dibuat!',
-                confirmButtonColor: '#9672F3',
-            });
-        });
-    </script>
-    @endif
-
-
-
   <main class="main">
 
     <!-- Hero Section -->

@@ -17,7 +17,7 @@ class ReservasiController extends Controller
     public function index()
     {
         // Eager load relasi anak, pengguna, layanan
-        $reservasi = Reservasi::with(['anak', 'pengguna', 'layanan'])
+        $reservasi = Reservasi::with(['anak.orangTua.user', 'pengguna', 'layanan'])
                         ->orderBy('created_at', 'desc')
                         ->paginate(10);
 

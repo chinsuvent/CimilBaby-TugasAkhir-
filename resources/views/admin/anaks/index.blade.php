@@ -76,8 +76,8 @@
                             <td class="align-middle">{{ $an->tanggal_lahir }}</td>
                             <td class="align-middle">{{ $an->jenis_kelamin }}</td>
                             <td class="align-middle">{{ $an->hitungUsia() }}</td>
-                            <td class="align-middle">{{ $an->pengguna->name ?? '-' }}</td> 
-                            <td class="align-middle">{{ $an->pengguna->no_hp ?? '-' }}</td> 
+                            <td class="align-middle">{{ $an->orangTua->user->name ?? '-' }}</td>
+                            <td class="align-middle">{{ $an->orangTua->no_hp ?? '-' }}</td>
                             <td class="align-middle">{{ $an->alergi }}</td>
                         </tr>
                     @endforeach
@@ -87,7 +87,7 @@
                         </tr>
                 @endif
             </tbody>
-        </table>  
+        </table>
     </div>
     <div class="d-flex justify-content-center mt-3 mb-4">
         @if ($anak->hasPages())

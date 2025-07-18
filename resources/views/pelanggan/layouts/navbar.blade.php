@@ -12,17 +12,30 @@
 
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
-                                    {{ auth()->user()->name }}
-                                    <br>
-                                    <small>{{ auth()->user()->level }}</small>
-                                </span>
-                                <img class="img-profile rounded-circle"
-                                    src="https://startbootstrap.github.io/startbootstrap-sb-admin-2/img/undraw_profile.svg">
-                            </a>
-                        </li>
+    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span class="me-2 d-none d-lg-inline text-gray-600 small">
+            {{ auth()->user()->name }}<br>
+            <small>{{ auth()->user()->level }}</small>
+        </span>
+        <img class="img-profile rounded-circle"
+            src="https://startbootstrap.github.io/startbootstrap-sb-admin-2/img/undraw_profile.svg"
+            style="width: 32px; height: 32px;">
+    </a>
+
+    <ul class="dropdown-menu dropdown-menu-end shadow animated--grow-in" aria-labelledby="userDropdown">
+        <li>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="dropdown-item">
+                    <i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>
+                    Logout
+                </button>
+            </form>
+        </li>
+    </ul>
+</li>
+
                     </ul>
 
 

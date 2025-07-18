@@ -22,7 +22,7 @@ class ReservasiPelangganController extends Controller
                 ->from('anaks')
                 ->where('orang_tua_id', $orangTua->id);
         })->orderBy('created_at', 'desc')->paginate(10);
-        return view('reservasi.index', compact('reservasi', 'anakUser'));
+        return view('pelanggan.riwayat_reservasi', compact('reservasi', 'anakUser'));
     }
 
 
@@ -41,7 +41,7 @@ class ReservasiPelangganController extends Controller
 
 
 
-   
+
 
     public function cancel($id)
     {
@@ -157,7 +157,8 @@ class ReservasiPelangganController extends Controller
     // Kirim WA ke admin
     $this->kirimWhatsappAdmin($pesan);
 
-        return redirect()->back()->with('success', 'Reservasi berhasil dikirim!');
+        return redirect()->route('pelanggan.riwayat_reservasi')->with('success', 'Reservasi berhasil dikirim!');
+
     }
 
 

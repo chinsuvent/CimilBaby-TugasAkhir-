@@ -34,7 +34,7 @@
             @foreach ($laporan as $i => $item)
                 <tr>
                     <td>{{ $i + 1 }}</td>
-                    <td>{{ $item->pengguna->name ?? '-' }}</td>
+                    <td>{{ $item->anak->orangTua->user->name ?? '-' }}</td>
                     <td>{{ $item->anak->nama_anak ?? '-' }}</td>
                     <td>{{ $item->anak->jenis_kelamin ?? '-' }}</td>
                     <td>{{ $item->layanan->jenis_layanan ?? '-' }}</td>

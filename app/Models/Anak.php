@@ -9,6 +9,7 @@ use Carbon\Carbon;
 class Anak extends Model
 {
     use HasFactory;
+    
 
     protected $fillable = [
         'nama_anak',

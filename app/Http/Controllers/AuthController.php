@@ -47,55 +47,63 @@ class AuthController extends Controller
     }
 
     public function loginAction(Request $request)
-{
-    Validator::make($request->all(), [
-        'username' => 'required',
-        'password' => 'required'
-    ])->validate();
+    {
+        Validator::make($request->all(), [
+            'username' => 'required',
+            'password' => 'required'
+        ])->validate();
 
-    if (!Auth::attempt($request->only('username','password'), $request->boolean('remember'))) {
-        throw ValidationException::withMessages([
-            'username' => trans('auth.failed')
-        ]);
-    }
-
-    $request->session()->regenerate();
-
-    $user = Auth::user();
-
-    // Jika level pengguna
-    if ($user->level === 'Pengguna') {
-        if (!$user->is_profile_complete) {
-            // Belum isi data diri
-            return redirect()->route('pelanggan.profil')->with('info', 'Silakan lengkapi data diri Anda terlebih dahulu.');
+        if (!Auth::attempt($request->only('username','password'), $request->boolean('remember'))) {
+            throw ValidationException::withMessages([
+                'username' => trans('auth.failed')
+            ]);
         }
 
-        return redirect()->route('pelanggan.dashboard')->with('success', 'Selamat datang kembali!');
+        $request->session()->regenerate();
+
+        $user = Auth::user();
+
+        // Jika level pengguna
+        if ($user->level === 'Pengguna') {
+            if (!$user->is_profile_complete) {
+                // Belum isi data diri
+                return redirect()->route('pelanggan.profil')->with('info', 'Silakan lengkapi data diri Anda terlebih dahulu.');
+            }
+
+            return redirect()->route('pelanggan.dashboard')->with('success', 'Selamat datang kembali!');
+        }
+
+        // Untuk admin atau level lain
+        return redirect()->route('dashboard')->with('success', 'Selamat Anda Berhasil Login!');
     }
 
-    // Untuk admin atau level lain
-    return redirect()->route('dashboard')->with('success', 'Selamat Anda Berhasil Login!');
-}
 
-
-
-    public function logout(Request $request)
-    {
-        Auth::guard('web')->logout();
-
-        $request->session()->invalidate();
-
-        return redirect()->route('logout')->with('success', 'Anda Telah Logout');
-    }
 
     public function destroy(Request $request)
     {
-        Auth::logout();
+        $level = Auth::user()->level; // Simpan level sebelum logout
 
+        Auth::guard('web')->logout();
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
 
-        return redirect('/login')->with('success', 'Anda Telah Logout');
+        if ($level === 'Pengguna') {
+            return redirect('/')->with('success', 'Anda telah logout');
+        }
+
+        return redirect()->route('login')->with('success', 'Anda telah logout');
     }
+
+
+
+    // public function destroy(Request $request)
+    // {
+    //     Auth::logout();
+
+    //     $request->session()->invalidate();
+
+    //     $request->session()->regenerateToken();
+
+    //     return redirect('/login')->with('success', 'Anda Telah Logout');
+    // }
 }

@@ -181,7 +181,7 @@
                       @foreach ($laporan as $la)
                           <tr class="text-center">
                               <td class="align-middle">{{ $loop->iteration + ($laporan->currentPage()-1)*$laporan->perPage() }}</td>
-                              <td class="align-middle">{{ $la->pengguna->name ?? '-' }}</td>
+                              <td class="align-middle">{{ $la->anak->orangTua->user->name ?? '-' }}</td>
                               <td class="align-middle">{{ $la->anak->nama_anak ?? '-' }}</td>
                               <td class="align-middle">{{ $la->layanan->jenis_layanan ?? '-' }}</td>
                               <td class="align-middle">{{ \Carbon\Carbon::parse($la->tgl_masuk)->format('d-m-Y') }}</td>

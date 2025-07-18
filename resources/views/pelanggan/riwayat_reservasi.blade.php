@@ -32,6 +32,15 @@
             });
         @endif
 
+        @if (session('success'))
+            Swal.fire({
+                title: 'Sukses!',
+                text: 'Reservasi Berhasil Dibuat!',
+                confirmButtonColor: '#9672F3',
+            });
+        @endif
+        
+
         // Harus tetap dimuat selalu
         function hapus(button) {
             Swal.fire({
@@ -46,8 +55,11 @@
                     button.closest('form').submit();
                 }
             });
+
+
         }
     </script>
+    
     @endpush
 
     <div class="table-responsive">
@@ -62,7 +74,7 @@
                     <th>Jenis Layanan</th>
                     <th>Tanggal Masuk</th>
                     <th>Tanggal Keluar</th>
-                    <th>Durasi</th>
+                    {{-- <th>Durasi</th> --}}
                     <th>Total</th>
                     <th>Metode Pembayaran</th>
                     <th>Status</th>
@@ -77,11 +89,11 @@
                             <td class="align-middle">{{ $rs->anak->nama_anak ?? '-' }}</td>
                             <td class="align-middle">{{ $rs->anak->jenis_kelamin ?? '-' }}</td>
                             {{-- <td class="align-middle">{{ $rs->anak->usia ?? '-' }}</td> --}}
-                            <td class="align-middle">{{ $rs->pengguna->name ?? '-' }}</td>
+                            <td class="align-middle">{{ $rs->anak->orangTua->user->name ?? '-' }}</td>
                             <td class="align-middle">{{ $rs->layanan->jenis_layanan ?? '-' }}</td>
                             <td class="align-middle">{{ \Carbon\Carbon::parse($rs->tgl_masuk)->format('d-m-Y') }}</td>
                             <td class="align-middle">{{ \Carbon\Carbon::parse($rs->tgl_keluar)->format('d-m-Y') }}</td>
-                            <td class="align-middle">{{ $rs->hitungDurasi() }}</td>
+                            {{-- <td class="align-middle">{{ $rs->hitungDurasi() }}</td> --}}
                             <td class="align-middle">{{ $rs->layanan->biaya ?? '-' }}</td>
                             <td class="align-middle">{{ $rs->metode_pembayaran }}</td>
                             <td class="align-middle">{{ $rs->status }}</td>
@@ -97,7 +109,7 @@
                                             @csrf
                                             @method('PATCH')
                                             <button type="submit" class="btn btn-sm btn-danger d-flex align-items-center justify-content-center" title="Batalkan Reservasi" onclick="batalReservasi(this)">
-                                                <i class="bi bi-x-circle"></i>Batal 
+                                                <i class="bi bi-x-circle"></i>Batal
                                             </button>
                                         </form>
                                     @else
@@ -108,7 +120,7 @@
                         </tr>
 
                     @endforeach
-                        
+
                 @else
                     <tr>
                         <td class="text-center" colspan="15" style="background-color: white;">Data Tidak Ditemukan</td>
