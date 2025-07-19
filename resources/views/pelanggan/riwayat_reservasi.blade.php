@@ -6,6 +6,19 @@
     </div>
     <hr />
 
+    @if (session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+
+@if (session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+
+
     @push('scripts')
     <script>
         @if (session('added'))
@@ -39,7 +52,7 @@
                 confirmButtonColor: '#9672F3',
             });
         @endif
-        
+
 
         // Harus tetap dimuat selalu
         function hapus(button) {
@@ -59,7 +72,7 @@
 
         }
     </script>
-    
+
     @endpush
 
     <div class="table-responsive">

@@ -13,12 +13,9 @@ class Reservasi extends Model
 
     protected $fillable = [
         'anaks_id',
-        'users_id',
-        'layanans_id',
-        'jadwal_layanan_id',  // Ini FK ke jadwal_layanans
+        'layanans_id',// Ini FK ke jadwal_layanans
         'tgl_masuk',
         'tgl_keluar',
-        'total',
         'metode_pembayaran',
         'status',
     ];

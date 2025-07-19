@@ -10,6 +10,7 @@ use App\Models\Layanan;
 use Illuminate\Support\Facades\Log;
 
 
+
 class ReservasiPelangganController extends Controller
 {
     public function index()
@@ -25,6 +26,10 @@ class ReservasiPelangganController extends Controller
         return view('pelanggan.riwayat_reservasi', compact('reservasi', 'anakUser'));
     }
 
+public function show($id)
+{
+    return redirect()->route('pelanggan.reservasi')->with('info', 'Halaman tidak tersedia.');
+}
 
 
    public function beranda()
@@ -45,8 +50,10 @@ class ReservasiPelangganController extends Controller
 
     public function cancel($id)
     {
-        $pelanggan = Auth::user();
-        $reservasi = $pelanggan->reservasis()->findOrFail($id);
+        $orangTua = Auth::user()->orangTua;
+        $anakIds = $orangTua->anak->pluck('id');
+
+        $reservasi = Reservasi::whereIn('anaks_id', $anakIds)->findOrFail($id);
 
         if ($reservasi->status !== 'Pending') {
             return redirect()->back()->with('error', 'Reservasi tidak dapat dibatalkan.');
@@ -57,66 +64,97 @@ class ReservasiPelangganController extends Controller
         return redirect()->route('pelanggan.reservasi')->with('success', 'Reservasi berhasil dibatalkan.');
     }
 
+
+
+
     public function edit($id)
     {
-        $pelanggan = Auth::user();
-        $reservasi = $pelanggan->reservasis()->findOrFail($id);
+        $user = Auth::user();
+        $orangTua = $user->orangTua;
 
-        if ($reservasi->status !== 'Pending') {
-            return redirect()->route('pelanggan.reservasi')
-                ->with('error', 'Hanya reservasi dengan status Pending yang dapat diedit.');
-        }
+        // if (!$orangTua || !$orangTua->anaks || $orangTua->anaks->isEmpty()) {
+        //     return redirect()->route('pelanggan.reservasi')->with('error', 'Data anak tidak ditemukan.');
+        // }
 
-        return view('pelanggan.editReservasi', compact('reservasi'));
+        $anakIds = $orangTua->anaks->pluck('id');
+
+        // ✅ Load relasi anak & layanan
+        $reservasi = Reservasi::with(['anak', 'layanan'])
+            ->whereIn('anaks_id', $anakIds)
+            ->findOrFail($id);
+
+        $layanans = Layanan::all();
+
+        return view('pelanggan.editReservasi', compact('reservasi', 'layanans'));
     }
+
+
+
+
 
     public function update(Request $request, $id)
     {
-        $pelanggan = Auth::user();
-        $reservasi = $pelanggan->reservasis()->findOrFail($id);
-
-        if ($reservasi->status !== 'Pending') {
-            return redirect()->route('pelanggan.reservasi')
-                ->with('error', 'Hanya reservasi dengan status Pending yang dapat diedit.');
-        }
-
-        $validated = $request->validate([
-            'tanggal' => 'required|date|after_or_equal:today',
-            'catatan' => 'nullable|string|max:500',
-            // tambahkan field lain sesuai kebutuhanmu
+        $request->validate([
+            'layanans_id' => 'required|exists:layanans,id',
+            'tgl_masuk' => 'required|date',
+            'tgl_keluar' => 'required|date|after_or_equal:tgl_masuk',
+            'metode_pembayaran' => 'required|string',
         ]);
 
-        $reservasi->update($validated);
+        $reservasi = Reservasi::findOrFail($id);
 
-        return redirect()->route('pelanggan.reservasi')
-            ->with('success', 'Reservasi berhasil diedit.');
+        $reservasi->layanans_id = $request->input('layanans_id');
+        $reservasi->tgl_masuk = $request->input('tgl_masuk');
+        $reservasi->tgl_keluar = $request->input('tgl_keluar');
+        $reservasi->metode_pembayaran = $request->input('metode_pembayaran');
+        $reservasi->save();
+
+        // Kirim WhatsApp ke admin setelah berhasil update
+        $user = Auth::user();
+        $layananNama = $reservasi->layanan->jenis_layanan ?? 'Tidak diketahui';
+
+        $pesan = "*Reservasi Diperbarui!*\n\n"
+            . "Nama: {$user->name}\n"
+            . "Layanan: {$layananNama}\n"
+            . "Tanggal Masuk: {$reservasi->tgl_masuk}\n"
+            . "Tanggal Keluar: {$reservasi->tgl_keluar}\n"
+            . "Metode Bayar: {$reservasi->metode_pembayaran}";
+
+        $this->kirimWhatsappAdmin($pesan);
+
+        return redirect()->route('pelanggan.riwayat_reservasi')
+            ->with('edited', 'Reservasi berhasil diperbarui.');
     }
 
+
+
+
+
     protected function kirimWhatsappAdmin($message)
-{
-    $token = env('FONNTE_API_KEY');
-    $adminPhone = env('ADMIN_PHONE');
+    {
+        $token = env('FONNTE_API_KEY');
+        $adminPhone = env('ADMIN_PHONE');
 
-    $curl = curl_init();
+        $curl = curl_init();
 
-    curl_setopt_array($curl, [
-        CURLOPT_URL => "https://api.fonnte.com/send",
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_POST => true,
-        CURLOPT_POSTFIELDS => [
-            'target' => $adminPhone,
-            'message' => $message,
-        ],
-        CURLOPT_HTTPHEADER => [
-            "Authorization: $token"
-        ],
-    ]);
+        curl_setopt_array($curl, [
+            CURLOPT_URL => "https://api.fonnte.com/send",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => [
+                'target' => $adminPhone,
+                'message' => $message,
+            ],
+            CURLOPT_HTTPHEADER => [
+                "Authorization: $token"
+            ],
+        ]);
 
-    $response = curl_exec($curl);
-    curl_close($curl);
+        $response = curl_exec($curl);
+        curl_close($curl);
 
-    Log::info('Fonnte WA response:', ['response' => $response]);
-}
+        Log::info('Fonnte WA response:', ['response' => $response]);
+    }
 
 
     public function store(Request $request)

@@ -213,6 +213,11 @@ Route::get('/pelanggan/reservasi/{id}/edit', [ReservasiPelangganController::clas
     ->middleware(['auth', CekLevelPengguna::class])
     ->name('pelanggan.edit');
 
+Route::put('/pelanggan/reservasi/{id}', [ReservasiPelangganController::class, 'update'])
+    ->middleware(['auth', CekLevelPengguna::class])
+    ->name('pelanggan.update');
+
+
 Route::post('/reservasi/store', [ReservasiPelangganController::class, 'store'])
     ->middleware('auth')
     ->name('reservasi.store');
