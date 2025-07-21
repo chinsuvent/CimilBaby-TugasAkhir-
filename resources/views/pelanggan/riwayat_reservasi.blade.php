@@ -53,6 +53,22 @@
             });
         @endif
 
+        @if (session('cancel'))
+            Swal.fire({
+                title: 'Sukses!',
+                text: 'Reservasi Berhasil Dibatalkan',
+                confirmButtonColor: '#9672F3',
+            });
+        @endif
+
+        @if (session('batal'))
+            Swal.fire({
+                title: 'Sukses!',
+                text: 'Pengajuan Pembatalan Berhasil Dikirim. Silahkan Menunggu Konfirmasi Admin',
+                confirmButtonColor: '#9672F3',
+            });
+        @endif
+
 
         // Harus tetap dimuat selalu
         function hapus(button) {
@@ -125,8 +141,24 @@
                                                 <i class="bi bi-x-circle"></i>Batal
                                             </button>
                                         </form>
-                                    @else
-                                        -
+                                    @elseif ($rs->status == 'Diterima')
+                                        {{-- Tombol Ajukan Pembatalan --}}
+                                        @if (!$rs->pembatalan) {{-- Cegah dobel ajukan --}}
+                                            <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalBatal{{ $rs->id }}">
+                                                Ajukan Pembatalan
+                                            </button>
+                                        @else
+                                            <span class="text-muted">Menunggu Konfirmasi Pembatalan</span>
+                                        @endif
+
+                                    @elseif ($rs->status == 'Dibatalkan')
+                                        @if ($rs->pembatalan && $rs->pembatalan->status == 'Disetujui')
+                                            <span class="text-danger">Dibatalkan (Disetujui Admin)</span>
+                                        @elseif ($rs->pembatalan && $rs->pembatalan->status == 'Ditolak')
+                                            <span class="text-warning">Pengajuan Dibatalkan (Ditolak Admin)</span>
+                                        @else
+                                            <span class="text-muted">Reservasi Dibatalkan</span>
+                                        @endif
                                     @endif
                                 </div>
                             </td>
@@ -141,6 +173,38 @@
                 @endif
             </tbody>
         </table>
+        @foreach ($reservasi as $rs)
+    @if ($rs->status == 'Diterima' && !$rs->pembatalan)
+        <!-- Modal Ajukan Pembatalan -->
+        <div class="modal fade" id="modalBatal{{ $rs->id }}" tabindex="-1" aria-labelledby="modalBatalLabel{{ $rs->id }}" aria-hidden="true">
+            <div class="modal-dialog">
+                <form action="{{ route('pelanggan.ajukanPembatalan', $rs->id) }}" method="POST">
+                    @csrf
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Ajukan Pembatalan</h5>
+                            <button type="button" class="btn" data-bs-dismiss="modal" aria-label="Close" style="border:none; background:transparent;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M18 6L6 18M6 6l12 12"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="alasan" class="form-label">Alasan Pembatalan</label>
+                                <textarea name="alasan" class="form-control" required rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-danger">Kirim Pengajuan</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    @endif
+@endforeach
+
     </div>
     <div class="d-flex justify-content-center mt-3 mb-4">
             @if ($reservasi->hasPages())

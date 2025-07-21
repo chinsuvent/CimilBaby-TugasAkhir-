@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Reservasi;
+use App\Models\PengajuanPembatalan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -17,11 +18,15 @@ class ReservasiController extends Controller
     public function index()
     {
         // Eager load relasi anak, pengguna, layanan
-        $reservasi = Reservasi::with(['anak.orangTua.user', 'pengguna', 'layanan'])
+        $reservasi = Reservasi::with(['anak.orangTua.user', 'pengguna', 'layanan', 'pengajuanPembatalan'])
                         ->orderBy('created_at', 'desc')
                         ->paginate(10);
 
-        return view('admin.reservasis.index', compact('reservasi'));
+        $pembatalans = PengajuanPembatalan::with('reservasi.pengguna')->get(); // jika kamu ingin tampilkan juga data user
+
+
+
+        return view('admin.reservasis.index', compact('reservasi', 'pembatalans'));
     }
 
     /**
@@ -92,47 +97,100 @@ class ReservasiController extends Controller
         return redirect()->route('reservasis.index')->with('deleted', true);
     }
 
-    /**
-     * Konfirmasi reservasi dan kirim notifikasi WhatsApp.
-     */
+    protected function kirimWhatsapp($targetPhone, $message)
+    {
+        $token = env('FONNTE_API_KEY');
+
+        $curl = curl_init();
+        curl_setopt_array($curl, [
+            CURLOPT_URL => "https://api.fonnte.com/send",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => [
+                'target' => $targetPhone,
+                'message' => $message,
+                'countryCode' => '62', // pastikan 62 untuk Indonesia
+            ],
+            CURLOPT_HTTPHEADER => [
+                "Authorization: $token"
+            ],
+        ]);
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+
+        Log::info("WA sent to $targetPhone | Message: $message | Response: $response");
+    }
+
+
+
     public function konfirmasi(Request $request, $id)
     {
         $request->validate([
             'status' => 'required|in:Diterima,Ditolak',
         ]);
 
-        $reservasi = Reservasi::with(['pengguna', 'anak'])->findOrFail($id);
+        $reservasi = Reservasi::with('anak.orangTua')->findOrFail($id);
         $reservasi->status = $request->status;
         $reservasi->save();
 
-        $rawNoTelp = $reservasi->pengguna->no_hp ?? null;
+        $namaAnak = $reservasi->anak->nama_anak ?? 'Anak Anda';
+        $status = $request->status;
+        $noHp = $reservasi->anak?->orangTua?->no_hp;
 
-        if ($rawNoTelp && preg_match('/^08\d{8,12}$/', $rawNoTelp)) {
-            $noTelp = preg_replace('/^08/', '628', $rawNoTelp);
-            $nama = $reservasi->pengguna->name;
-            $namaAnak = $reservasi->anak->nama_anak ?? 'anak Anda';
-            $tglMasuk = Carbon::parse($reservasi->tgl_masuk)->translatedFormat('d F Y');
-            $tglKeluar = Carbon::parse($reservasi->tgl_keluar)->translatedFormat('d F Y');
-
-            $pesan = $reservasi->status === 'Diterima'
-                ? "Halo {$nama},\n\nReservasi Anda di Cimil Baby telah DITERIMA.\n\nDetail:\nNama Anak: {$namaAnak}\nTanggal Masuk: {$tglMasuk}\nTanggal Keluar: {$tglKeluar}\n\nKami siap menyambut buah hati Anda.\n\nSalam,\nCimil Baby"
-                : "Halo {$nama},\n\nMohon Maaf, reservasi Anda DITOLAK.\n\nKemungkinan:\n- Jadwal penuh\n- Data belum lengkap\n\nSilakan reservasi ulang atau hubungi admin.\n\nTerima kasih.\n\nCimil Baby";
-
-            $response = Http::withHeaders([
-                'Authorization' => env('FONNTE_API_KEY'),
-            ])->post('https://api.fonnte.com/send', [
-                'target' => $noTelp,
-                'message' => $pesan,
-            ]);
-
-            $responseData = $response->json();
-            if (!$responseData['status']) {
-                Log::error('Gagal kirim WA ke ' . $noTelp . ': ' . $responseData['message']);
-            }
-        } else {
-            Log::warning('Nomor HP tidak valid atau kosong: ' . ($rawNoTelp ?? 'null'));
+        if ($noHp) {
+            $message = "Reservasi untuk *$namaAnak* telah *$status*. Terima kasih telah menggunakan layanan kami.";
+            $this->kirimWhatsapp($noHp, $message);
         }
 
-        return redirect()->back()->with('edited', true);
+        return redirect()->back()->with('edited', 'Reservasi berhasil dikonfirmasi.');
     }
+
+
+
+    public function konfirmasiPembatalan(Request $request, $id)
+    {
+        // Eager loading anak dan orangTua saja (tidak perlu pengguna)
+        $reservasi = Reservasi::with('anak.orangTua')->findOrFail($id);
+        $pengajuan = $reservasi->pengajuanPembatalan;
+
+        if (!$pengajuan) {
+            return back()->with('error', 'Pengajuan tidak ditemukan.');
+        }
+
+        $namaAnak = $reservasi->anak->nama_anak ?? 'Anak Anda'; // Pastikan nama kolom sesuai di DB
+        $noHp = $reservasi->anak?->orangTua?->no_hp;
+
+        if ($request->konfirmasi === 'terima') {
+            $reservasi->status = 'dibatalkan';
+            $reservasi->save();
+            $pengajuan->delete();
+
+            if ($noHp) {
+                $message = "Permohonan pembatalan reservasi untuk *$namaAnak* telah *DITERIMA*. Reservasi dibatalkan.";
+                $this->kirimWhatsapp($noHp, $message);
+            }
+
+            return back()->with('success', 'Reservasi berhasil dibatalkan.');
+        }
+
+        if ($request->konfirmasi === 'tolak') {
+            $pengajuan->delete();
+
+            if ($noHp) {
+                $message = "Permohonan pembatalan reservasi untuk *$namaAnak* *DITOLAK*. Silakan hubungi admin untuk informasi lebih lanjut.";
+                $this->kirimWhatsapp($noHp, $message);
+            }
+
+            return back()->with('info', 'Pengajuan pembatalan ditolak.');
+        }
+
+        return back()->with('error', 'Aksi tidak valid.');
+    }
+
+
+
+
+
+
 }

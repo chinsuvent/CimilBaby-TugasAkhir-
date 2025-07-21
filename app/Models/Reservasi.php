@@ -49,6 +49,12 @@ class Reservasi extends Model
         return $this->belongsTo(Layanan::class, 'layanans_id');
     }
 
+    public function pengajuanPembatalan()
+    {
+        return $this->hasOne(PengajuanPembatalan::class, 'reservasis_id');
+    }
+
+
 //     public function hitungDurasi()
 // {
 //     // Pastikan relasi layanan sudah dimuat

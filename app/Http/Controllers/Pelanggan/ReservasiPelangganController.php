@@ -6,8 +6,10 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Reservasi;
 use Illuminate\Http\Request;
 use App\Models\Anak;
+use App\Models\PengajuanPembatalan;
 use App\Models\Layanan;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 
 
@@ -25,6 +27,53 @@ class ReservasiPelangganController extends Controller
         })->orderBy('created_at', 'desc')->paginate(10);
         return view('pelanggan.riwayat_reservasi', compact('reservasi', 'anakUser'));
     }
+
+    // Fungsi ajukan pembatalan
+    public function ajukanPembatalan(Request $request, $id)
+    {
+        $request->validate([
+            'alasan' => 'required|string',
+        ]);
+
+        $reservasi = Reservasi::with(['anak', 'layanan'])->where('id', $id)
+            ->where('status', 'Diterima')
+            ->firstOrFail();
+
+        // Cegah duplikat
+        if ($reservasi->pembatalan) {
+            return redirect()->back()->with('error', 'Pembatalan sudah diajukan.');
+        }
+
+        PengajuanPembatalan::create([
+            'reservasis_id' => $reservasi->id,
+            'alasan' => $request->alasan,
+            'status' => 'Menunggu',
+            'tanggal_pengajuan' => Carbon::now(),
+        ]);
+
+        // Kirim WhatsApp ke admin
+        $user = Auth::user();
+        $namaOrtu = $user->name ?? 'Orang Tua';
+        $namaAnak = $reservasi->anak->nama_anak ?? 'Anak';
+        $layanan = $reservasi->layanan->jenis_layanan ?? 'Layanan';
+        $tglMasuk = $reservasi->tgl_masuk ?? '-';
+        $tglKeluar = $reservasi->tgl_keluar ?? '-';
+        $alasan = $request->alasan;
+
+        $pesan = "*Permohonan Pembatalan Masuk!*\n\n"
+            . "👤 Orang Tua: *{$namaOrtu}*\n"
+            . "👶 Anak: *{$namaAnak}*\n"
+            . "🧾 Layanan: *{$layanan}*\n"
+            . "📅 Masuk: {$tglMasuk}\n"
+            . "📅 Keluar: {$tglKeluar}\n"
+            . "❗ *Alasan*: _{$alasan}_\n\n"
+            . "Mohon segera dikonfirmasi di dashboard admin.";
+
+        $this->kirimWhatsappAdmin($pesan);
+
+        return redirect()->back()->with('batal', 'Pengajuan pembatalan berhasil dikirim. Menunggu konfirmasi admin.');
+    }
+
 
 public function show($id)
 {
@@ -51,9 +100,11 @@ public function show($id)
     public function cancel($id)
     {
         $orangTua = Auth::user()->orangTua;
-        $anakIds = $orangTua->anak->pluck('id');
+        $anakIds = $orangTua->anaks->pluck('id');
 
-        $reservasi = Reservasi::whereIn('anaks_id', $anakIds)->findOrFail($id);
+        $reservasi = Reservasi::with(['anak', 'layanan']) // pastikan relasi diload
+            ->whereIn('anaks_id', $anakIds)
+            ->findOrFail($id);
 
         if ($reservasi->status !== 'Pending') {
             return redirect()->back()->with('error', 'Reservasi tidak dapat dibatalkan.');
@@ -61,11 +112,23 @@ public function show($id)
 
         $reservasi->update(['status' => 'Dibatalkan']);
 
-        return redirect()->route('pelanggan.reservasi')->with('success', 'Reservasi berhasil dibatalkan.');
+        // Kirim WhatsApp ke admin
+        $user = Auth::user();
+        $namaAnak = $reservasi->anaks->nama ?? 'Anak';
+        $layananNama = $reservasi->layanan->jenis_layanan ?? 'Layanan Tidak Diketahui';
+
+        $pesan = "*Reservasi Dibatalkan!*\n\n"
+            . "Nama Orang Tua: {$user->name}\n"
+            . "Nama Anak: {$namaAnak}\n"
+            . "Layanan: {$layananNama}\n"
+            . "Tanggal Masuk: {$reservasi->tgl_masuk}\n"
+            . "Tanggal Keluar: {$reservasi->tgl_keluar}\n"
+            . "Status: *DIBATALKAN*";
+
+        $this->kirimWhatsappAdmin($pesan);
+
+        return redirect()->route('pelanggan.reservasi')->with('cancel', 'Reservasi berhasil dibatalkan.');
     }
-
-
-
 
     public function edit($id)
     {
@@ -125,10 +188,6 @@ public function show($id)
         return redirect()->route('pelanggan.riwayat_reservasi')
             ->with('edited', 'Reservasi berhasil diperbarui.');
     }
-
-
-
-
 
     protected function kirimWhatsappAdmin($message)
     {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Layanan;
 use App\Models\Fasilitas;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LayananController extends Controller
 {
@@ -27,11 +28,20 @@ class LayananController extends Controller
 
 
 
-   public function showLayanan()
-    {
-        $layanan = Layanan::all(); // jangan gunakan ->keyBy()
-        return view('layanan', compact('layanan'));
-    }
+
+
+    public function showLayanan()
+{
+    $layanan = Layanan::all();
+
+    $orangTua = Auth::user()->orangTua ?? null;
+
+    // Jika user tidak punya data orang tua, berikan koleksi kosong agar tidak null
+    $anakUser = $orangTua ? $orangTua->anaks : collect();
+
+    return view('layanan', compact('layanan', 'anakUser'));
+}
+
 
 
     /**

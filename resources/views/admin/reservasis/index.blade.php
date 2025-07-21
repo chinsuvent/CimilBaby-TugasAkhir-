@@ -19,7 +19,7 @@
         @if (session('edited'))
             Swal.fire({
                 title: 'Berhasil',
-                text: 'Data Berhasil Diubah',
+                text: 'Reservasi Berhasil Dikonfirmasi!',
                 icon: 'success'
             });
         @endif
@@ -29,6 +29,32 @@
                 title: 'Hapus',
                 text: 'Data Berhasil Dihapus',
                 icon: 'success'
+            });
+        @endif
+
+        @if (session('success'))
+        Swal.fire({
+            icon: 'success',
+            title: 'Pembatalan Berhasil Dikonfirmasi',
+            text: '{{ session('success') }}',
+            confirmButtonColor: '#3085d6',
+        });
+        @endif
+
+        @if (session('info'))
+            Swal.fire({
+                icon: 'info',
+                title: 'Informasi',
+                text: '{{ session('info') }}',
+                confirmButtonColor: '#3085d6',
+            });
+        @endif
+        @if (session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal',
+                text: '{{ session('error') }}',
+                confirmButtonColor: '#d33',
             });
         @endif
 
@@ -86,8 +112,8 @@
                             <td class="align-middle">{{ $rs->metode_pembayaran }}</td>
                             <td class="align-middle">{{ $rs->status }}</td>
                             <td class="align-middle">
-                                @if ($rs->status == 'Pending')
-                                    <div class="d-flex justify-content-center gap-2">
+                                <div class="d-flex justify-content-center gap-2">
+                                    @if ($rs->status == 'Pending')
                                         <form action="{{ route('reservasis.konfirmasi', $rs->id) }}" method="POST">
                                             @csrf
                                             @method('PUT')
@@ -101,13 +127,49 @@
                                             <input type="hidden" name="status" value="Ditolak">
                                             <button type="submit" class="btn btn-danger btn-sm">Tolak</button>
                                         </form>
-                                    </div>
-                                @else
-                                    <span class="text-muted">Sudah dikonfirmasi</span>
-                                @endif
-                            </td>
+                                    @endif
 
+                                    @if ($rs->pengajuanPembatalan)
+                                        <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#konfirmasiPembatalanModal{{ $rs->id }}">
+                                            Lihat Pembatalan
+                                        </button>
+                                    @elseif($rs->status != 'Pending')
+                                        <span class="text-muted">Sudah dikonfirmasi</span>
+                                    @endif
+                                </div>
+                            </td>
                         </tr>
+                        @if ($rs->pengajuanPembatalan)
+                        <!-- Modal Konfirmasi Pembatalan -->
+                        <div class="modal fade" id="konfirmasiPembatalanModal{{ $rs->id }}" tabindex="-1" aria-labelledby="konfirmasiPembatalanModalLabel{{ $rs->id }}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <form action="{{ route('admin.reservasi.konfirmasiPembatalan', $rs->id) }}" method="POST">
+                                        @csrf
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Konfirmasi Pembatalan</h5>
+                                            <button type="button" class="btn ms-auto p-0 border-0 bg-transparent" data-bs-dismiss="modal" aria-label="Close">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                                                    <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M18 6L6 18M6 6l12 12"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p><strong>Alasan Pembatalan:</strong></p>
+                                            <p>{{ $rs->pengajuanPembatalan->alasan }}</p>
+                                            <p>Setujui permintaan pembatalan ini?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button name="konfirmasi" value="tolak" type="submit" class="btn btn-danger">Tolak</button>
+                                            <button name="konfirmasi" value="terima" type="submit" class="btn btn-success">Terima</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        @endif
                     @endforeach
                 @else
                     <tr>
@@ -116,6 +178,8 @@
                 @endif
             </tbody>
         </table>
+
+
     </div>
     <div class="d-flex justify-content-center mt-3 mb-4">
             @if ($reservasi->hasPages())

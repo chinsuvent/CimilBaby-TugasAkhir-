@@ -78,7 +78,7 @@
                         <tr class="text-center">
                             <td class="align-middle">{{ $loop->iteration }}</td>
                             <td class="align-middle">{{ $rs->anak->nama_anak ?? '-' }}</td>
-                            <td class="align-middle">{{ $rs->pengguna->name ?? '-' }}</td>
+                            <td class="align-middle">{{ $rs->anak->orangTua->user->name ?? '-' }}</td>
                             <td class="align-middle">{{ $rs->layanan->jenis_layanan ?? '-' }}</td>
                             <td class="align-middle">{{ \Carbon\Carbon::parse($rs->tgl_masuk)->format('d-m-Y') }}</td>
                             <td class="align-middle">{{ \Carbon\Carbon::parse($rs->tgl_keluar)->format('d-m-Y') }}</td>
@@ -148,9 +148,9 @@
             </div>
         </div>
     </div>
-    
 
-    
+
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         const dataReservasi = @json(array_values($dataReservasiPerBulan));

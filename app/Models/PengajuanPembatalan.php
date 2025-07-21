@@ -9,21 +9,20 @@ class PengajuanPembatalan extends Model
 {
     use HasFactory;
 
-    protected $table = 'pengajuan_pembatalan';
-
     protected $fillable = [
         'reservasis_id',
         'alasan',
         'status',
+        'tanggal_pengajuan',
+        'tanggal_dikonfirmasi',
+        'admin_id',
     ];
 
     public function reservasi()
     {
-        return $this->belongsTo(Reservasi::class);
+        return $this->belongsTo(Reservasi::class, 'reservasis_id');
     }
 
-    public function admin()
-    {
-        return $this->belongsTo(User::class, 'admin_id');
-    }
 }
+
+

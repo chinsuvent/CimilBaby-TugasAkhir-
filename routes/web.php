@@ -11,13 +11,13 @@ use App\Http\Controllers\JadwalLayananController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LaporanReservasiController;
 use App\Http\Controllers\LaporanPenitipanController;
-use App\Http\Controllers\PengajuanPembatalanController;
 use App\Http\Controllers\Pelanggan\DashboardPelangganController;
 use App\Http\Middleware\CekLevelPengguna;
 use App\Http\Controllers\Pelanggan\ProfilController;
 use App\Http\Controllers\Pelanggan\AnakPelangganController;
 use App\Http\Controllers\Pelanggan\ReservasiPelangganController;
 use App\Http\Controllers\Auth\ForgotPasswordWAController;
+
 
 use Illuminate\Support\Facades\Route;
 
@@ -135,13 +135,6 @@ Route::middleware('auth')->group(function () {
 });
 
 
-// Pengajuan oleh user
-Route::post('/pengajuan-pembatalan', [PengajuanPembatalanController::class, 'store'])->name('pengajuan.store');
-
-// Untuk admin
-Route::get('/admin/pengajuan-pembatalan', [PengajuanPembatalanController::class, 'index'])->name('pengajuan.index');
-Route::put('/admin/pengajuan-pembatalan/{id}', [PengajuanPembatalanController::class, 'update'])->name('pengajuan.update');
-
 
 
 
@@ -222,6 +215,7 @@ Route::post('/reservasi/store', [ReservasiPelangganController::class, 'store'])
     ->middleware('auth')
     ->name('reservasi.store');
 
+Route::get('/layanan', [LayananController::class, 'showLayanan'])->middleware('auth')->name('layanan');
 
 
 Route::get('/', [LayananController::class, 'beranda'])->name('beranda');
@@ -253,6 +247,20 @@ Route::get('/riwayat-reservasi', [ReservasiPelangganController::class, 'index'])
     ->name('pelanggan.riwayat_reservasi');
 
 Route::post('/reservasi/store', [ReservasiPelangganController::class, 'store'])->name('reservasi.store');
+
+
+// Pelanggan
+Route::post('/reservasi/{id}/ajukan-pembatalan', [App\Http\Controllers\Pelanggan\ReservasiPelangganController::class, 'ajukanPembatalan'])->name('pelanggan.ajukanPembatalan');
+Route::post('/admin/reservasi/{id}/konfirmasi-pembatalan', [ReservasiController::class, 'konfirmasiPembatalan'])->name('admin.reservasi.konfirmasiPembatalan');
+Route::put('/admin/pembatalan/{id}', [ReservasiController::class, 'konfirmasiPembatalan'])->name('admin.pembatalan.konfirmasi');
+
+
+
+
+
+
+
+
 
 
 
