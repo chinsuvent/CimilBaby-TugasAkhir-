@@ -60,7 +60,7 @@ class ProfilController extends Controller
         $user->is_profile_complete = true;
         $user->save();
 
-        return redirect()->route('pelanggan.profil')->with('success', 'Profil berhasil diperbarui.');
+        return redirect()->route('pelanggan.profil')->with('edited', 'Profil berhasil diperbarui.');
     }
 
 
@@ -84,7 +84,7 @@ class ProfilController extends Controller
         $user->password = Hash::make($request->new_password);
         $user->save();
 
-        return redirect()->route('pelanggan.profil')->with('success', 'Password berhasil diubah.');
+        return redirect()->route('pelanggan.profil')->with('ubah_password', 'Password berhasil diubah.');
     }
 
 }

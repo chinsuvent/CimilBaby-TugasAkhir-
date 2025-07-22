@@ -1,6 +1,68 @@
 @extends('pelanggan.layouts.app')
 
+
+
 @section('contents')
+
+    @push('scripts')
+    <script>
+
+        @if (session('edited'))
+            Swal.fire({
+                title: 'Berhasil',
+                text: 'Profil Berhasil Diubah',
+                icon: 'success'
+            });
+        @endif
+
+
+        @if (session('ubah_password'))
+            Swal.fire({
+                title: 'Sukses!',
+                text: 'Password Berhasil Diubah',
+                confirmButtonColor: '#9672F3',
+            });
+        @endif
+
+        @if (session('cancel'))
+            Swal.fire({
+                title: 'Sukses!',
+                text: 'Reservasi Berhasil Dibatalkan',
+                confirmButtonColor: '#9672F3',
+            });
+        @endif
+
+        @if (session('batal'))
+            Swal.fire({
+                title: 'Sukses!',
+                text: 'Pengajuan Pembatalan Berhasil Dikirim. Silahkan Menunggu Konfirmasi Admin',
+                confirmButtonColor: '#9672F3',
+            });
+        @endif
+
+
+        // Harus tetap dimuat selalu
+        function hapus(button) {
+            Swal.fire({
+                title: 'Apakah Anda Yakin Ingin Menghapus Data Ini?',
+                text: 'Data Akan Benar Benar Terhapus!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Hapus',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    button.closest('form').submit();
+                }
+            });
+
+
+        }
+    </script>
+
+    @endpush
+
+
 <div class="container mt-4">
     <h1 class="m-0 text-title text-md-left text-center text-md-h4 mb-3">Profil Pelanggan</h1>
     <form>

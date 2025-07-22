@@ -1,8 +1,5 @@
 @php
-    $totalAnak = $laporan->count();
-    $totalBiaya = $laporan->sum(function($item) {
-        return $item->layanan->biaya;
-    });
+    $totalReservasi = $laporan->count();
 @endphp
 
 <!DOCTYPE html>
@@ -19,6 +16,7 @@
 </head>
 <body>
     <h2>Laporan Reservasi</h2>
+
     <table>
         <thead>
             <tr>
@@ -28,6 +26,7 @@
                 <th>Jenis Kelamin</th>
                 <th>Layanan</th>
                 <th>Tanggal Masuk</th>
+                <th>Status</th>
             </tr>
         </thead>
         <tbody>
@@ -39,20 +38,16 @@
                     <td>{{ $item->anak->jenis_kelamin ?? '-' }}</td>
                     <td>{{ $item->layanan->jenis_layanan ?? '-' }}</td>
                     <td>{{ \Carbon\Carbon::parse($item->tgl_masuk)->format('d-m-Y') }}</td>
+                    <td>{{ ucfirst($item->status ?? '-') }}</td>
                 </tr>
             @endforeach
         </tbody>
         <tfoot>
             <tr>
-                <th colspan="5" style="text-align: right;">Total Anak</th>
-                <th>{{ $totalAnak }}</th>
-            </tr>
-            <tr>
-                <th colspan="5" style="text-align: right;">Total Biaya</th>
-                <th> Rp {{ number_format($totalBiaya, 0, ',', '.') }}</th>
+                <th colspan="6" style="text-align: right;">Total Reservasi</th>
+                <th>{{ $totalReservasi }}</th>
             </tr>
         </tfoot>
-
     </table>
 </body>
 </html>

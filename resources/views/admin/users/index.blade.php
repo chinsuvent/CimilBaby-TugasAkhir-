@@ -83,7 +83,7 @@
                                     </svg>
                                 </a> --}}
 
-                                <form action="{{ route('layanans.destroy', $us->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                                <form action="{{ route('users.destroy', $us->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="button" onclick="hapus(this)" class="btn btn-danger d-flex align-items-center justify-content-center">

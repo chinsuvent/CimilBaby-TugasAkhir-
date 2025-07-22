@@ -59,7 +59,7 @@ class LaporanPenitipanController extends Controller
         $query = Reservasi::query();
 
         // Tampilkan hanya yang diterima
-        $query->where('status_reservasi', 'diterima');
+        $query->where('status', 'diterima');
 
         // Filter tanggal
         if ($request->filled('tgl_awal') && $request->filled('tgl_akhir')) {
@@ -94,7 +94,7 @@ class LaporanPenitipanController extends Controller
 
         $laporan = $query->orderBy('tgl_masuk', 'desc')->get();
 
-        $pdf = Pdf::loadView('laporans.pdf', compact('laporan'))->setPaper('A4', 'landscape');
-        return $pdf->download('laporan_reservasi.pdf');
+        $pdf = Pdf::loadView('admin.laporans_penitipan.pdf', compact('laporan'))->setPaper('A4', 'landscape');
+        return $pdf->download('admin.laporans_penitipan.pdf');
     }
 }

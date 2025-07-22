@@ -231,6 +231,13 @@ Route::get('/verifikasi-token-cari', function (Request $request) {
 });
 
 Route::get('/verifikasi/{token}', [App\Http\Controllers\Auth\ResetPasswordWAController::class, 'verifyForm']);
+use Illuminate\Support\Facades\Auth;
+
+Route::get('/ubah-password', function () {
+    $user = Auth::user();
+    return view('auth.reset-password-wa', compact('user'));
+});
+
 Route::post('/ubah-password', [App\Http\Controllers\Auth\ResetPasswordWAController::class, 'updatePassword']);
 
 

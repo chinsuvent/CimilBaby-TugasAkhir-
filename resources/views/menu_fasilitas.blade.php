@@ -19,16 +19,16 @@
           <div class="col-lg-6 mb-4 mb-lg-0">
             <h1 class="hero-title mb-4 text-white">Jasa Penitipan Anak<br>Ci'mil Baby</h1>
 
-            <p class="description mb-4 text-white text-center">Ci'mil Baby adalah salah satu tempat penitipan anak di Kota Pontianak yang berdiri sejak tahun 
-                2023 dan berlokasi di Jalan Komodor Yos Sudarso, Gang Kenari 2 No. 23B. 
-                Menerima penitipan anak untuk anak dengan usia 3 bulan hingga 5 tahun, Ci'mil Baby menghadirkan 
-                lingkungan yang aman, nyaman, dan penuh kasih sayang bagi buah hati Anda. 
+            <p class="description mb-4 text-white text-center">Ci'mil Baby adalah salah satu tempat penitipan anak di Kota Pontianak yang berdiri sejak tahun
+                2023 dan berlokasi di Jalan Komodor Yos Sudarso, Gang Kenari 2 No. 23B.
+                Menerima penitipan anak untuk anak dengan usia 3 bulan hingga 5 tahun, Ci'mil Baby menghadirkan
+                lingkungan yang aman, nyaman, dan penuh kasih sayang bagi buah hati Anda.
                 Dengan jam operasional setiap Senin hingga Jumat pukul 07.00 hingga 17.00.
             </p>
           </div>
         </div>
     </div>
-    
+
     <div class="container" data-aos="fade-up" data-aos-delay="100">
         <div class="row align-items-center" style= "margin-top: rem;">
             <div class="col-lg-6 mb-4 mb-lg-0">
@@ -36,9 +36,7 @@
 
                 <p class="hero-description mb-4 text-white">Ci'mil Baby, tempat aman dan nyaman untuk buah hati Anda. Kami hadir dengan layanan penitipan anak yang penuh kasih sayang dan perhatian.</p>
 
-                <div class="cta-wrapper">
-                <a href="{{ route('register') }}" class="btn btn-daftar text-white">Daftar Untuk Reservasi</a>
-                </div>
+            
             </div>
 
             <div class="col-lg-6">
