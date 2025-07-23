@@ -21,14 +21,14 @@
   ];
   $buttonClasses = ['btn-bulanan', 'btn-harian', 'btn-khusus'];
   $deskripsiItem = ['<ul class="list-unstyled">
-                        <li class="text-white my-2"><i class="bi bi-check-circle-fill text-white me-2"></i>Layanan penitipan bulanan</li>
+                        <li class="text-white my-2"><i class="bi bi-check-circle-fill text-white me-2"></i>Layanan penitipan harian</li>
                         <li class="text-white my-2"><i class="bi bi-check-circle-fill text-white me-2"></i>Penitipan anak selama 9 jam</li>
                         <li class="text-white my-2"><i class="bi bi-check-circle-fill text-white me-2"></i>Makan Siang Sehat</li>
                         <li class="text-white my-2"><i class="bi bi-check-circle-fill text-white me-2"></i>Terdapat Ruang Bermain</li>
                         <li class="text-white my-2"><i class="bi bi-check-circle-fill text-white me-2"></i>Terdapat Ruang Tidur</li>
                     </ul>',
                 '<ul class="list-unstyled">
-                        <li class="text-white my-2"><i class="bi bi-check-circle-fill text-white me-2"></i>Layanan penitipan harian</li>
+                        <li class="text-white my-2"><i class="bi bi-check-circle-fill text-white me-2"></i>Layanan penitipan bulanan</li>
                         <li class="text-white my-2"><i class="bi bi-check-circle-fill text-white me-2"></i>Penitipan anak selama 9 jam</li>
                         <li class="text-white my-2"><i class="bi bi-check-circle-fill text-white me-2"></i>Makan Siang Sehat</li>
                         <li class="text-white my-2"><i class="bi bi-check-circle-fill text-white me-2"></i>Terdapat Ruang Bermain</li>

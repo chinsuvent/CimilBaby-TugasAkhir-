@@ -84,7 +84,7 @@ class ForgotPasswordWAController extends Controller
 
         Session::forget(['wa_reset_token', 'wa_reset_no_hp', 'wa_reset_user_id']);
 
-        return redirect()->route('login')->with('success', 'Password berhasil direset. Silakan login.');
+        return redirect()->route('login')->with('ubahPassword', 'Password berhasil direset. Silakan login.');
     }
 
 

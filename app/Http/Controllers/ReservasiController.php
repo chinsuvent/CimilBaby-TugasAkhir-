@@ -139,7 +139,7 @@ class ReservasiController extends Controller
         $noHp = $reservasi->anak?->orangTua?->no_hp;
 
         if ($noHp) {
-            $message = "Reservasi untuk *$namaAnak* telah *$status*. Terima kasih telah menggunakan layanan kami.";
+            $message = "Reservasi Anda telah *$status*. Terima kasih telah menggunakan layanan kami.";
             $this->kirimWhatsapp($noHp, $message);
         }
 
@@ -167,7 +167,7 @@ class ReservasiController extends Controller
             $pengajuan->delete();
 
             if ($noHp) {
-                $message = "Permohonan pembatalan reservasi untuk *$namaAnak* telah *DITERIMA*. Reservasi dibatalkan.";
+                $message = "Permohonan pembatalan reservasi Anda telah *DITERIMA*. Reservasi dibatalkan.";
                 $this->kirimWhatsapp($noHp, $message);
             }
 
@@ -178,7 +178,7 @@ class ReservasiController extends Controller
             $pengajuan->delete();
 
             if ($noHp) {
-                $message = "Permohonan pembatalan reservasi untuk *$namaAnak* *DITOLAK*. Silakan hubungi admin untuk informasi lebih lanjut.";
+                $message = "Permohonan pembatalan reservasi untuk Anda *DITOLAK*. Silakan hubungi admin untuk informasi lebih lanjut.";
                 $this->kirimWhatsapp($noHp, $message);
             }
 

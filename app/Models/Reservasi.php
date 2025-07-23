@@ -54,6 +54,11 @@ class Reservasi extends Model
         return $this->hasOne(PengajuanPembatalan::class, 'reservasis_id');
     }
 
+    public function checkinCheckout()
+    {
+        return $this->hasOne(CheckinCheckout::class, 'reservasis_id');
+    }
+
 
 //     public function hitungDurasi()
 // {

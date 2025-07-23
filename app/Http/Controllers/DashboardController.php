@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Reservasi;
 use App\Models\Anak;
+use App\Models\CheckinCheckout;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -22,10 +23,15 @@ class DashboardController extends Controller
     $totalReservasiPending = Reservasi::where('status', 'Pending')->count();
 
     // Hitung jumlah anak yang reservasi hari ini
-    $jumlahAnakHariIni = Reservasi::whereDate('tgl_masuk', today())
-        ->where('status', 'Diterima')
-        ->distinct('anaks_id')
-        ->count('anaks_id');
+    // Jumlah anak yang sudah check-in dan belum check-out hari ini
+    $jumlahAnakHariIni = CheckinCheckout::whereNotNull('waktu_checkin')
+        ->whereNull('waktu_checkout')
+        ->count();
+
+    $today = now()->toDateString();
+
+    $totalCheckinHariIni = CheckinCheckout::whereDate('waktu_checkin', $today)->count();
+    $totalCheckoutHariIni = CheckinCheckout::whereDate('waktu_checkout', $today)->count();
 
 
     // Jumlah anak laki-laki
@@ -65,7 +71,9 @@ class DashboardController extends Controller
         'reservasi',
         'dataReservasiPerBulan',
         'jumlahLaki',
-        'jumlahPerempuan' 
+        'jumlahPerempuan',
+        'totalCheckinHariIni',
+        'totalCheckoutHariIni'
     ));
 }
 

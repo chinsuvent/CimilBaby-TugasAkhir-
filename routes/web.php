@@ -17,6 +17,7 @@ use App\Http\Controllers\Pelanggan\ProfilController;
 use App\Http\Controllers\Pelanggan\AnakPelangganController;
 use App\Http\Controllers\Pelanggan\ReservasiPelangganController;
 use App\Http\Controllers\Auth\ForgotPasswordWAController;
+use App\Http\Controllers\CheckinCheckoutController;
 
 
 use Illuminate\Support\Facades\Route;
@@ -52,6 +53,11 @@ Route::controller(AuthController::class)->group(function () {
     Route::get('logout','logout')->middleware('auth')->name('logout');
     Route::post('/logout', [AuthController::class, 'destroy'])->name('logout');
 });
+
+Route::get('/admin/checkin-checkout', [CheckinCheckoutController::class, 'index'])->name('checkin_checkout.index');
+Route::post('/checkin/{id}', [CheckinCheckoutController::class, 'checkIn'])->name('checkin');
+Route::post('/checkout/{id}', [CheckinCheckoutController::class, 'checkOut'])->name('checkout');
+
 
 
 Route::middleware('auth')->group(function () {

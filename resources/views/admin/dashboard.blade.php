@@ -53,10 +53,14 @@
             </div>
         </div>
     </div>
+
+
+
+
 </div>
 
     <div class="text-center mt-4 mb-4" style="color: #7D65EC; font-weight: 700;">
-        <h3>Reservasi Terbaru</h3>
+        <h3>Reservasi Belum Dikonfirmasi</h3>
     </div>
     <div class="table-responsive mb-4">
         <table class="table table-hover table-bordered">

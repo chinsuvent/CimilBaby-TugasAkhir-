@@ -53,21 +53,17 @@ class ReservasiPelangganController extends Controller
 
         // Kirim WhatsApp ke admin
         $user = Auth::user();
-        $namaOrtu = $user->name ?? 'Orang Tua';
-        $namaAnak = $reservasi->anak->nama_anak ?? 'Anak';
         $layanan = $reservasi->layanan->jenis_layanan ?? 'Layanan';
         $tglMasuk = $reservasi->tgl_masuk ?? '-';
         $tglKeluar = $reservasi->tgl_keluar ?? '-';
         $alasan = $request->alasan;
 
         $pesan = "*Permohonan Pembatalan Masuk!*\n\n"
-            . "👤 Orang Tua: *{$namaOrtu}*\n"
-            . "👶 Anak: *{$namaAnak}*\n"
             . "🧾 Layanan: *{$layanan}*\n"
             . "📅 Masuk: {$tglMasuk}\n"
             . "📅 Keluar: {$tglKeluar}\n"
             . "❗ *Alasan*: _{$alasan}_\n\n"
-            . "Mohon segera dikonfirmasi di dashboard admin.";
+            . "Mohon segera dikonfirmasi!";
 
         $this->kirimWhatsappAdmin($pesan);
 
@@ -102,7 +98,7 @@ public function show($id)
         $orangTua = Auth::user()->orangTua;
         $anakIds = $orangTua->anaks->pluck('id');
 
-        $reservasi = Reservasi::with(['anak', 'layanan']) // pastikan relasi diload
+        $reservasi = Reservasi::with(['anak', 'layanan'])
             ->whereIn('anaks_id', $anakIds)
             ->findOrFail($id);
 
@@ -113,13 +109,9 @@ public function show($id)
         $reservasi->update(['status' => 'Dibatalkan']);
 
         // Kirim WhatsApp ke admin
-        $user = Auth::user();
-        $namaAnak = $reservasi->anaks->nama ?? 'Anak';
         $layananNama = $reservasi->layanan->jenis_layanan ?? 'Layanan Tidak Diketahui';
 
         $pesan = "*Reservasi Dibatalkan!*\n\n"
-            . "Nama Orang Tua: {$user->name}\n"
-            . "Nama Anak: {$namaAnak}\n"
             . "Layanan: {$layananNama}\n"
             . "Tanggal Masuk: {$reservasi->tgl_masuk}\n"
             . "Tanggal Keluar: {$reservasi->tgl_keluar}\n"
@@ -177,7 +169,6 @@ public function show($id)
         $layananNama = $reservasi->layanan->jenis_layanan ?? 'Tidak diketahui';
 
         $pesan = "*Reservasi Diperbarui!*\n\n"
-            . "Nama: {$user->name}\n"
             . "Layanan: {$layananNama}\n"
             . "Tanggal Masuk: {$reservasi->tgl_masuk}\n"
             . "Tanggal Keluar: {$reservasi->tgl_keluar}\n"
@@ -244,7 +235,6 @@ public function show($id)
         ]);
 
         $pesan = "*Reservasi Baru Masuk!*\n\n"
-           . "Nama: {$pelanggan->name}\n"
            . "Layanan: {$validated['jenis_layanan']}\n"
            . "Tanggal Masuk: {$validated['tgl_masuk']}\n"
            . "Tanggal Keluar: {$validated['tgl_keluar']}\n"

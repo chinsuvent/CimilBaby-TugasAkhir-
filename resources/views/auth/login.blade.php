@@ -150,6 +150,18 @@
     </script>
     @endif
 
+    @if (session('ubahPassword'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Password Berhasil Diubah!',
+            text: '{{ session('success') }}',
+            confirmButtonColor: '#8B7FB8',
+            confirmButtonText: 'OK'
+        });
+    </script>
+    @endif
+
     @if (session('register'))
         <script>
             Swal.fire({
