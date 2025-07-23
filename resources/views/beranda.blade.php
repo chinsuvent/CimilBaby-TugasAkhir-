@@ -35,7 +35,7 @@
                         <li class="text-white my-2"><i class="bi bi-check-circle-fill text-white me-2"></i>Terdapat Ruang Tidur</li>
                     </ul>',
                     '<ul class="list-unstyled">
-                        <li class="text-white my-2"><i class="bi bi-check-circle-fill text-white me-2"></i>Layanan penitipan khusus</li>
+                        <li class="text-white my-2"><i class="bi bi-check-circle-fill text-white me-2"></i>Layanan penitipan hari libur</li>
                         <li class="text-white my-2"><i class="bi bi-check-circle-fill text-white me-2"></i>Penitipan anak selama 9 jam</li>
                         <li class="text-white my-2"><i class="bi bi-check-circle-fill text-white me-2"></i>Makan Siang Sehat</li>
                         <li class="text-white my-2"><i class="bi bi-check-circle-fill text-white me-2"></i>Terdapat Ruang Bermain</li>
@@ -65,7 +65,7 @@
             <p class="hero-description mb-4 text-white">Ci'mil Baby, tempat aman dan nyaman untuk buah hati Anda. Kami hadir dengan layanan penitipan anak yang penuh kasih sayang dan perhatian.</p>
 
             <div class="cta-wrapper">
-              <a href="{{ route('register') }}" class="btn btn-daftar text-white">Daftar Untuk Reservasi</a>
+              <a href="{{ route('register') }}" class="btn btn-daftar text-white">Buat Akun Untuk Reservasi</a>
             </div>
           </div>
 
@@ -254,7 +254,7 @@
                   <i class="bi bi-fork-knife"></i>
                 </div>
                 <div class="service-content">
-                  <h3>Makanan Sehat & Gratis</h3>
+                  <h3>Makanan Sehat</h3>
                   <p>Tersedia Makan Siang Yang Sehat Di Setiap Layanan</p>
                 </div>
               </div>
@@ -286,7 +286,7 @@
                 </div>
                 <div class="service-content">
                   <h3>Fasilitas Yang Bersih</h3>
-                  <p>Kebersihan fasilitas di Cimil Baby selalu dijaga demi kenyamanan dan kesehatan anak</p>
+                  <p>Kebersihan fasilitas di Ci'mil Baby selalu dijaga demi kenyamanan dan kesehatan anak</p>
 
                 </div>
               </div>

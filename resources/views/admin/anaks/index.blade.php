@@ -73,7 +73,7 @@
                             <td class="align-middle">{{ $loop->iteration + ($anak->currentPage()-1)*$anak->perPage() }}</td>
                             <td class="align-middle">{{ $an->nama_anak }}</td>
                             <td class="align-middle">{{ $an->tempat_lahir }}</td>
-                            <td class="align-middle">{{ $an->tanggal_lahir }}</td>
+                            <td class="align-middle">{{ \Carbon\Carbon::parse($an->tanggal_lahir)->format('d F Y') }}</td>
                             <td class="align-middle">{{ $an->jenis_kelamin }}</td>
                             <td class="align-middle">{{ $an->hitungUsia() }}</td>
                             <td class="align-middle">{{ $an->orangTua->user->name ?? '-' }}</td>

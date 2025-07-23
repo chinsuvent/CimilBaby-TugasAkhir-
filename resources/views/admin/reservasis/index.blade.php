@@ -108,7 +108,9 @@
                             <td class="align-middle">{{ \Carbon\Carbon::parse($rs->tgl_masuk)->format('d-m-Y') }}</td>
                             <td class="align-middle">{{ \Carbon\Carbon::parse($rs->tgl_keluar)->format('d-m-Y') }}</td>
                             {{-- <td class="align-middle">{{ $rs->hitungDurasi() }}</td> --}}
-                            <td class="align-middle">{{ $rs->layanan->biaya ?? '-' }}</td>
+                            <td class="align-middle">
+                                {{ $rs->layanan->biaya ? 'Rp. ' . number_format($rs->layanan->biaya, 0, ',', '.') : '-' }}
+                            </td>
                             <td class="align-middle">{{ $rs->metode_pembayaran }}</td>
                             <td class="align-middle">{{ $rs->status }}</td>
                             <td class="align-middle">

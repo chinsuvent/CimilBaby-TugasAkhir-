@@ -52,7 +52,7 @@
         // Function untuk menampilkan detail layanan
         function lihatDetail(id, jenisLayanan, biaya, fasilitas) {
             let fasilitasHtml = '';
-            
+
             if (fasilitas && fasilitas.length > 0) {
                 fasilitasHtml = '<div class="row mt-3">';
                 fasilitas.forEach(function(item) {
@@ -79,11 +79,11 @@
                         <div class="mb-3">
                             <h5 class="text-primary">${jenisLayanan}</h5>
                         </div>
-                        
+
                         <div class="row mb-3">
                             <div class="col-6">
                                 <strong>Biaya:</strong><br>
-                                <span class="badge bg-success text-white">Rp ${new Intl.NumberFormat('id-ID').format(biaya)}</span>
+                                <span class="badge bg-success text-white">Rp. ${new Intl.NumberFormat('id-ID').format(biaya)}</span>
                             </div>
                         </div>
 
@@ -121,18 +121,18 @@
                             <td class="align-middle">{{ $loop->iteration + ($layanan->currentPage()-1)*$layanan->perPage() }}</td>
                             <td class="align-middle">{{ $la->jenis_layanan }}</td>
                             {{-- <td class="align-middle">{{ $la->hitungDurasi() }}</td> --}}
-                            <td class="align-middle">Rp {{ number_format($la->biaya, 0, ',', '.') }}</td>
+                            <td class="align-middle">Rp. {{ number_format($la->biaya, 0, ',', '.') }}</td>
                             <td class="align-middle">
                                 <div class="d-flex justify-content-center align-items-center gap-2" style="gap: 0.5rem;">
                                     <!-- Tombol Lihat Detail -->
-                                    <button type="button" 
+                                    <button type="button"
                                         onclick='lihatDetail(
-                                            {{ $la->id }}, 
-                                            @json($la->jenis_layanan), 
-                                            {{ $la->biaya }}, 
+                                            {{ $la->id }},
+                                            @json($la->jenis_layanan),
+                                            {{ $la->biaya }},
                                             @json($la->fasilitas)
-                                        )' 
-                                        class="btn btn-info d-flex align-items-center justify-content-center" 
+                                        )'
+                                        class="btn btn-info d-flex align-items-center justify-content-center"
                                         title="Lihat Detail"
                                         style="margin-right: 0.5rem;"
                                     >
