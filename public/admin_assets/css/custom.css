@@ -657,3 +657,14 @@ hr {
         border-bottom-right-radius: 0;
     }
 }
+
+/* Tambahan untuk sidebar desktop saat toggled */
+@media (min-width: 769px) {
+  .sidebar.toggled {
+    width: 80px !important;
+  }
+
+  .sidebar.toggled .nav-item .nav-link span {
+    display: none !important;
+  }
+}

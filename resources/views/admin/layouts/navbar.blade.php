@@ -14,7 +14,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                                <span class="mr-2 text-gray-600 small">
                                     {{ auth()->user()->name }}
                                     <br>
                                     <small>{{ auth()->user()->level }}</small>
@@ -33,14 +33,31 @@
   function toggleSidebar() {
     const sidebar = document.getElementById("accordionSidebar");
     const backdrop = document.getElementById("sidebar-backdrop");
-    
+
     sidebar.classList.toggle("show");
     backdrop.classList.toggle("show");
-    
+
     if (sidebar.classList.contains("show")) {
       document.body.classList.add("sidebar-open");
     } else {
       document.body.classList.remove("sidebar-open");
     }
   }
+
+  // ✅ Perbaiki agar kembali ke sidebar desktop penuh (bukan mini/toggled)
+  window.addEventListener('resize', function () {
+    const sidebar = document.getElementById("accordionSidebar");
+    const backdrop = document.getElementById("sidebar-backdrop");
+
+    if (window.innerWidth > 768) {
+      sidebar.classList.remove("show"); // Tutup mobile sidebar
+      backdrop.classList.remove("show");
+      document.body.classList.remove("sidebar-open");
+
+      // ❌ Jangan pakai toggled! Justru HAPUS agar sidebar normal penuh
+      sidebar.classList.remove("toggled");
+    }
+  });
 </script>
+
+
