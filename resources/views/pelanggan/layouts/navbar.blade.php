@@ -14,10 +14,11 @@
                         <li class="nav-item dropdown no-arrow">
     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <span class="me-2 d-none d-lg-inline text-gray-600 small">
-            {{ auth()->user()->name }}<br>
-            <small>{{ auth()->user()->level }}</small>
-        </span>
+        <span class="mr-2 text-gray-600 small">
+                                    {{ auth()->user()->name }}
+                                    <br>
+                                    <small>{{ auth()->user()->level }}</small>
+                                </span>
         <img class="img-profile rounded-circle"
             src="https://startbootstrap.github.io/startbootstrap-sb-admin-2/img/undraw_profile.svg"
             style="width: 32px; height: 32px;">
@@ -56,4 +57,19 @@
       document.body.classList.remove("sidebar-open");
     }
   }
+
+  // ✅ Perbaiki agar kembali ke sidebar desktop penuh (bukan mini/toggled)
+  window.addEventListener('resize', function () {
+    const sidebar = document.getElementById("accordionSidebar");
+    const backdrop = document.getElementById("sidebar-backdrop");
+
+    if (window.innerWidth > 768) {
+      sidebar.classList.remove("show"); // Tutup mobile sidebar
+      backdrop.classList.remove("show");
+      document.body.classList.remove("sidebar-open");
+
+      // ❌ Jangan pakai toggled! Justru HAPUS agar sidebar normal penuh
+      sidebar.classList.remove("toggled");
+    }
+  });
 </script>

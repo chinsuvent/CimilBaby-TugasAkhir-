@@ -24,7 +24,7 @@
     <link href="{{ asset('admin_assets/css/sb-admin-2.min.css') }}" rel="stylesheet">
 
     <link href="{{ asset('admin_assets/css/custom.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="sweetalert2.min.css">
+    
 
     {{-- <script>
         setInterval(function() {
@@ -97,10 +97,7 @@
     <!-- Page level plugins -->
     <script src="{{ asset('admin_assets/vendor/chart.js/Chart.min.js') }}"></script>
 
-    <!-- Page level custom scripts -->
-    <script src="{{ asset('admin_assets/js/demo/chart-area-demo.js') }}"></script>
-    <script src="{{ asset('admin_assets/js/demo/chart-pie-demo.js') }}"></script>
-
+    
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 

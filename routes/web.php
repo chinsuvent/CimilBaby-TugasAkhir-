@@ -18,6 +18,7 @@ use App\Http\Controllers\Pelanggan\AnakPelangganController;
 use App\Http\Controllers\Pelanggan\ReservasiPelangganController;
 use App\Http\Controllers\Auth\ForgotPasswordWAController;
 use App\Http\Controllers\CheckinCheckoutController;
+use App\Http\Controllers\SettingController;
 
 
 use Illuminate\Support\Facades\Route;
@@ -266,6 +267,7 @@ Route::post('/reservasi/store', [ReservasiPelangganController::class, 'store'])-
 Route::post('/reservasi/{id}/ajukan-pembatalan', [App\Http\Controllers\Pelanggan\ReservasiPelangganController::class, 'ajukanPembatalan'])->name('pelanggan.ajukanPembatalan');
 Route::post('/admin/reservasi/{id}/konfirmasi-pembatalan', [ReservasiController::class, 'konfirmasiPembatalan'])->name('admin.reservasi.konfirmasiPembatalan');
 Route::put('/admin/pembatalan/{id}', [ReservasiController::class, 'konfirmasiPembatalan'])->name('admin.pembatalan.konfirmasi');
+
 
 
 
