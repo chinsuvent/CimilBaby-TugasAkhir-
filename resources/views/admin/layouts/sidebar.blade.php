@@ -83,8 +83,9 @@
             <li class="nav-item">
                 <a class="nav-link d-flex align-items-center" href="{{ route('checkin_checkout.index') }}">
                     <span class="mr-2">Kehadiran Anak</span>
+                    <!-- Icon: User Check (Kehadiran Anak) -->
                     <svg class="ml-auto" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
-                        <path fill="#fff" d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m1 18h2v-6H7zm4 0h2v-8h-2zm4 0h2v-4h-2z" />
+                        <path fill="#fff" d="M12 4a4 4 0 1 1 0 8a4 4 0 0 1 0-8m0 10c-3.31 0-6 1.34-6 3v3h12v-3c0-1.66-2.69-3-6-3m7.71-1.29a1 1 0 0 0-1.42 0l-2.29 2.3l-.71-.7a1 1 0 1 0-1.42 1.41l1.41 1.41a1 1 0 0 0 1.42 0l3-3a1 1 0 0 0 0-1.42"/>
                     </svg>
                 </a>
             </li>
@@ -92,8 +93,9 @@
             <li class="nav-item">
                 <a class="nav-link d-flex align-items-center" href="{{ route('laporans_reservasi.index') }}">
                     <span class="mr-2">Laporan Reservasi</span>
+                    <!-- Icon: File Chart (Laporan Reservasi) -->
                     <svg class="ml-auto" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
-                        <path fill="#fff" d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m1 18h2v-6H7zm4 0h2v-8h-2zm4 0h2v-4h-2z" />
+                        <path fill="#fff" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zm0 2l6 6h-6zm-4 10v4h2v-4zm4-2v6h2v-6zm-8 4v2h2v-2z"/>
                     </svg>
                 </a>
             </li>
@@ -101,8 +103,9 @@
             <li class="nav-item">
                 <a class="nav-link d-flex align-items-center" href="{{ route('laporans_penitipan.index') }}">
                     <span class="mr-2">Laporan Penitipan</span>
+                    <!-- Icon: Clipboard List (Laporan Penitipan) -->
                     <svg class="ml-auto" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
-                        <path fill="#fff" d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m1 18h2v-6H7zm4 0h2v-8h-2zm4 0h2v-4h-2z" />
+                        <path fill="#fff" d="M19 3h-4.18C14.4 1.84 13.3 1 12 1s-2.4.84-2.82 2H5a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2m-7 0a1 1 0 0 1 2 0zm8 18H5V5h2v2h10V5h2zm-9-7h2v2h-2zm0-4h2v2h-2zm4 4h2v2h-2zm0-4h2v2h-2z"/>
                     </svg>
                 </a>
             </li>
@@ -110,13 +113,12 @@
             <li class="nav-item">
                 <a class="nav-link d-flex align-items-center" href="{{ route('admin.settings.index') }}">
                     <span class="mr-2">Settings</span>
+                    <!-- Icon: Gear (Settings) -->
                     <svg class="ml-auto" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
-                        <path fill="#fff" d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m1 18h2v-6H7zm4 0h2v-8h-2zm4 0h2v-4h-2z" />
+                        <path fill="#fff" d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.06-.94l2.03-1.58a.5.5 0 0 0 .12-.65l-1.92-3.32a.5.5 0 0 0-.61-.22l-2.39.96a7.03 7.03 0 0 0-1.62-.94l-.36-2.53A.5.5 0 0 0 13 2h-3a.5.5 0 0 0-.5.42l-.36 2.53c-.59.23-1.14.54-1.62.94l-2.39-.96a.5.5 0 0 0-.61.22l-1.92 3.32a.5.5 0 0 0 .12.65l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58a.5.5 0 0 0-.12.65l1.92 3.32c.14.24.44.33.68.22l2.39-.96c.48.4 1.03.71 1.62.94l.36 2.53c.05.27.27.46.5.46h3c.23 0 .45-.19.5-.46l.36-2.53c.59-.23 1.14-.54 1.62-.94l2.39.96c.24.11.54.02.68-.22l1.92-3.32a.5.5 0 0 0-.12-.65zm-7.14 2.56a3 3 0 1 1 0-6a3 3 0 0 1 0 6z"/>
                     </svg>
                 </a>
-            </li>
-
-            <li class="nav-item">
+            </li>  <li class="nav-item">
                 <a class="nav-link d-flex align-items-center" href="{{ route('logout') }}" onclick="confirmLogout(event)">
                     <span class="mr-2">Logout</span>
                     <svg class="ml-auto" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">

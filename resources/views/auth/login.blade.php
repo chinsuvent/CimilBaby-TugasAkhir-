@@ -174,6 +174,17 @@
         </script>
     @endif
 
+    @if (session('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Login Gagal, Password atau Username Salah',
+                text: '{{ session('error') }}',
+                confirmButtonColor: '#8B7FB8',
+                confirmButtonText: 'OK'
+            });
+        </script>
+    @endif
 </body>
 
 </html>

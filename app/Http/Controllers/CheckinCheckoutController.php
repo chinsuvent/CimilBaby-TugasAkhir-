@@ -10,17 +10,27 @@ use Carbon\Carbon;
 class CheckinCheckoutController extends Controller
 {
     public function index()
-    {
-        $today = Carbon::today();
+{
+    $today = Carbon::today();
 
-        // Ambil semua reservasi hari ini
-        $reservasis = Reservasi::whereDate('tgl_masuk', $today)->with(['anak', 'layanan'])->get();
+    // Ambil semua checkin yang belum checkout
+    $checkinsBelumCheckout = CheckinCheckout::whereNull('waktu_checkout')->pluck('reservasis_id')->toArray();
 
-        // Ambil data checkin yang sudah dilakukan hari ini
-        $checkinsToday = CheckinCheckout::whereDate('created_at', $today)->get()->keyBy('reservasis_id');
+    // Ambil semua reservasi:
+    // - yang tgl_masuk-nya hari ini, ATAU
+    // - yang pernah check-in tapi belum check-out
+    $today = Carbon::today();
+    $reservasis = Reservasi::whereDate('tgl_masuk', '<=', $today)
+    ->whereDate('tgl_keluar', '>=', $today)
+    ->with(['anak', 'layanan', 'checkinCheckout'])
+    ->get();
 
-        return view('admin.checkin_checkout.index', compact('reservasis', 'checkinsToday'));
-    }
+    // Ambil semua checkin hari ini dan sebelumnya
+    $checkinsToday = CheckinCheckout::whereIn('reservasis_id', $reservasis->pluck('id'))->get()->keyBy('reservasis_id');
+
+    return view('admin.checkin_checkout.index', compact('reservasis', 'checkinsToday'));
+}
+
 
     public function checkin($id)
     {
@@ -38,9 +48,11 @@ class CheckinCheckoutController extends Controller
 
     public function checkout($id)
     {
-        $check = CheckinCheckout::where('reservasis_id', $id)->whereDate('created_at', Carbon::today())->first();
+        $check = CheckinCheckout::where('reservasis_id', $id)
+            ->whereNull('waktu_checkout') // cukup pastikan belum checkout
+            ->first();
 
-        if ($check && !$check->waktu_checkout) {
+        if ($check) {
             $check->update([
                 'waktu_checkout' => now()
             ]);
@@ -48,4 +60,5 @@ class CheckinCheckoutController extends Controller
 
         return back()->with('success', 'Check-out berhasil!');
     }
+
 }

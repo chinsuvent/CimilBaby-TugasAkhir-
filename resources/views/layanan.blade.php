@@ -122,10 +122,10 @@
                     </div>
                     <div class="row g-2 mb-3">
                         <div class="col">
-                        <input type="date" name="tgl_masuk" class="form-control rounded-3" placeholder="Tanggal Masuk" required>
+                            <input type="date" name="tgl_masuk" id="tgl_masuk" class="form-control rounded-3" placeholder="Tanggal Masuk" required>
                         </div>
                         <div class="col">
-                        <input type="date" name="tgl_keluar" class="form-control rounded-3" placeholder="Tanggal Keluar" required>
+                            <input type="date" name="tgl_keluar" id="tgl_keluar" class="form-control rounded-3" placeholder="Tanggal Keluar" required>
                         </div>
                     </div>
                     <div class="mb-3">
@@ -150,4 +150,121 @@
             </div>
         </div>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let selectedLayanan = "";
+
+        // === Bagian 1: Isi layanan dan biaya ===
+        document.querySelectorAll('.btn-reservasi').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                const layanan = btn.getAttribute('data-layanan');
+                const biaya = btn.getAttribute('data-biaya');
+                selectedLayanan = layanan?.toLowerCase() ?? '';
+
+                document.getElementById('jenisLayananInput').value = layanan ?? '';
+                document.getElementById('biayaInput').value = biaya ?? '';
+            });
+        });
+
+        const tglMasukInput = document.querySelector('input[name="tgl_masuk"]');
+        const tglKeluarInput = document.querySelector('input[name="tgl_keluar"]');
+
+        // Ambil data tanggal merah dari API
+        async function getTanggalMerah(year) {
+            try {
+                const response = await fetch(`https://api-harilibur.vercel.app/api?year=${year}`);
+                return response.ok ? await response.json() : [];
+            } catch (err) {
+                console.error("Gagal memuat tanggal merah:", err);
+                return [];
+            }
+        }
+
+        function isTanggalMerah(dateStr, liburList) {
+            return liburList.some(item => item.holiday_date === dateStr);
+        }
+
+        function isWeekendOrHoliday(date, tanggalMerahList) {
+            const day = date.getDay();
+            const dateStr = date.toISOString().split('T')[0];
+            return day === 6 || day === 0 || isTanggalMerah(dateStr, tanggalMerahList);
+        }
+
+        (async () => {
+            const tahunIni = new Date().getFullYear();
+            const tanggalMerahList = await getTanggalMerah(tahunIni);
+
+            if (tglMasukInput && tglKeluarInput) {
+               tglMasukInput.addEventListener("change", function () {
+                const masukDate = new Date(this.value);
+
+                if (isNaN(masukDate)) return;
+
+                if (selectedLayanan === "bulanan") {
+                    let keluarDate = new Date(masukDate);
+                    keluarDate.setDate(keluarDate.getDate() + 30);
+                    const year = keluarDate.getFullYear();
+                    const month = String(keluarDate.getMonth() + 1).padStart(2, '0');
+                    const day = String(keluarDate.getDate()).padStart(2, '0');
+                    tglKeluarInput.value = `${year}-${month}-${day}`;
+                } else if (selectedLayanan === "khusus") {
+                    if (!isWeekendOrHoliday(masukDate, tanggalMerahList)) {
+                        Swal.fire({
+                            title: 'Tanggal Tidak Valid',
+                            text: 'Tanggal masuk untuk layanan khusus hanya boleh hari Sabtu, Minggu, atau tanggal merah.',
+                            icon: 'warning',
+                            toast: true,
+                            position: 'top',
+                            confirmButtonText: 'OK',
+                            showConfirmButton: true,
+                            customClass: {
+                                popup: 'small-swal'
+                            }
+                        });
+                        this.value = "";
+                        tglKeluarInput.value = "";
+                        return;
+                    }
+                    tglKeluarInput.value = "";
+                } else {
+                    tglKeluarInput.value = "";
+                }
+            });
+
+            tglKeluarInput.addEventListener("input", function () {
+                const keluarDate = new Date(this.value);
+                if (selectedLayanan === "khusus" && !isWeekendOrHoliday(keluarDate, tanggalMerahList)) {
+                    Swal.fire({
+                        title: 'Tanggal Tidak Valid',
+                        text: 'Tanggal keluar untuk layanan khusus hanya boleh hari Sabtu, Minggu, atau tanggal merah.',
+                        icon: 'warning',
+                        toast: true,
+                        position: 'top',
+                        confirmButtonText: 'OK',
+                        showConfirmButton: true,
+                        customClass: {
+                                popup: 'small-swal'
+                        }
+                    });
+                    this.value = "";
+                }
+            });
+
+            }
+        })();
+    });
+    const modalElement = document.getElementById('reservasiModal'); // Ganti dengan ID modalmu
+
+    if (modalElement) {
+        modalElement.addEventListener('hidden.bs.modal', function () {
+            // Reset semua input dalam form di dalam modal
+            modalElement.querySelectorAll('input, select, textarea').forEach(function (input) {
+                input.value = '';
+            });
+
+            // Reset variabel layanan terpilih
+            selectedLayanan = '';
+        });
+    }
+</script>
 @endsection

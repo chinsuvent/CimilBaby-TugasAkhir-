@@ -20,13 +20,35 @@ class ReservasiPelangganController extends Controller
         $orangTua = Auth::user()->orangTua;
         $anakUser = $orangTua->anak;
 
-        $reservasi = \App\Models\Reservasi::whereIn('anaks_id', function ($query) use ($orangTua) {
+        $reservasi = Reservasi::with('pengajuanPembatalan')->whereIn('anaks_id', function ($query) use ($orangTua) {
             $query->select('id')
                 ->from('anaks')
                 ->where('orang_tua_id', $orangTua->id);
-        })->orderBy('created_at', 'desc')->paginate(10);
-        return view('pelanggan.riwayat_reservasi', compact('reservasi', 'anakUser'));
+        })->orderBy('created_at', 'desc')->get(); // Ambil semua untuk bisa update status
+
+        $today = Carbon::today();
+
+        // Cek status selesai
+        foreach ($reservasi as $rs) {
+            if (
+                $rs->status === 'Diterima' &&
+                Carbon::parse($rs->tgl_masuk)->lt($today) &&
+                Carbon::parse($rs->tgl_keluar)->lt($today)
+            ) {
+                $rs->status = 'Selesai';
+                $rs->save();
+            }
+        }
+
+        // Paginate setelah update
+        $paginator = $reservasi->sortByDesc('created_at')->paginate(10);
+
+        return view('pelanggan.riwayat_reservasi', [
+            'reservasi' => $paginator,
+            'anakUser' => $anakUser
+        ]);
     }
+
 
     // Fungsi ajukan pembatalan
     public function ajukanPembatalan(Request $request, $id)

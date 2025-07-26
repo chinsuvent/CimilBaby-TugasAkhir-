@@ -145,10 +145,10 @@
                     </div>
                     <div class="row g-2 mb-3">
                         <div class="col">
-                        <input type="date" name="tgl_masuk" class="form-control rounded-3" placeholder="Tanggal Masuk" required>
+                            <input type="date" name="tgl_masuk" id="tgl_masuk" class="form-control rounded-3" placeholder="Tanggal Masuk" required>
                         </div>
                         <div class="col">
-                        <input type="date" name="tgl_keluar" class="form-control rounded-3" placeholder="Tanggal Keluar" required>
+                            <input type="date" name="tgl_keluar" id="tgl_keluar" class="form-control rounded-3" placeholder="Tanggal Keluar" required>
                         </div>
                     </div>
                     <div class="mb-3">
@@ -172,54 +172,7 @@
 
             </div>
 
-{{--
-          <div class="col-lg-4 mb-4 mb-lg-0 d-flex justify-content-center" data-aos="fade-up" data-aos-delay="300">
-            <div class="feature-box text-center box-bulanan">
-              <div class="feature-content ">
-                <h3 class="feature-title text-white">Bulanan</h3>
-                <div class="text-center mb-3">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="4.5em" height="4.5em" viewBox="0 0 24 24">
-                    <path fill="#fff" d="M8.5 14a1.25 1.25 0 1 0 0-2.5a1.25 1.25 0 0 0 0 2.5m0 3.5a1.25 1.25 0 1 0 0-2.5a1.25 1.25 0 0 0 0 2.5m4.75-4.75a1.25 1.25 0 1 1-2.5 0a1.25 1.25 0 0 1 2.5 0M12 17.5a1.25 1.25 0 1 0 0-2.5a1.25 1.25 0 0 0 0 2.5m4.75-4.75a1.25 1.25 0 1 1-2.5 0a1.25 1.25 0 0 1 2.5 0" />
-                    <path fill="#fff" fill-rule="evenodd" d="M8 3.25a.75.75 0 0 1 .75.75v.75h6.5V4a.75.75 0 0 1 1.5 0v.758q.228.006.425.022c.38.03.736.098 1.073.27a2.75 2.75 0 0 1 1.202 1.202c.172.337.24.693.27 1.073c.03.365.03.81.03 1.345v7.66c0 .535 0 .98-.03 1.345c-.03.38-.098.736-.27 1.073a2.75 2.75 0 0 1-1.201 1.202c-.338.172-.694.24-1.074.27c-.365.03-.81.03-1.344.03H8.17c-.535 0-.98 0-1.345-.03c-.38-.03-.736-.098-1.073-.27a2.75 2.75 0 0 1-1.202-1.2c-.172-.338-.24-.694-.27-1.074c-.03-.365-.03-.81-.03-1.344V8.67c0-.535 0-.98.03-1.345c.03-.38.098-.736.27-1.073A2.75 2.75 0 0 1 5.752 5.05c.337-.172.693-.24 1.073-.27q.197-.016.425-.022V4A.75.75 0 0 1 8 3.25m10.25 7H5.75v6.05c0 .572 0 .957.025 1.252c.023.288.065.425.111.515c.12.236.311.427.547.547c.09.046.227.088.514.111c.296.024.68.025 1.253.025h7.6c.572 0 .957 0 1.252-.025c.288-.023.425-.065.515-.111a1.25 1.25 0 0 0 .547-.547c.046-.09.088-.227.111-.515c.024-.295.025-.68.025-1.252zM10.5 7a.75.75 0 0 0 0 1.5h3a.75.75 0 0 0 0-1.5z" clip-rule="evenodd" />
-                  </svg>
-                </div>
-                <h3 class="text-white">Rp. 800.000 / bulan</h3>
-                <ul class="list-unstyled">
-                  <li class="text-white my-2"><i class="bi bi-check-circle-fill text-white me-2"></i>Layanan penitipan bulanan</li>
-                  <li class="text-white my-2"><i class="bi bi-check-circle-fill text-white me-2"></i>Penitipan anak selama 9 jam</li>
-                  <li class="text-white my-2"><i class="bi bi-check-circle-fill text-white me-2"></i>Makan Siang Sehat</li>
-                  <li class="text-white my-2"><i class="bi bi-check-circle-fill text-white me-2"></i>Terdapat Ruang Bermain</li>
-                  <li class="text-white my-2"><i class="bi bi-check-circle-fill text-white me-2"></i>Terdapat Ruang Tidur</li>
-                </ul>
-                <a href="#" class="btn btn-reservasi mt-3" target="_blank" style="color: #81BFDA;">
-                  Reservasi Sekarang
-                </a>
-              </div>
-            </div>
-          </div>
 
-          <div class="col-lg-4 mb-4 mb-lg-0 d-flex justify-content-center" data-aos="fade-up" data-aos-delay="300">
-            <div class="feature-box text-center box-khusus">
-              <div class="feature-content ">
-                <h3 class="feature-title text-white">Khusus</h3>
-                <div class="text-center mb-3">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="4em" height="4em" viewBox="0 0 2048 2048">
-                    <path fill="#fff" d="M1920 128v1792H0V128h384V0h128v128h896V0h128v128zM128 256v256h1664V256h-256v128h-128V256H512v128H384V256zm1664 1536V640H128v1152zm-440-768l-241 189l101 315l-252-197l-252 197l101-315l-241-189h302l90-280l90 280z" />
-                  </svg>
-                </div>
-                <h3 class="text-white">Rp. 120.000 / hari</h3>
-                <ul class="list-unstyled">
-                  <li class="text-white my-2"><i class="bi bi-check-circle-fill text-white me-2"></i>Layanan hari libur</li>
-                  <li class="text-white my-2"><i class="bi bi-check-circle-fill text-white me-2"></i>Penitipan anak selama 9 jam</li>
-                  <li class="text-white my-2"><i class="bi bi-check-circle-fill text-white me-2"></i>Makan Siang Sehat</li>
-                  <li class="text-white my-2"><i class="bi bi-check-circle-fill text-white me-2"></i>Terdapat Ruang Bermain</li>
-                  <li class="text-white my-2"><i class="bi bi-check-circle-fill text-white me-2"></i>Terdapat Ruang Tidur</li>
-                </ul>
-                <a href="#" class="btn btn-reservasi mt-3" target="_blank" style="color: #FF9D3D;">
-                  Reservasi Sekarang
-                </a>
-              </div>
-            </div> --}}
     </section><!-- /Hero Section -->
 
     <!-- Services Section -->
@@ -302,26 +255,121 @@
   </main>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    // Seleksi semua tombol dengan class btn-reservasi
-    document.querySelectorAll('.btn-reservasi').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-            // Ambil data-layanan dan data-biaya dari tombol yang diklik
-            const layanan = btn.getAttribute('data-layanan');
-            const biaya = btn.getAttribute('data-biaya');
+    document.addEventListener('DOMContentLoaded', function () {
+        let selectedLayanan = "";
 
-            // Isi ke input di modal
-            document.getElementById('jenisLayananInput').value = layanan ?? '';
-            document.getElementById('biayaInput').value = biaya ?? '';
+        // === Bagian 1: Isi layanan dan biaya ===
+        document.querySelectorAll('.btn-reservasi').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                const layanan = btn.getAttribute('data-layanan');
+                const biaya = btn.getAttribute('data-biaya');
+                selectedLayanan = layanan?.toLowerCase() ?? '';
+
+                document.getElementById('jenisLayananInput').value = layanan ?? '';
+                document.getElementById('biayaInput').value = biaya ?? '';
+            });
         });
+
+        const tglMasukInput = document.querySelector('input[name="tgl_masuk"]');
+        const tglKeluarInput = document.querySelector('input[name="tgl_keluar"]');
+
+        // Ambil data tanggal merah dari API
+        async function getTanggalMerah(year) {
+            try {
+                const response = await fetch(`https://api-harilibur.vercel.app/api?year=${year}`);
+                return response.ok ? await response.json() : [];
+            } catch (err) {
+                console.error("Gagal memuat tanggal merah:", err);
+                return [];
+            }
+        }
+
+        function isTanggalMerah(dateStr, liburList) {
+            return liburList.some(item => item.holiday_date === dateStr);
+        }
+
+        function isWeekendOrHoliday(date, tanggalMerahList) {
+            const day = date.getDay();
+            const dateStr = date.toISOString().split('T')[0];
+            return day === 6 || day === 0 || isTanggalMerah(dateStr, tanggalMerahList);
+        }
+
+        (async () => {
+            const tahunIni = new Date().getFullYear();
+            const tanggalMerahList = await getTanggalMerah(tahunIni);
+
+            if (tglMasukInput && tglKeluarInput) {
+               tglMasukInput.addEventListener("change", function () {
+                const masukDate = new Date(this.value);
+
+                if (isNaN(masukDate)) return;
+
+                if (selectedLayanan === "bulanan") {
+                    let keluarDate = new Date(masukDate);
+                    keluarDate.setDate(keluarDate.getDate() + 30);
+                    const year = keluarDate.getFullYear();
+                    const month = String(keluarDate.getMonth() + 1).padStart(2, '0');
+                    const day = String(keluarDate.getDate()).padStart(2, '0');
+                    tglKeluarInput.value = `${year}-${month}-${day}`;
+                } else if (selectedLayanan === "khusus") {
+                    if (!isWeekendOrHoliday(masukDate, tanggalMerahList)) {
+                        Swal.fire({
+                            title: 'Tanggal Tidak Valid',
+                            text: 'Tanggal masuk untuk layanan khusus hanya boleh hari Sabtu, Minggu, atau tanggal merah.',
+                            icon: 'warning',
+                            toast: true,
+                            position: 'top',
+                            confirmButtonText: 'OK',
+                            showConfirmButton: true,
+                            customClass: {
+                                popup: 'small-swal'
+                            }
+                        });
+                        this.value = "";
+                        tglKeluarInput.value = "";
+                        return;
+                    }
+                    tglKeluarInput.value = "";
+                } else {
+                    tglKeluarInput.value = "";
+                }
+            });
+
+            tglKeluarInput.addEventListener("input", function () {
+                const keluarDate = new Date(this.value);
+                if (selectedLayanan === "khusus" && !isWeekendOrHoliday(keluarDate, tanggalMerahList)) {
+                    Swal.fire({
+                        title: 'Tanggal Tidak Valid',
+                        text: 'Tanggal keluar untuk layanan khusus hanya boleh hari Sabtu, Minggu, atau tanggal merah.',
+                        icon: 'warning',
+                        toast: true,
+                        position: 'top',
+                        confirmButtonText: 'OK',
+                        showConfirmButton: true,
+                        customClass: {
+                                popup: 'small-swal'
+                        }
+                    });
+                    this.value = "";
+                }
+            });
+
+            }
+        })();
     });
-});
+    const modalElement = document.getElementById('reservasiModal'); // Ganti dengan ID modalmu
 
+    if (modalElement) {
+        modalElement.addEventListener('hidden.bs.modal', function () {
+            // Reset semua input dalam form di dalam modal
+            modalElement.querySelectorAll('input, select, textarea').forEach(function (input) {
+                input.value = '';
+            });
 
+            // Reset variabel layanan terpilih
+            selectedLayanan = '';
+        });
+    }
 </script>
-
-
-
-
 
 @endsection

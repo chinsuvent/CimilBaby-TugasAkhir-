@@ -54,10 +54,9 @@ class AuthController extends Controller
         ])->validate();
 
         if (!Auth::attempt($request->only('username','password'), $request->boolean('remember'))) {
-            throw ValidationException::withMessages([
-                'username' => trans('auth.failed')
-            ]);
+            return back()->with('error', 'Username atau password salah!');
         }
+
 
         $request->session()->regenerate();
 

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->date('tgl_masuk');
             $table->date('tgl_keluar');
             $table->string('metode_pembayaran');
-            $table->enum('status', ['Pending', 'Diterima', 'Ditolak', 'Dibatalkan']);
+            $table->enum('status', ['Pending', 'Diterima', 'Ditolak', 'Dibatalkan', 'Selesai']);
             $table->timestamps();
         });
     }

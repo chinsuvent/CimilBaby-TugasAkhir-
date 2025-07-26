@@ -29,7 +29,7 @@
     <script>
         Swal.fire({
             icon: 'error',
-            title: 'Gagal',
+            title: 'Gagal, Nomor Whatsapp tidak terdaftar di sistem',
             text: '{{ $errors->first() }}',
             confirmButtonText: 'OK'
         });

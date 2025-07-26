@@ -6,7 +6,7 @@
     </div>
     <hr />
 
-    @if (session('error'))
+    {{-- @if (session('error'))
     <div class="alert alert-danger">
         {{ session('error') }}
     </div>
@@ -16,7 +16,7 @@
     <div class="alert alert-success">
         {{ session('success') }}
     </div>
-@endif
+@endif --}}
 
 
     @push('scripts')
@@ -113,6 +113,13 @@
             <tbody>
                 @if ($reservasi->count() > 0)
                     @foreach ($reservasi as $rs)
+                        @php
+                            $now = \Carbon\Carbon::now();
+                            $masuk = \Carbon\Carbon::parse($rs->tgl_masuk);
+                            $keluar = \Carbon\Carbon::parse($rs->tgl_keluar);
+                            $isBelumSelesai = $keluar->gte($now); // jika tgl_keluar >= hari ini
+                        @endphp
+
                         <tr class="text-center">
                             <td class="align-middle">{{ $loop->iteration + ($reservasi->currentPage()-1)*$reservasi->perPage() }}</td>
                             <td class="align-middle">{{ $rs->anak->nama_anak ?? '-' }}</td>
@@ -128,7 +135,9 @@
                             <td class="align-middle">{{ $rs->status }}</td>
                             <td class="align-middle">
                                 <div class="d-flex justify-content-center gap-2">
-                                    @if ($rs->status == 'Pending')
+                                    @if ($rs->status === 'Selesai')
+                                        <span class="text-muted">Reservasi Selesai</span>
+                                    @elseif ($rs->status == 'Pending')
                                         <a href="{{ route('pelanggan.edit', $rs->id) }}" class="btn btn-warning d-flex align-items-center justify-content-center" title="Edit" style="margin-right: 0.5rem;">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
                                                 <path fill="#fff" d="m21.561 5.318l-2.879-2.879A1.5 1.5 0 0 0 17.621 2c-.385 0-.768.146-1.061.439L13 6H4a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h13a1 1 0 0 0 1-1v-9l3.561-3.561c.293-.293.439-.677.439-1.061s-.146-.767-.439-1.06M11.5 14.672L9.328 12.5l6.293-6.293l2.172 2.172zm-2.561-1.339l1.756 1.728L9 15zM16 19H5V8h6l-3.18 3.18c-.293.293-.478.812-.629 1.289c-.16.5-.191 1.056-.191 1.47V17h3.061c.414 0 1.108-.1 1.571-.29c.464-.19.896-.347 1.188-.64L16 13zm2.5-11.328L16.328 5.5l1.293-1.293l2.171 2.172z" />
@@ -142,14 +151,21 @@
                                             </button>
                                         </form>
                                     @elseif ($rs->status == 'Diterima')
-                                        {{-- Tombol Ajukan Pembatalan --}}
-                                        @if (!$rs->pembatalan) {{-- Cegah dobel ajukan --}}
+                                        @if (!$rs->pengajuanPembatalan && $isBelumSelesai)
                                             <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalBatal{{ $rs->id }}">
                                                 Ajukan Pembatalan
                                             </button>
+                                        @elseif ($rs->pengajuanPembatalan && $rs->pengajuanPembatalan->status == 'Menunggu')
+                                            <span class="text-muted">Menunggu<br> Konfirmasi <br>Admin</span>
+                                        @elseif ($rs->pengajuanPembatalan && $rs->pengajuanPembatalan->status == 'Ditolak')
+                                            <span class="tetx-muted">Pengajuan Ditolak</span>
+                                        @elseif ($rs->pengajuanPembatalan && $rs->pengajuanPembatalan->status == 'Disetujui')
+                                            <span class="text-muted">Pembatalan Disetujui</span>
                                         @else
-                                            <span class="text-muted">Menunggu Konfirmasi Pembatalan</span>
+                                            <span class="text-muted">Reservasi Aktif</span>
                                         @endif
+
+
 
                                     @elseif ($rs->status == 'Dibatalkan')
                                         @if ($rs->pembatalan && $rs->pembatalan->status == 'Disetujui')
@@ -174,7 +190,8 @@
             </tbody>
         </table>
         @foreach ($reservasi as $rs)
-    @if ($rs->status == 'Diterima' && !$rs->pembatalan)
+    @if ($rs->status == 'Diterima' && !$rs->pembatalan && (\Carbon\Carbon::parse($rs->tgl_keluar)->gte(\Carbon\Carbon::today())))
+
         <!-- Modal Ajukan Pembatalan -->
         <div class="modal fade" id="modalBatal{{ $rs->id }}" tabindex="-1" aria-labelledby="modalBatalLabel{{ $rs->id }}" aria-hidden="true">
             <div class="modal-dialog">
