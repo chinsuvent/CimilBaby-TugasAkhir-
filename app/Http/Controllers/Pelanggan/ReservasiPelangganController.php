@@ -183,7 +183,20 @@ public function show($id)
     protected function kirimWhatsappAdmin($message)
     {
         $token = env('FONNTE_API_KEY');
-        $adminPhone = env('ADMIN_PHONE');
+
+        // Ambil nomor dari tabel settings
+        $setting = \App\Models\Setting::where('key', 'admin_whatsapp')->first();
+        $adminPhone = $setting?->value ?? null;
+
+        if (!$adminPhone) {
+            Log::error('Nomor admin tidak ditemukan di settings.');
+            return;
+        }
+
+        // Format: ubah 08xxxx jadi 62xxxx
+        if (str_starts_with($adminPhone, '08')) {
+            $adminPhone = '62' . substr($adminPhone, 1);
+        }
 
         $curl = curl_init();
 

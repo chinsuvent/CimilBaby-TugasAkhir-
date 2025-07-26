@@ -63,7 +63,7 @@ Route::post('/checkout/{id}', [CheckinCheckoutController::class, 'checkOut'])->n
 
 Route::middleware('auth')->group(function () {
     Route::get('dashboard', function() {
-        return view('dashboard');
+        return view('admin.dashboard');
     })->name('dashboard');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -269,10 +269,9 @@ Route::post('/admin/reservasi/{id}/konfirmasi-pembatalan', [ReservasiController:
 Route::put('/admin/pembatalan/{id}', [ReservasiController::class, 'konfirmasiPembatalan'])->name('admin.pembatalan.konfirmasi');
 
 
-
-
-
-
+// routes/web.php
+Route::get('/admin/settings/whatsapp', [SettingController::class, 'index'])->name('admin.settings.index');
+Route::post('/admin/settings/whatsapp', [SettingController::class, 'update'])->name('admin.settings.update');
 
 
 

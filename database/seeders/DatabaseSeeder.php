@@ -24,5 +24,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             JadwalLayananSeeder::class,
         ]);
+
+        $this->call([
+            SettingSeeder::class,
+        ]);
     }
 }

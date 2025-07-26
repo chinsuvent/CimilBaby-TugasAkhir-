@@ -22,10 +22,15 @@
                         <h4 class="text-center text-white mt-4">Hubungi Kami</h4>
                         <ul class="d-flex flex-column align-items-center p-0" style="list-style: none;">
                         <li>
-                                <a href="https://wa.me/6281234567890" target="_blank" class="text-white">
-                                    <i class="bi bi-whatsapp me-2" style="font-size: 1em;"></i>0812-3456-7890
+                            @if ($waSetting && $waSetting->value)
+                                <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $waSetting->value) }}" target="_blank" class="text-white">
+                                    <i class="bi bi-whatsapp me-2" style="font-size: 1em;"></i>{{ $waSetting->value }}
                                 </a>
+                            @else
+                                <span class="text-white">Nomor tidak tersedia</span>
+                            @endif
                         </li>
+
                         <li>
                             <span class="text-white text-center" style="max-width: 220px; word-break: break-word; display: inline-block;">
                                     <i class="bi bi-geo-alt me-2" style="font-size: 1em;"></i>
