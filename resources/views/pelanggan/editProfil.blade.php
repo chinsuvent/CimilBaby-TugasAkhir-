@@ -9,7 +9,7 @@
         <div class="row">
             <div class="col mb-3">
                 <label class="form-label">Nama Lengkap</label>
-                <input type="text" name="nama_orang_tua" class="form-control" placeholder="Nama Lengkap" value="{{ $user->name }}">
+                <input type="text" name="name" class="form-control" placeholder="Nama Lengkap" value="{{ $user->name }}">
             </div>
             <div class="col mb-3">
                 <label class="form-label">Username</label>

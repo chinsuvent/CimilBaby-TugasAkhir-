@@ -122,10 +122,9 @@ body {
     margin-top: 2rem !important;
 }
 
-.table-jadwal {
-    background-color: #8E7DBE !important;
+.table-primary {
+    background-color: #3b9b84 !important;
     color: white;
-    text-align: center;
 }
 
 

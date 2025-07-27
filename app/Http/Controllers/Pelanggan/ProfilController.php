@@ -39,29 +39,30 @@ class ProfilController extends Controller
     public function updateProfil(Request $request)
     {
         $request->validate([
+            'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users,username,' . Auth::id(),
             'no_hp' => 'nullable|string|max:20',
             'alamat' => 'nullable|string|max:255',
         ]);
 
         $user = Auth::user();
-        $orangTua = $user->orangTua;
 
-        // Jika belum ada data orang tua, buat baru
-        if (!$orangTua) {
-            $orangTua = new OrangTua();
-            $orangTua->users_id = $user->id;
-        }
+        // Update nama dan username
+        $user->name = $request->name;
+        $user->username = $request->username;
+        $user->is_profile_complete = true;
+        $user->save();
 
+        // Update data orang tua
+        $orangTua = $user->orangTua ?? new OrangTua();
+        $orangTua->users_id = $user->id;
         $orangTua->no_hp = $request->no_hp;
         $orangTua->alamat = $request->alamat;
         $orangTua->save();
 
-        // Optional: update is_profile_complete di tabel users
-        $user->is_profile_complete = true;
-        $user->save();
-
         return redirect()->route('pelanggan.profil')->with('edited', 'Profil berhasil diperbarui.');
     }
+
 
 
 

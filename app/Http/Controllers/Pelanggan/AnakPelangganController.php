@@ -44,7 +44,7 @@ class AnakPelangganController extends Controller
     public function editAnak($id)
     {
         $pelanggan = Auth::user();
-        $anak = $pelanggan->anak()->findOrFail($id);
+        $anak = $pelanggan->orangTua->anaks()->findOrFail($id);
 
         return view('pelanggan.editAnak', compact('anak'));
     }
@@ -52,7 +52,7 @@ class AnakPelangganController extends Controller
     public function updateAnak(Request $request, $id)
     {
         $pelanggan = Auth::user();
-        $anak = $pelanggan->anaks()->findOrFail($id);
+        $anak = $pelanggan->orangTua->anaks()->findOrFail($id);
 
         $validated = $request->validate([
             'nama_anak' => 'required|string|max:255',
@@ -71,10 +71,10 @@ class AnakPelangganController extends Controller
     public function hapusAnak($id)
     {
         $pelanggan = Auth::user();
-        $anak = $pelanggan->anaks()->findOrFail($id);
+        $anak = $pelanggan->orangTua->anaks()->findOrFail($id);
 
         $anak->delete();
 
-        return redirect()->back()->with('delete', 'Data anak berhasil dihapus.');
+        return redirect()->back()->with('deleted', 'Data anak berhasil dihapus.');
     }
 }

@@ -13,6 +13,7 @@ class JadwalLayanan extends Model
 
     protected $fillable = [
         'hari',
-        'jam_layanan',
+        'jam_mulai',
+        'jam_selesai',
     ];
 }

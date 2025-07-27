@@ -10,8 +10,9 @@ return new class extends Migration
     {
         Schema::create('jadwal_layanans', function (Blueprint $table) {
             $table->id();
-            $table->string('hari');          
-            $table->string('jam_layanan');   
+            $table->string('hari');
+            $table->time('jam_mulai');       // waktu mulai layanan
+            $table->time('jam_selesai');
             $table->timestamps();
         });
     }

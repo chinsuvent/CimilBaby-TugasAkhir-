@@ -1,23 +1,25 @@
 @extends('layouts.app')
 
 @section('contents')
-<div class="container mt-5" data-aos="fade-up" data-aos-delay="100">
+<div class="container mt-1" data-aos="fade-up" data-aos-delay="100">
 
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped text-center align-middle table-jadwal">
-            <thead class="table-jadwal">
+    <div class="table-responsive rounded ">
+        <table class="table table-hover table-bordered">
+            <thead class="table-primary text-center">
                 <tr>
                     <th>No</th>
                     <th>Hari</th>
-                    <th>Jam Layanan</th>
+                    <th>Jam Mulai</th>
+                    <th>Jam Selesai</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="text-center">
                 @forelse ($jadwal as $index => $item)
                     <tr>
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $item->hari }}</td>
-                        <td>{{ $item->jam_layanan }}</td>
+                        <td class="align-middle">{{ \Carbon\Carbon::parse($item->jam_mulai)->format('H:i') }}</td>
+                        <td class="align-middle">{{ \Carbon\Carbon::parse($item->jam_selesai)->format('H:i') }}</td>
                     </tr>
                 @empty
                     <tr>

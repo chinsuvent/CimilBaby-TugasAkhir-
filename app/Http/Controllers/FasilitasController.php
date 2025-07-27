@@ -106,7 +106,7 @@ class FasilitasController extends Controller
 
         $fasilitas->update($data);
 
-        return redirect()->route('fasilitas')->with('success', 'Data berhasil diperbarui');
+        return redirect()->route('fasilitas')->with('edited', 'Data berhasil diperbarui');
     }
 
 
