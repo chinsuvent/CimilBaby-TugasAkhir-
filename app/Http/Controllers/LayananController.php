@@ -90,10 +90,12 @@ class LayananController extends Controller
      */
     public function edit(string $id)
     {
-        $layanan = Layanan::findOrFail($id);
+        $layanan = Layanan::with('fasilitas')->findOrFail($id); // Load relasi fasilitas
+        $fasilitas = Fasilitas::all(); // Ambil semua fasilitas
 
-        return view('admin.layanans.edit', compact('layanan'));
+        return view('admin.layanans.edit', compact('layanan', 'fasilitas'));
     }
+
 
     /**
      * Update the specified resource in storage.

@@ -10,24 +10,37 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
+
 class ReservasiController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        // Eager load relasi anak, pengguna, layanan
-        $reservasi = Reservasi::with(['anak.orangTua.user', 'pengguna', 'layanan', 'pengajuanPembatalan'])
-                        ->orderBy('created_at', 'desc')
-                        ->paginate(10);
+    public function index(Request $request)
+{
+    $query = Reservasi::query();
+    $limit = $request->input('limit', 10);
 
-        $pembatalans = PengajuanPembatalan::with('reservasi.pengguna')->get(); // jika kamu ingin tampilkan juga data user
-
-
-
-        return view('admin.reservasis.index', compact('reservasi', 'pembatalans'));
+    if ($request->filled('cari')) {
+        $search = $request->cari;
+        $query->where(function ($q) use ($search) {
+            $q->whereHas('anak', function ($q3) use ($search) {
+                $q3->where('nama_anak', 'like', "%$search%");
+            });
+        });
     }
+
+    $reservasi = $query->with(['anak.orangTua.user', 'pengguna', 'layanan', 'pengajuanPembatalan'])
+        ->orderBy('created_at', 'desc')
+        ->paginate($limit);
+
+    $pembatalans = PengajuanPembatalan::with('reservasi.pengguna')->get();
+
+    return view('admin.reservasis.index', compact('reservasi', 'pembatalans'));
+}
+
+
+       
 
     /**
      * Show the form for creating a new resource.
@@ -139,7 +152,7 @@ class ReservasiController extends Controller
         $noHp = $reservasi->anak?->orangTua?->no_hp;
 
         if ($noHp) {
-            $message = "Reservasi Anda telah *$status*. Terima kasih telah menggunakan layanan kami.";
+            $message = "Reservasi dengan nama anak *$namaAnak* telah *$status*. Terima kasih telah menggunakan layanan kami.";
             $this->kirimWhatsapp($noHp, $message);
         }
 
@@ -167,7 +180,7 @@ class ReservasiController extends Controller
             $pengajuan->delete();
 
             if ($noHp) {
-                $message = "Permohonan pembatalan reservasi Anda telah *DITERIMA*. Reservasi dibatalkan.";
+                $message = "Permohonan pembatalan reservasi dengan nama anak *$namaAnak* telah *DITERIMA*. Reservasi dibatalkan.";
                 $this->kirimWhatsapp($noHp, $message);
             }
 
@@ -178,7 +191,7 @@ class ReservasiController extends Controller
             $pengajuan->delete();
 
             if ($noHp) {
-                $message = "Permohonan pembatalan reservasi untuk Anda *DITOLAK*. Silakan hubungi admin untuk informasi lebih lanjut.";
+                $message = "Permohonan pembatalan reservasi untuk nama anak *$namaAnak* *DITOLAK*.";
                 $this->kirimWhatsapp($noHp, $message);
             }
 
@@ -189,6 +202,20 @@ class ReservasiController extends Controller
     }
 
 
+    public function search(Request $request)
+    {
+        $keyword = $request->q;
+
+        $reservasi = Reservasi::with(['anak.orangTua.user', 'pengguna', 'layanan', 'pengajuanPembatalan'])
+            ->whereHas('anak', function ($q) use ($keyword) {
+                $q->where('nama_anak', 'like', '%' . $keyword . '%');
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        // Kembalikan partial view hanya isi <tbody>
+        return view('admin.reservasis.partials.table_body', compact('reservasi'))->render();
+    }
 
 
 

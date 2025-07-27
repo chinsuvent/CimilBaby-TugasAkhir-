@@ -97,7 +97,7 @@
 <div class="row mb-4 align-items-center">
   <div class="col-12 col-md-6 d-flex justify-content-center justify-content-md-start mb-3 mb-md-0" style="gap: 20px;">
 
-    <div class="dropdown">
+    {{-- <div class="dropdown">
       <button class="btn btn-purple dropdown-toggle d-flex align-items-center" type="button" id="dropdownShow" data-bs-toggle="dropdown" aria-expanded="false">
         Lihat 10
       </button>
@@ -107,7 +107,7 @@
         <li><button type="button" class="dropdown-item" onclick="setShowLimit(50)">50</button></li>
         <li><button type="button" class="dropdown-item" onclick="setShowLimit(100)">100</button></li>
       </ul>
-    </div>
+    </div> --}}
 
     <div class="dropdown">
       <button class="btn btn-purple dropdown-toggle d-flex align-items-center" type="button" id="dropdownFilter" data-bs-toggle="dropdown" aria-expanded="false">
@@ -151,7 +151,7 @@
             class="text-white border-0"
             placeholder="Cari"
             value="{{ request('cari') }}"
-            id="searchInput"
+            id="input-cari"
           />
         </div>
       </form>
@@ -161,7 +161,7 @@
 
 
   <!-- Tabel -->
-  <div class="px-4">
+  <div id="laporan-content" class="px-4">
     <div class="table-responsive">
       <table class="table table-hover table-bordered text-center align-middle">
         <thead class="table-primary text-center">
@@ -211,4 +211,40 @@
               </nav>
         @endif
   </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+let typingTimer;
+const debounceDelay = 500;
+
+$('#input-cari').on('input', function () {
+  clearTimeout(typingTimer);
+  const search = $(this).val();
+
+  typingTimer = setTimeout(() => {
+    const params = {
+      cari: search,
+      tgl_awal: $('input[name="tgl_awal"]').val(),
+      tgl_akhir: $('input[name="tgl_akhir"]').val(),
+      gender: $('select[name="gender"]').val(),
+      service: $('select[name="service"]').val(),
+      limit: $('#limitInput').val()
+    };
+
+    $.ajax({
+      url: "{{ route('laporans_penitipan.index') }}",
+      type: "GET",
+      data: params,
+      success: function (data) {
+        // Ambil hanya bagian tabel dan pagination dari hasil response
+        const html = $(data).find('#laporan-content').html();
+        $('#laporan-content').html(html);
+      },
+      error: function () {
+        console.error("Gagal memuat data.");
+      }
+    });
+  }, debounceDelay);
+});
+</script>
 @endsection

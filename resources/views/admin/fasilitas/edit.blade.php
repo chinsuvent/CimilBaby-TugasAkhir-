@@ -37,7 +37,8 @@
 
         <div class="row">
             <div class="d-grid">
-                <button type="submit" class="btn btn-warning ml-3">Simpan</button>
+                <button type="submit" class="btn btn-warning mr-3 ml-3">Simpan</button>
+                <a href="{{ route('fasilitas') }}" class="btn btn-secondary">Batal</a>
             </div>
         </div>
     </form>

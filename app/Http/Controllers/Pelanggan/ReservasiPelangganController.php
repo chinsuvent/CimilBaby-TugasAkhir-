@@ -79,12 +79,14 @@ class ReservasiPelangganController extends Controller
         $tglMasuk = $reservasi->tgl_masuk ?? '-';
         $tglKeluar = $reservasi->tgl_keluar ?? '-';
         $alasan = $request->alasan;
+        $namaAnak = $reservasi->anak->nama ?? '-';
 
         $pesan = "*Permohonan Pembatalan Masuk!*\n\n"
-            . "🧾 Layanan: *{$layanan}*\n"
-            . "📅 Masuk: {$tglMasuk}\n"
-            . "📅 Keluar: {$tglKeluar}\n"
-            . "❗ *Alasan*: _{$alasan}_\n\n"
+            . "Nama Anak: *{$namaAnak}*\n"
+            . "Layanan: *{$layanan}*\n"
+            . "Tanggal Masuk: {$tglMasuk}\n"
+            . "Tanggal Keluar: {$tglKeluar}\n"
+            . "*Alasan*: _{$alasan}_\n\n"
             . "Mohon segera dikonfirmasi!";
 
         $this->kirimWhatsappAdmin($pesan);
@@ -132,8 +134,10 @@ public function show($id)
 
         // Kirim WhatsApp ke admin
         $layananNama = $reservasi->layanan->jenis_layanan ?? 'Layanan Tidak Diketahui';
+        $namaAnak = $reservasi->anak->nama ?? '-';
 
         $pesan = "*Reservasi Dibatalkan!*\n\n"
+            . "Nama Anak: *{$namaAnak}*\n"
             . "Layanan: {$layananNama}\n"
             . "Tanggal Masuk: {$reservasi->tgl_masuk}\n"
             . "Tanggal Keluar: {$reservasi->tgl_keluar}\n"
@@ -189,8 +193,10 @@ public function show($id)
         // Kirim WhatsApp ke admin setelah berhasil update
         $user = Auth::user();
         $layananNama = $reservasi->layanan->jenis_layanan ?? 'Tidak diketahui';
+        $namaAnak = $reservasi->anak->nama ?? '-';
 
         $pesan = "*Reservasi Diperbarui!*\n\n"
+            . "Nama Anak: *{$namaAnak}*\n"
             . "Layanan: {$layananNama}\n"
             . "Tanggal Masuk: {$reservasi->tgl_masuk}\n"
             . "Tanggal Keluar: {$reservasi->tgl_keluar}\n"

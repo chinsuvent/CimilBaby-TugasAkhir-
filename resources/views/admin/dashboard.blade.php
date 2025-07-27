@@ -14,6 +14,19 @@
         </script>
     @endif
 
+    @if (session('edited'))
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Reservasi Berhasil Dikonfirmasi',
+                text: '{{ session('success') }}',
+                showConfirmButton: false,
+                timer: 2000
+            });
+        </script>
+    @endif
+
    <div class="row card-dashboard justify-content-center">
     <div class="col-12 col-sm-6 col-md-4 col-xl-3 mb-3 text-center">
         <div class="card card-reservasi shadow h-100 py-4">

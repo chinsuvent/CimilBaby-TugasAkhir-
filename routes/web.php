@@ -273,6 +273,7 @@ Route::put('/admin/pembatalan/{id}', [ReservasiController::class, 'konfirmasiPem
 Route::get('/admin/settings/whatsapp', [SettingController::class, 'index'])->name('admin.settings.index');
 Route::post('/admin/settings/whatsapp', [SettingController::class, 'update'])->name('admin.settings.update');
 
+Route::get('/admin/reservasis/search', [ReservasiController::class, 'search'])->name('admin.reservasis.search');
 
 
 

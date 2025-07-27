@@ -13,23 +13,20 @@ class CheckinCheckoutController extends Controller
 {
     $today = Carbon::today();
 
-    // Ambil semua checkin yang belum checkout
-    $checkinsBelumCheckout = CheckinCheckout::whereNull('waktu_checkout')->pluck('reservasis_id')->toArray();
-
-    // Ambil semua reservasi:
-    // - yang tgl_masuk-nya hari ini, ATAU
-    // - yang pernah check-in tapi belum check-out
-    $today = Carbon::today();
+    // Ambil reservasi yang aktif hari ini
     $reservasis = Reservasi::whereDate('tgl_masuk', '<=', $today)
-    ->whereDate('tgl_keluar', '>=', $today)
-    ->with(['anak', 'layanan', 'checkinCheckout'])
-    ->get();
+        ->whereDate('tgl_keluar', '>=', $today)
+        ->with(['anak', 'layanan'])
+        ->get();
 
-    // Ambil semua checkin hari ini dan sebelumnya
-    $checkinsToday = CheckinCheckout::whereIn('reservasis_id', $reservasis->pluck('id'))->get()->keyBy('reservasis_id');
+    // Ambil semua data checkin-checkout HANYA untuk hari ini
+    $checkinsToday = CheckinCheckout::whereDate('created_at', $today)
+        ->get()
+        ->keyBy('reservasis_id');
 
     return view('admin.checkin_checkout.index', compact('reservasis', 'checkinsToday'));
 }
+
 
 
     public function checkin($id)
@@ -43,7 +40,8 @@ class CheckinCheckoutController extends Controller
             ]);
         }
 
-        return back()->with('success', 'Check-in berhasil!');
+        return redirect()->back()->with('success', 'Berhasil melakukan check-in.');
+
     }
 
     public function checkout($id)
@@ -58,7 +56,8 @@ class CheckinCheckoutController extends Controller
             ]);
         }
 
-        return back()->with('success', 'Check-out berhasil!');
+        return redirect()->back()->with('success', 'Berhasil melakukan check-out.');
+
     }
 
 }

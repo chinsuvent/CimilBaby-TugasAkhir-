@@ -2,11 +2,26 @@
 
 @section('contents')
     <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-2 mb-3">
-        <h1 class="m-0 text-title text-md-left text-center text-md-h4">Data Reservasi</h1>
+        <h1 class="m-0 text-title">Data Reservasi</h1>
+
+        <form method="GET" action="{{ route('reservasis') }}" id="searchForm">
+            <div class="search-wrapper d-flex align-items-center">
+            <i class="fas fa-search search-icon me-2"></i>
+            <input
+                type="text"
+                name="cari"
+                class="text-white border-0"
+                placeholder="Cari"
+                value="{{ request('cari') }}"
+                id="input-cari"
+            />
+            </div>
+        </form>
     </div>
     <hr />
 
     @push('scripts')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         @if (session('added'))
             Swal.fire({
@@ -73,9 +88,45 @@
                 }
             });
         }
+
+        let typingTimer;
+        const debounceDelay = 500;
+
+        $('#input-cari').on('input', function () {
+        clearTimeout(typingTimer);
+        const search = $(this).val();
+
+        typingTimer = setTimeout(() => {
+            const params = {
+            cari: search,
+            tgl_awal: $('input[name="tgl_awal"]').val(),
+            tgl_akhir: $('input[name="tgl_akhir"]').val(),
+            gender: $('select[name="gender"]').val(),
+            service: $('select[name="service"]').val(),
+            limit: $('#limitInput').val()
+            };
+
+            $.ajax({
+            url: "{{ route('reservasis') }}",
+            type: "GET",
+            data: params,
+            success: function (data) {
+                // Ambil hanya bagian tabel dan pagination dari hasil response
+                const html = $(data).find('#reservasi-content').html();
+                $('#reservasi-content').html(html);
+            },
+            error: function () {
+                console.error("Gagal memuat data.");
+            }
+            });
+        }, debounceDelay);
+        });
+
+
     </script>
     @endpush
 
+    <div id="reservasi-content">
     <div class="table-responsive">
         <table class="table table-hover table-bordered">
             <thead class="table-primary text-center">
@@ -180,7 +231,7 @@
                 @endif
             </tbody>
         </table>
-
+    </div>
 
     </div>
     <div class="d-flex justify-content-center mt-3 mb-4">
