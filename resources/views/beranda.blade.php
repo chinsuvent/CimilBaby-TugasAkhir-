@@ -226,8 +226,8 @@
                   <i class="bi bi-shield-check"></i>
                 </div>
                 <div class="service-content">
-                  <h3>Lingkungan Aman & Menyenangkan</h3>
-                  <p>Lingkungan aman, hangat, dan menyenangkan agar anak nyaman seperti di rumah sendiri</p>
+                  <h3>Lingkungan Menyenangkan</h3>
+                  <p>Lingkungan menyenangkan agar anak nyaman seperti di rumah sendiri</p>
 
                 </div>
               </div>
@@ -239,7 +239,7 @@
                 </div>
                 <div class="service-content">
                   <h3>Fasilitas Yang Bersih</h3>
-                  <p>Kebersihan fasilitas di Ci'mil Baby selalu dijaga demi kenyamanan dan kesehatan anak</p>
+                  <p>Kebersihan fasilitas di Ci'mil Baby selalu dijaga demi kenyamanan anak</p>
 
                 </div>
               </div>
