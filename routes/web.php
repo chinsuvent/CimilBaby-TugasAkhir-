@@ -39,9 +39,9 @@ Route::get('/jadwal_layanan', [App\Http\Controllers\JadwalLayananController::cla
 
 
 
-Route::get('/menu_fasilitas', function () {
-    return view('menu_fasilitas');
-});
+Route::get('/menu_fasilitas', [FasilitasController::class, 'menuFasilitas']);
+Route::get('/', [FasilitasController::class, 'menuFasilitas']);
+
 
 
 Route::controller(AuthController::class)->group(function () {

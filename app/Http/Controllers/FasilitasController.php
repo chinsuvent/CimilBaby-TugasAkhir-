@@ -122,4 +122,11 @@ class FasilitasController extends Controller
         return redirect()->route('fasilitas')->with('deleted', true);
     }
 
+    public function menuFasilitas()
+    {
+        $fasilitas = Fasilitas::all(); 
+        return view('menu_fasilitas', compact('fasilitas'));
+    }
+
+
 }
