@@ -144,8 +144,6 @@
             icon: 'success',
             title: 'Logout Berhasil',
             text: '{{ session('success') }}',
-            confirmButtonColor: '#8B7FB8',
-            confirmButtonText: 'OK'
         });
     </script>
     @endif
@@ -156,8 +154,6 @@
             icon: 'success',
             title: 'Password Berhasil Diubah!',
             text: '{{ session('success') }}',
-            confirmButtonColor: '#8B7FB8',
-            confirmButtonText: 'OK'
         });
     </script>
     @endif
@@ -168,8 +164,6 @@
                 icon: 'success',
                 title: 'Registrasi Berhasil',
                 text: '{{ session('register') }}',
-                confirmButtonColor: '#8B7FB8',
-                confirmButtonText: 'OK'
             });
         </script>
     @endif
@@ -180,8 +174,6 @@
                 icon: 'error',
                 title: 'Login Gagal, Password atau Username Salah',
                 text: '{{ session('error') }}',
-                confirmButtonColor: '#8B7FB8',
-                confirmButtonText: 'OK'
             });
         </script>
     @endif

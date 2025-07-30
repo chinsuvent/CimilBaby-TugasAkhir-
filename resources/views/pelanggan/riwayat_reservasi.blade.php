@@ -4,6 +4,33 @@
     <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-2 mb-3">
         <h1 class="m-0 text-title text-md-left text-center text-md-h4">Data Reservasi</h1>
     </div>
+    <div class="mt-2 d-flex flex-wrap gap-3">
+        <button type="button" class="btn btn-tambah mr-3"
+            data-bs-toggle="modal"
+            data-bs-target="#reservasiModal"
+            data-layanan="Harian"
+            data-biaya="{{ $layanans['Harian']->biaya }}">
+            Buat Reservasi Harian
+        </button>
+
+        <button type="button" class="btn btn-success mr-3"
+            data-bs-toggle="modal"
+            data-bs-target="#reservasiModal"
+            data-layanan="Bulanan"
+            data-biaya="{{ $layanans['Bulanan']->biaya }}">
+            Buat Reservasi Bulanan
+        </button>
+
+        <button type="button" class="btn btn-warning text-white"
+            data-bs-toggle="modal"
+            data-bs-target="#reservasiModal"
+            data-layanan="Khusus"
+            data-biaya="{{ $layanans['Khusus']->biaya }}">
+            Buat Reservasi Khusus
+        </button>
+    </div>
+
+
     <hr />
 
     {{-- @if (session('error'))
@@ -69,6 +96,14 @@
             });
         @endif
 
+        @if (session('error'))
+            Swal.fire({
+                title: 'Gagal!',
+                text: 'Reservasi Gagal Dibuat. Hanya Bisa Satu Kali Reservasi.',
+                confirmButtonColor: '#9672F3',
+            });
+        @endif
+
 
         // Harus tetap dimuat selalu
         function hapus(button) {
@@ -101,8 +136,8 @@
                     {{-- <th>Usia</th> --}}
                     <th>Nama Orang Tua</th>
                     <th>Jenis Layanan</th>
-                    <th>Tanggal Masuk</th>
-                    <th>Tanggal Keluar</th>
+                    <th>Tanggal Mulai</th>
+                    <th>Tanggal Selesai</th>
                     {{-- <th>Durasi</th> --}}
                     <th>Total</th>
                     <th>Metode Pembayaran</th>
@@ -222,6 +257,71 @@
     @endif
 @endforeach
 
+        @auth
+           <!-- Modal Reservasi -->
+            <div class="modal fade" id="reservasiModal" tabindex="-1" aria-labelledby="reservasiModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content rounded-4" style="background-color: #C9A7F3; color: white;">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title w-100 text-center fw-bold text-white" id="modalReservasiLabel">Form Reservasi</h5>
+                    <button type="button" class="border-0 bg-transparent" data-bs-dismiss="modal" aria-label="Tutup">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
+                            <path d="M18 6L6 18M6 6l12 12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('reservasi.store') }}" method="POST">
+                        @csrf
+                    <div class="mb-3">
+                        <input type="text" name="name" class="form-control rounded-3" placeholder="Nama Lengkap"
+                            value="{{ auth()->user()->name }}" readonly required>
+                    </div>
+                    <div class="mb-3">
+                        <select name="anaks_id" class="form-control rounded-3" required >
+                        <option value="">Pilih Anak</option>
+                       @if (!empty($anakUser) && count($anakUser) > 0)
+                            @foreach ($anakUser as $anak)
+                                <option value="{{ $anak->id }}">{{ $anak->nama_anak }}</option>
+                            @endforeach
+                        @else
+                            <option disabled>Tidak ada data anak</option>
+                        @endif
+
+                        </select>
+
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" name="jenis_layanan" id="jenisLayananInput" class="form-control rounded-3" placeholder="Jenis Layanan" readonly required>
+                    </div>
+                    <div class="row g-2 mb-3">
+                        <div class="col">
+                            <input type="date" name="tgl_masuk" id="tgl_masuk" class="form-control rounded-3" placeholder="Tanggal Masuk" required>
+                        </div>
+                        <div class="col">
+                            <input type="date" name="tgl_keluar" id="tgl_keluar" class="form-control rounded-3" placeholder="Tanggal Keluar" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" name="biaya" id="biayaInput" class="form-control rounded-3" placeholder="Biaya" readonly required>
+                    </div>
+                    <div class="mb-3">
+                        <select name="metode_pembayaran" class="form-control rounded-3" required>
+                        <option value="">Pilih Metode Pembayaran</option>
+                        <option value="cash">Cash</option>
+                        <option value="transfer">Transfer</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn w-100 rounded-pill" style="background-color: #9672F3; color: white;">Buat Reservasi</button>
+                    </form>
+                </div>
+                </div>
+            </div>
+            </div>
+            @endauth
+
+
     </div>
     <div class="d-flex justify-content-center mt-3 mb-4">
             @if ($reservasi->hasPages())
@@ -252,6 +352,166 @@ function batalReservasi(button) {
         }
     });
 }
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        let selectedLayanan = "";
+
+        // === Bagian 1: Isi layanan dan biaya dari tombol ===
+        document.querySelectorAll('button[data-bs-target="#reservasiModal"]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                const layanan = btn.getAttribute('data-layanan');
+                const biaya = btn.getAttribute('data-biaya');
+
+                selectedLayanan = layanan?.toLowerCase() ?? '';
+
+                document.getElementById('jenisLayananInput').value = layanan ?? '';
+                document.getElementById('biayaInput').value = biaya ? formatRupiah(biaya) : '';
+            });
+        });
+
+        const tglMasukInput = document.querySelector('input[name="tgl_masuk"]');
+        const tglKeluarInput = document.querySelector('input[name="tgl_keluar"]');
+
+        if (tglMasukInput) {
+            const today = new Date().toISOString().split('T')[0];
+            tglMasukInput.setAttribute('min', today);
+        }
+
+        if (tglKeluarInput) {
+            tglKeluarInput.setAttribute('readonly', true);
+            tglKeluarInput.addEventListener('keydown', function (e) {
+                e.preventDefault(); // Mencegah input via keyboard
+            });
+            tglKeluarInput.addEventListener('paste', function (e) {
+                e.preventDefault(); // Mencegah input via paste
+            });
+        }
+
+
+        // Fungsi Format Rupiah
+        function formatRupiah(angka) {
+            angka = parseInt(angka);
+            let numberString = angka.toString();
+            let sisa = numberString.length % 3;
+            let rupiah = numberString.substr(0, sisa);
+            let ribuan = numberString.substr(sisa).match(/\d{3}/gi);
+            if (ribuan) {
+                let separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+            return 'Rp. ' + rupiah;
+        }
+
+        // Ambil data tanggal merah dari API
+        async function getTanggalMerah(year) {
+            try {
+                const response = await fetch(`https://api-harilibur.vercel.app/api?year=${year}`);
+                return response.ok ? await response.json() : [];
+            } catch (err) {
+                console.error("Gagal memuat tanggal merah:", err);
+                return [];
+            }
+        }
+
+        function isTanggalMerah(dateStr, liburList) {
+            return liburList.some(item => item.holiday_date === dateStr);
+        }
+
+        function isWeekendOrHoliday(date, tanggalMerahList) {
+            const day = date.getDay();
+            const dateStr = date.toISOString().split('T')[0];
+            return day === 6 || day === 0 || isTanggalMerah(dateStr, tanggalMerahList);
+        }
+
+        (async () => {
+            const tahunIni = new Date().getFullYear();
+            const tanggalMerahList = await getTanggalMerah(tahunIni);
+
+            if (tglMasukInput && tglKeluarInput) {
+                tglMasukInput.addEventListener("change", function () {
+                    const masukDate = new Date(this.value);
+                    if (isNaN(masukDate)) return;
+
+                    if (selectedLayanan === "bulanan") {
+                        let keluarDate = new Date(masukDate);
+                        keluarDate.setDate(keluarDate.getDate() + 30);
+                        const year = keluarDate.getFullYear();
+                        const month = String(keluarDate.getMonth() + 1).padStart(2, '0');
+                        const day = String(keluarDate.getDate()).padStart(2, '0');
+                        tglKeluarInput.value = `${year}-${month}-${day}`;
+                    } else if (selectedLayanan === "harian") {
+                        tglKeluarInput.value = this.value;
+                        tglKeluarInput.setAttribute('readonly', true);
+                    } else if (selectedLayanan === "khusus") {
+    if (!isWeekendOrHoliday(masukDate, tanggalMerahList)) {
+        Swal.fire({
+            title: 'Tanggal Tidak Valid',
+            text: 'Tanggal masuk untuk layanan khusus hanya boleh hari Sabtu, Minggu, atau tanggal merah.',
+            icon: 'warning',
+            toast: true,
+            position: 'top',
+            confirmButtonText: 'OK',
+            showConfirmButton: true,
+            customClass: {
+                popup: 'small-swal'
+            }
+        });
+        this.value = "";
+        tglKeluarInput.value = "";
+        // tglKeluarInput.setAttribute('readonly', true);
+        return;
+    }
+
+    // ✅ Auto-set tanggal keluar sama dengan masuk
+    const year = masukDate.getFullYear();
+    const month = String(masukDate.getMonth() + 1).padStart(2, '0');
+    const day = String(masukDate.getDate()).padStart(2, '0');
+    tglKeluarInput.value = `${year}-${month}-${day}`;
+    // tglKeluarInput.setAttribute('readonly', true);
+}
+});
+                tglKeluarInput.addEventListener("input", function () {
+                    const keluarDate = new Date(this.value);
+                    if (selectedLayanan === "khusus" && !isWeekendOrHoliday(keluarDate, tanggalMerahList)) {
+                        Swal.fire({
+                            title: 'Tanggal Tidak Valid',
+                            text: 'Tanggal keluar untuk layanan khusus hanya boleh hari Sabtu, Minggu, atau tanggal merah.',
+                            icon: 'warning',
+                            toast: true,
+                            position: 'top',
+                            confirmButtonText: 'OK',
+                            showConfirmButton: true,
+                            customClass: {
+                                popup: 'small-swal'
+                            }
+                        });
+                        this.value = "";
+                    }
+                });
+            }
+        })();
+    });
+
+    const modalElement = document.getElementById('reservasiModal');
+    if (modalElement) {
+        modalElement.addEventListener('hidden.bs.modal', function () {
+    modalElement.querySelectorAll('input, select, textarea').forEach(function (input) {
+        const name = input.getAttribute('name');
+        if (name !== 'name') { // jangan reset field nama
+            input.value = '';
+            input.removeAttribute('readonly');
+        }
+    });
+});
+
+    }
+
+
+
+
+
+
 </script>
 @endpush
 

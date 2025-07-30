@@ -137,8 +137,8 @@
                     {{-- <th>Usia</th> --}}
                     <th>Nama Orang Tua</th>
                     <th>Jenis Layanan</th>
-                    <th>Tanggal Masuk</th>
-                    <th>Tanggal Keluar</th>
+                    <th>Tanggal Mulai</th>
+                    <th>Tanggal Selesai</th>
                     {{-- <th>Durasi</th> --}}
                     <th>Total</th>
                     <th>Metode Pembayaran</th>

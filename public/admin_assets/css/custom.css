@@ -552,6 +552,8 @@ hr {
         background-color: #0a58ca;
     }
 
+
+
 @media (max-width: 768px) {
     .sidebar {
         width: 250px !important;

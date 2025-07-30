@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Reservasi;
 use Illuminate\Http\Request;
 use App\Models\Anak;
+use App\Models\OrangTua;
 use App\Models\PengajuanPembatalan;
 use App\Models\Layanan;
 use Illuminate\Support\Facades\Log;
@@ -13,23 +14,39 @@ use Carbon\Carbon;
 
 
 
+
 class ReservasiPelangganController extends Controller
 {
+
     public function index()
     {
         $orangTua = Auth::user()->orangTua;
-        $anakUser = $orangTua->anak;
+
+        if (!$orangTua) {
+            return back()->with('error', 'Data orang tua tidak ditemukan. Silakan lengkapi profil terlebih dahulu.');
+        }
+
+        $anakUser = $orangTua->anaks;
 
         $reservasi = Reservasi::with('pengajuanPembatalan')->whereIn('anaks_id', function ($query) use ($orangTua) {
             $query->select('id')
                 ->from('anaks')
                 ->where('orang_tua_id', $orangTua->id);
-        })->orderBy('created_at', 'desc')->get(); // Ambil semua untuk bisa update status
+        })->orderBy('created_at', 'desc')->get();
+
+        $reservasi_diterima = Reservasi::with('pengajuanPembatalan')
+        ->where('status', 'Diterima') 
+        ->whereIn('anaks_id', function ($query) use ($orangTua) {
+            $query->select('id')
+                ->from('anaks')
+                ->where('orang_tua_id', $orangTua->id);
+        })
+        ->orderBy('created_at', 'desc')
+        ->get();
 
         $today = Carbon::today();
 
-        // Cek status selesai
-        foreach ($reservasi as $rs) {
+        foreach ($reservasi_diterima as $rs) {
             if (
                 $rs->status === 'Diterima' &&
                 Carbon::parse($rs->tgl_masuk)->lt($today) &&
@@ -40,14 +57,26 @@ class ReservasiPelangganController extends Controller
             }
         }
 
-        // Paginate setelah update
-        $paginator = $reservasi->sortByDesc('created_at')->paginate(10);
+        $paginator = Reservasi::with('pengajuanPembatalan')
+        ->whereIn('anaks_id', function ($query) use ($orangTua) {
+            $query->select('id')
+                ->from('anaks')
+                ->where('orang_tua_id', $orangTua->id);
+        })
+        ->orderBy('created_at', 'desc')
+        ->paginate(10);
+
+
+        // Ambil biaya layanan
+        $layanans = Layanan::all()->keyBy('jenis_layanan');
 
         return view('pelanggan.riwayat_reservasi', [
             'reservasi' => $paginator,
-            'anakUser' => $anakUser
+            'anakUser' => $anakUser,
+            'layanans' => $layanans
         ]);
     }
+
 
 
     // Fungsi ajukan pembatalan
@@ -248,46 +277,85 @@ public function show($id)
     }
 
 
-    public function store(Request $request)
-    {
-         Log::info('User saat reservasi: ', ['user' => Auth::user()]);
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'anaks_id' => 'required|exists:anaks,id',
-            'jenis_layanan' => 'required|string|max:255',
-            'tgl_masuk' => 'required|date|after_or_equal:today',
-            'tgl_keluar' => 'required|date|after_or_equal:tgl_masuk',
-            'biaya' => 'required|string|max:255',
-            'metode_pembayaran' => 'required|string|in:cash,transfer',
-        ]);
+public function store(Request $request)
+{
+    $validated = $request->validate([
+        'anaks_id' => 'required|exists:anaks,id',
+        'jenis_layanan' => 'required|in:harian,bulanan,khusus',
+        'tgl_masuk' => 'required|date',
+        'tgl_keluar' => 'required_if:jenis_layanan,bulanan,harian|nullable|date|after_or_equal:tgl_masuk',
+    ]);
 
-        $pelanggan = Auth::user();
+    $user = Auth::user();
+    $orangTua = OrangTua::where('user_id', $user->id)->firstOrFail();
 
-        Reservasi::create([
-            'name' => $validated['name'],
-            'anaks_id' => $validated['anaks_id'],
-            'layanans_id' => Layanan::where('jenis_layanan', $validated['jenis_layanan'])->first()->id,
-            'jenis_layanan' => $validated['jenis_layanan'],
-            'tgl_masuk' => $validated['tgl_masuk'],
-            'tgl_keluar' => $validated['tgl_keluar'],
-            'biaya' => $validated['biaya'],
-            'metode_pembayaran' => $validated['metode_pembayaran'],
-            'status' => 'Pending', // status default reservasi baru
-        ]);
+    // Validasi tumpang tindih reservasi
+    $reservasiAktif = false;
 
-        $pesan = "*Reservasi Baru Masuk!*\n\n"
-           . "Layanan: {$validated['jenis_layanan']}\n"
-           . "Tanggal Masuk: {$validated['tgl_masuk']}\n"
-           . "Tanggal Keluar: {$validated['tgl_keluar']}\n"
-           . "Biaya: {$validated['biaya']}\n"
-           . "Metode Bayar: {$validated['metode_pembayaran']}";
+    if (in_array($validated['jenis_layanan'], ['harian', 'bulanan'])) {
+        // Tidak boleh tumpang tindih dengan reservasi harian/bulanan lainnya
+        $reservasiAktif = Reservasi::whereHas('anak', function ($query) use ($orangTua, $validated) {
+                $query->where('orang_tua_id', $orangTua->id)
+                      ->where('id', $validated['anaks_id']);
+            })
+            ->where(function ($query) use ($validated) {
+                $query->whereBetween('tgl_masuk', [$validated['tgl_masuk'], $validated['tgl_keluar']])
+                      ->orWhereBetween('tgl_keluar', [$validated['tgl_masuk'], $validated['tgl_keluar']])
+                      ->orWhere(function ($query) use ($validated) {
+                          $query->where('tgl_masuk', '<=', $validated['tgl_masuk'])
+                                ->where('tgl_keluar', '>=', $validated['tgl_keluar']);
+                      });
+            })
+            ->whereIn('jenis_layanan', ['harian', 'bulanan'])
+            ->exists();
 
-    // Kirim WA ke admin
-    $this->kirimWhatsappAdmin($pesan);
+        if ($reservasiAktif) {
+            return redirect()->back()->with('error', 'Sudah ada reservasi harian/bulanan aktif di rentang tanggal tersebut.');
+        }
 
-        return redirect()->route('pelanggan.riwayat_reservasi')->with('success', 'Reservasi berhasil dikirim!');
+        // Tambahan validasi harian hanya boleh satu di satu tanggal
+        if ($validated['jenis_layanan'] === 'harian') {
+            $duplicateHarian = Reservasi::whereHas('anak', function ($query) use ($orangTua, $validated) {
+                    $query->where('orang_tua_id', $orangTua->id)
+                          ->where('id', $validated['anaks_id']);
+                })
+                ->where('jenis_layanan', 'harian')
+                ->whereDate('tgl_masuk', $validated['tgl_masuk'])
+                ->exists();
 
+            if ($duplicateHarian) {
+                return redirect()->back()->with('error', 'Anda sudah memiliki reservasi harian pada tanggal tersebut.');
+            }
+        }
+
+    } elseif ($validated['jenis_layanan'] === 'khusus') {
+        // Khusus hanya boleh satu per tanggal
+        $reservasiAktif = Reservasi::whereHas('anak', function ($query) use ($orangTua, $validated) {
+                $query->where('orang_tua_id', $orangTua->id)
+                      ->where('id', $validated['anaks_id']);
+            })
+            ->where('jenis_layanan', 'khusus')
+            ->whereDate('tgl_masuk', $validated['tgl_masuk'])
+            ->exists();
+
+        if ($reservasiAktif) {
+            return redirect()->back()->with('error', 'Anda sudah memiliki reservasi layanan khusus di tanggal tersebut.');
+        }
     }
+
+    // Simpan reservasi
+    Reservasi::create([
+        'anaks_id' => $validated['anaks_id'],
+        'jenis_layanan' => $validated['jenis_layanan'],
+        'tgl_masuk' => $validated['tgl_masuk'],
+        'tgl_keluar' => $validated['jenis_layanan'] === 'khusus' ? $validated['tgl_masuk'] : $validated['tgl_keluar'],
+        'status' => 'Menunggu Konfirmasi',
+    ]);
+
+    return redirect()->route('riwayat-reservasi.index')->with('success', 'Reservasi berhasil dibuat.');
+}
+
+
 
 
 }

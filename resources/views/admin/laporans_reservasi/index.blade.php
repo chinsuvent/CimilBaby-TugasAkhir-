@@ -171,8 +171,8 @@
             <th>Nama Lengkap</th>
             <th>Nama Anak</th>
             <th>Jenis Layanan</th>
-            <th>Tanggal Masuk</th>
-            <th>Tanggal Keluar</th>
+            <th>Tanggal Mulai</th>
+            <th>Tanggal Selesai</th>
             <th>Biaya</th>
             <th>Status</th>
           </tr>

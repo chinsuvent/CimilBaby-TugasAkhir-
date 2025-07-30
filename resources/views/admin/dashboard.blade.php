@@ -83,8 +83,8 @@
                     <th>Nama Anak</th>
                     <th>Nama Orang Tua</th>
                     <th>Jenis Layanan</th>
-                    <th>Tanggal Masuk</th>
-                    <th>Tanggal Keluar</th>
+                    <th>Tanggal Mulai</th>
+                    <th>Tanggal Selesai</th>
                     <th>Status</th>
                     <th>Aksi</th>
                 </tr>

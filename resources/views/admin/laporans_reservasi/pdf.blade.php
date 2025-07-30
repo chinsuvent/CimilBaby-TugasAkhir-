@@ -25,7 +25,7 @@
                 <th>Nama Anak</th>
                 <th>Jenis Kelamin</th>
                 <th>Layanan</th>
-                <th>Tanggal Masuk</th>
+                <th>Tanggal Mulai</th>
                 <th>Status</th>
             </tr>
         </thead>
