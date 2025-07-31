@@ -26,6 +26,6 @@ class SettingController extends Controller
     public function getFooterSetting()
     {
         $waSetting = Setting::where('key', 'admin_whatsapp')->first();
-        return view('partials.footer', compact('waSetting'));
+        return view('admin.layouts.footer', compact('waSetting'));
     }
 }

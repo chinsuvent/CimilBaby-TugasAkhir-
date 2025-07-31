@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use App\Models\WhatsappConfig;
 
 
 class ReservasiController extends Controller
@@ -111,29 +112,36 @@ class ReservasiController extends Controller
     }
 
     protected function kirimWhatsapp($targetPhone, $message)
-    {
-        $token = env('FONNTE_API_KEY');
+{
+    $config = WhatsappConfig::first(); // ambil konfigurasi pertama
 
-        $curl = curl_init();
-        curl_setopt_array($curl, [
-            CURLOPT_URL => "https://api.fonnte.com/send",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_POST => true,
-            CURLOPT_POSTFIELDS => [
-                'target' => $targetPhone,
-                'message' => $message,
-                'countryCode' => '62', // pastikan 62 untuk Indonesia
-            ],
-            CURLOPT_HTTPHEADER => [
-                "Authorization: $token"
-            ],
-        ]);
-
-        $response = curl_exec($curl);
-        curl_close($curl);
-
-        Log::info("WA sent to $targetPhone | Message: $message | Response: $response");
+    if (!$config || !$config->api_key || !$config->number) {
+        Log::error('Gagal kirim WA: Konfigurasi WhatsApp tidak lengkap.');
+        return;
     }
+
+    $token = $config->api_key;
+
+    $curl = curl_init();
+    curl_setopt_array($curl, [
+        CURLOPT_URL => "https://api.fonnte.com/send",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POST => true,
+        CURLOPT_POSTFIELDS => [
+            'target' => $targetPhone,
+            'message' => $message,
+            'countryCode' => '62',
+        ],
+        CURLOPT_HTTPHEADER => [
+            "Authorization: $token"
+        ],
+    ]);
+
+    $response = curl_exec($curl);
+    curl_close($curl);
+
+    Log::info("WA sent to $targetPhone | Message: $message | Response: $response");
+}
 
 
 

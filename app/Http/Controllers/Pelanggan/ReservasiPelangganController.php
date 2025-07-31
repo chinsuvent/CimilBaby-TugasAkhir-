@@ -238,43 +238,43 @@ public function show($id)
     }
 
     protected function kirimWhatsappAdmin($message)
-    {
-        $token = env('FONNTE_API_KEY');
+{
+    // Ambil data dari whatsapp_configs
+    $config = \App\Models\WhatsappConfig::first();
 
-        // Ambil nomor dari tabel settings
-        $setting = \App\Models\Setting::where('key', 'admin_whatsapp')->first();
-        $adminPhone = $setting?->value ?? null;
-
-        if (!$adminPhone) {
-            Log::error('Nomor admin tidak ditemukan di settings.');
-            return;
-        }
-
-        // Format: ubah 08xxxx jadi 62xxxx
-        if (str_starts_with($adminPhone, '08')) {
-            $adminPhone = '62' . substr($adminPhone, 1);
-        }
-
-        $curl = curl_init();
-
-        curl_setopt_array($curl, [
-            CURLOPT_URL => "https://api.fonnte.com/send",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_POST => true,
-            CURLOPT_POSTFIELDS => [
-                'target' => $adminPhone,
-                'message' => $message,
-            ],
-            CURLOPT_HTTPHEADER => [
-                "Authorization: $token"
-            ],
-        ]);
-
-        $response = curl_exec($curl);
-        curl_close($curl);
-
-        Log::info('Fonnte WA response:', ['response' => $response]);
+    if (!$config || !$config->api_key || !$config->number) {
+        Log::error('Konfigurasi WhatsApp tidak ditemukan atau belum lengkap.');
+        return;
     }
+
+    $adminPhone = $config->number;
+    $token = $config->api_key;
+
+    // Format nomor: ubah 08xxx jadi 62xxx jika perlu
+    if (str_starts_with($adminPhone, '08')) {
+        $adminPhone = '62' . substr($adminPhone, 1);
+    }
+
+    $curl = curl_init();
+
+    curl_setopt_array($curl, [
+        CURLOPT_URL => "https://api.fonnte.com/send",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POST => true,
+        CURLOPT_POSTFIELDS => [
+            'target' => $adminPhone,
+            'message' => $message,
+        ],
+        CURLOPT_HTTPHEADER => [
+            "Authorization: $token"
+        ],
+    ]);
+
+    $response = curl_exec($curl);
+    curl_close($curl);
+
+    Log::info('Fonnte WA response:', ['response' => $response]);
+}
 
 
 public function store(Request $request)

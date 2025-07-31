@@ -19,6 +19,7 @@ use App\Http\Controllers\Pelanggan\ReservasiPelangganController;
 use App\Http\Controllers\Auth\ForgotPasswordWAController;
 use App\Http\Controllers\CheckinCheckoutController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\WhatsappConfigController;
 
 
 use Illuminate\Support\Facades\Route;
@@ -277,6 +278,13 @@ Route::get('/admin/reservasis/search', [ReservasiController::class, 'search'])->
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/kehadiran-anak', [CheckinCheckoutController::class, 'indexOrangtua'])->name('pelanggan.kehadiran');
+});
+
+
+Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
+    Route::get('whatsapp', [WhatsappConfigController::class, 'index'])->name('whatsapp.index');
+    Route::get('whatsapp/edit', [WhatsappConfigController::class, 'edit'])->name('whatsapp.edit');
+    Route::post('whatsapp/update', [WhatsappConfigController::class, 'update'])->name('whatsapp.update');
 });
 
 
