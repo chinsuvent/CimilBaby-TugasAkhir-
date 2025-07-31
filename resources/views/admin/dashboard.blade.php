@@ -28,20 +28,34 @@
     @endif
 
    <div class="row card-dashboard justify-content-center">
-    <div class="col-12 col-sm-6 col-md-4 col-xl-3 mb-3 text-center">
+    <div class="col-12 col-sm-6 col-md-3 mb-3 text-center">
         <div class="card card-reservasi shadow h-100 py-4">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col">
-                        <div class="mb-4 mt-2">Reservasi Hari Ini</div>
-                        <div class="h5 mb-2" style="font-size: 28px;">{{ $totalReservasiHariIni }}</div>
+                        <div class="mb-4 mt-2">Total Reservasi Diterima</div>
+                        <div class="h5 mb-2" style="font-size: 28px;">{{ $totalReservasiDiterima }}</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="col-12 col-sm-6 col-md-4 col-xl-3 mb-3 text-center">
+    <div class="col-12 col-sm-6 col-md-3 mb-3 text-center">
+        <div class="card card-ditolak shadow h-100 py-4">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col">
+                        <div class="mb-4 mt-2">Total Reservasi Ditolak</div>
+                        <div class="h5 mb-2" style="font-size: 28px;">{{ $totalReservasiDitolak }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-12 col-sm-6 col-md-3 mb-3 text-center">
         <div class="card card-konfirmasi shadow h-100 py-4">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
@@ -54,7 +68,7 @@
         </div>
     </div>
 
-    <div class="col-12 col-sm-6 col-md-4 col-xl-3 mb-3 text-center">
+    <div class="col-12 col-sm-6 col-md-3 mb-3 text-center">
         <div class="card card-jumlah shadow h-100 py-4">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">

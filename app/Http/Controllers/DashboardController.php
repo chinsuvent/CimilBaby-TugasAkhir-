@@ -17,7 +17,11 @@ class DashboardController extends Controller
     public function index()
 {
     // Hitung reservasi hari ini
-    $totalReservasiHariIni = Reservasi::whereDate('tgl_masuk', today())->count();
+    $totalReservasiDiterima = Reservasi::where('status', 'Diterima')->count();
+
+    $totalReservasiDitolak = Reservasi::where('status', 'Ditolak')->count();
+
+
 
     // Hitung reservasi pending
     $totalReservasiPending = Reservasi::where('status', 'Pending')->count();
@@ -65,7 +69,8 @@ class DashboardController extends Controller
     }
 
     return view('admin.dashboard', compact(
-        'totalReservasiHariIni',
+        'totalReservasiDiterima',
+        'totalReservasiDitolak',
         'totalReservasiPending',
         'jumlahAnakHariIni',
         'reservasi',

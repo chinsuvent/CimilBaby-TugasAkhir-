@@ -15,12 +15,7 @@ thead.table-kehadiran th {
 }
 
 
-hr {
-    border: none;
-    color: white;
-    display: none;
-    height: 0;
-}
+
 
 
 
@@ -67,9 +62,9 @@ th {
     border: 1px solid #e0d7d7 !important;
 }
 
-.card-dashboard {
-    gap: 2rem;
-}
+/* .card-dashboard {
+    gap: 1rem;
+} */
 
 .card-reservasi {
     background-color: #ff8282 !important;
@@ -87,6 +82,13 @@ th {
 
 .card-jumlah {
     background-color: #7aa2e3 !important;
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.card-ditolak {
+    background-color: #39d398 !important;
     color: white;
     font-size: 18px;
     font-weight: 600;
