@@ -99,7 +99,7 @@
         @if (session('error'))
             Swal.fire({
                 title: 'Gagal!',
-                text: 'Reservasi Gagal Dibuat. Hanya Bisa Satu Kali Reservasi.',
+                text: 'Reservasi Gagal Dibuat. Reservasi Hanya Bisa Dilakukan Satu Kali.',
                 confirmButtonColor: '#9672F3',
             });
         @endif

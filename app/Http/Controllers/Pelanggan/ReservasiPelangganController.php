@@ -35,7 +35,7 @@ class ReservasiPelangganController extends Controller
         })->orderBy('created_at', 'desc')->get();
 
         $reservasi_diterima = Reservasi::with('pengajuanPembatalan')
-        ->where('status', 'Diterima') 
+        ->where('status', 'Diterima')
         ->whereIn('anaks_id', function ($query) use ($orangTua) {
             $query->select('id')
                 ->from('anaks')
@@ -279,81 +279,59 @@ public function show($id)
 
 public function store(Request $request)
 {
+    Log::info('User saat reservasi: ', ['user' => Auth::user()]);
+
     $validated = $request->validate([
+        'name' => 'required|string|max:255',
         'anaks_id' => 'required|exists:anaks,id',
-        'jenis_layanan' => 'required|in:harian,bulanan,khusus',
-        'tgl_masuk' => 'required|date',
-        'tgl_keluar' => 'required_if:jenis_layanan,bulanan,harian|nullable|date|after_or_equal:tgl_masuk',
+        'jenis_layanan' => 'required|string|max:255',
+        'tgl_masuk' => 'required|date|after_or_equal:today',
+        'tgl_keluar' => 'required|date|after_or_equal:tgl_masuk',
+        'biaya' => 'required|string|max:255',
+        'metode_pembayaran' => 'required|string|in:cash,transfer',
     ]);
 
-    $user = Auth::user();
-    $orangTua = OrangTua::where('user_id', $user->id)->firstOrFail();
+    $overlap = Reservasi::where('anaks_id', $validated['anaks_id'])
+        ->where(function($query) use ($validated) {
+            $query->whereBetween('tgl_masuk', [$validated['tgl_masuk'], $validated['tgl_keluar']])
+                  ->orWhereBetween('tgl_keluar', [$validated['tgl_masuk'], $validated['tgl_keluar']])
+                  ->orWhere(function ($query2) use ($validated) {
+                      $query2->where('tgl_masuk', '<=', $validated['tgl_masuk'])
+                             ->where('tgl_keluar', '>=', $validated['tgl_keluar']);
+                  });
+        })
+        ->first();
 
-    // Validasi tumpang tindih reservasi
-    $reservasiAktif = false;
-
-    if (in_array($validated['jenis_layanan'], ['harian', 'bulanan'])) {
-        // Tidak boleh tumpang tindih dengan reservasi harian/bulanan lainnya
-        $reservasiAktif = Reservasi::whereHas('anak', function ($query) use ($orangTua, $validated) {
-                $query->where('orang_tua_id', $orangTua->id)
-                      ->where('id', $validated['anaks_id']);
-            })
-            ->where(function ($query) use ($validated) {
-                $query->whereBetween('tgl_masuk', [$validated['tgl_masuk'], $validated['tgl_keluar']])
-                      ->orWhereBetween('tgl_keluar', [$validated['tgl_masuk'], $validated['tgl_keluar']])
-                      ->orWhere(function ($query) use ($validated) {
-                          $query->where('tgl_masuk', '<=', $validated['tgl_masuk'])
-                                ->where('tgl_keluar', '>=', $validated['tgl_keluar']);
-                      });
-            })
-            ->whereIn('jenis_layanan', ['harian', 'bulanan'])
-            ->exists();
-
-        if ($reservasiAktif) {
-            return redirect()->back()->with('error', 'Sudah ada reservasi harian/bulanan aktif di rentang tanggal tersebut.');
-        }
-
-        // Tambahan validasi harian hanya boleh satu di satu tanggal
-        if ($validated['jenis_layanan'] === 'harian') {
-            $duplicateHarian = Reservasi::whereHas('anak', function ($query) use ($orangTua, $validated) {
-                    $query->where('orang_tua_id', $orangTua->id)
-                          ->where('id', $validated['anaks_id']);
-                })
-                ->where('jenis_layanan', 'harian')
-                ->whereDate('tgl_masuk', $validated['tgl_masuk'])
-                ->exists();
-
-            if ($duplicateHarian) {
-                return redirect()->back()->with('error', 'Anda sudah memiliki reservasi harian pada tanggal tersebut.');
-            }
-        }
-
-    } elseif ($validated['jenis_layanan'] === 'khusus') {
-        // Khusus hanya boleh satu per tanggal
-        $reservasiAktif = Reservasi::whereHas('anak', function ($query) use ($orangTua, $validated) {
-                $query->where('orang_tua_id', $orangTua->id)
-                      ->where('id', $validated['anaks_id']);
-            })
-            ->where('jenis_layanan', 'khusus')
-            ->whereDate('tgl_masuk', $validated['tgl_masuk'])
-            ->exists();
-
-        if ($reservasiAktif) {
-            return redirect()->back()->with('error', 'Anda sudah memiliki reservasi layanan khusus di tanggal tersebut.');
-        }
+    if ($overlap) {
+        return redirect()->back()->with('error', 'Sudah ada reservasi untuk anak ini di rentang tanggal tersebut.');
     }
 
-    // Simpan reservasi
+    $pelanggan = Auth::user();
+
     Reservasi::create([
+        'name' => $validated['name'],
         'anaks_id' => $validated['anaks_id'],
+        'layanans_id' => Layanan::where('jenis_layanan', $validated['jenis_layanan'])->first()->id,
         'jenis_layanan' => $validated['jenis_layanan'],
         'tgl_masuk' => $validated['tgl_masuk'],
-        'tgl_keluar' => $validated['jenis_layanan'] === 'khusus' ? $validated['tgl_masuk'] : $validated['tgl_keluar'],
-        'status' => 'Menunggu Konfirmasi',
+        'tgl_keluar' => $validated['tgl_keluar'],
+        'biaya' => $validated['biaya'],
+        'metode_pembayaran' => $validated['metode_pembayaran'],
+        'status' => 'Pending',
     ]);
 
-    return redirect()->route('riwayat-reservasi.index')->with('success', 'Reservasi berhasil dibuat.');
+    $pesan = "*Reservasi Baru Masuk!*\n\n"
+        . "Layanan: {$validated['jenis_layanan']}\n"
+        . "Tanggal Masuk: {$validated['tgl_masuk']}\n"
+        . "Tanggal Keluar: {$validated['tgl_keluar']}\n"
+        . "Biaya: {$validated['biaya']}\n"
+        . "Metode Bayar: {$validated['metode_pembayaran']}";
+
+    $this->kirimWhatsappAdmin($pesan);
+
+    return redirect()->back()->with('success', 'Reservasi berhasil dikirim!');
 }
+
 
 
 
