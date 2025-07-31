@@ -208,19 +208,55 @@ $('#input-cari').on('input', function () {
     };
 
     $.ajax({
-      url: "{{ route('laporans_penitipan.index') }}",
+      url: "{{ route('laporans_reservasi.index') }}",
       type: "GET",
       data: params,
-      success: function (data) {
-        // Ambil hanya bagian tabel dan pagination dari hasil response
-        const html = $(data).find('#laporan-content').html();
-        $('#laporan-content').html(html);
-      },
-      error: function () {
-        console.error("Gagal memuat data.");
-      }
-    });
-  }, debounceDelay);
+ success: function (data) {
+  const html = $(data).find('#laporan-content').html();
+  $('#laporan-content').html(html);
+
+  // Isi kembali nilai form agar tetap tampil
+  $('#input-cari').val(params.cari);
+  $('input[name="tgl_awal"]').val(params.tgl_awal);
+  $('input[name="tgl_akhir"]').val(params.tgl_akhir);
+  $('select[name="gender"]').val(params.gender);
+  $('select[name="service"]').val(params.service);
+  $('#limitInput').val(params.limit);
+
+  // Bind ulang event pagination
+  $('#laporan-content').find('.pagination a').on('click', function (e) {
+    e.preventDefault();
+    const url = new URL($(this).attr('href'));
+    const page = url.searchParams.get('page');
+
+    if (page) {
+      params.page = page;
+
+      $.ajax({
+        url: "{{ route('laporans_reservasi.index') }}",
+        type: "GET",
+        data: params,
+        success: function (data) {
+          const html = $(data).find('#laporan-content').html();
+          $('#laporan-content').html(html);
+
+          // Isi ulang form
+          $('#input-cari').val(params.cari);
+          $('input[name="tgl_awal"]').val(params.tgl_awal);
+          $('input[name="tgl_akhir"]').val(params.tgl_akhir);
+          $('select[name="gender"]').val(params.gender);
+          $('select[name="service"]').val(params.service);
+          $('#limitInput').val(params.limit);
+        },
+        error: function () {
+          console.error("Gagal load data halaman baru.");
+        }
+      });
+    }
+  });
+},
+
+
 });
 </script>
 @endsection
