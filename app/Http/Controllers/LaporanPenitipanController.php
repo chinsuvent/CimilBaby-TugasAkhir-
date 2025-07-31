@@ -48,6 +48,8 @@ class LaporanPenitipanController extends Controller
 public function cetak(Request $request)
 {
     $query = Reservasi::query();
+    $query->whereIn('status', ['Diterima', 'Selesai']);
+
 
     if ($request->filled('tgl_awal') && $request->filled('tgl_akhir')) {
         $query->whereBetween('tgl_masuk', [$request->tgl_awal, $request->tgl_akhir]);
@@ -77,10 +79,12 @@ public function cetak(Request $request)
     $laporan = $query->orderBy('tgl_masuk', 'desc')->get();
     $totalReservasi = $laporan->count();
 
-    $pdf = Pdf::loadView('admin.laporans_reservasi.pdf', compact('laporan', 'totalReservasi'))
+    $pdf = Pdf::loadView('admin.laporans_penitipan.pdf', compact('laporan', 'totalReservasi'))
         ->setPaper('A4', 'landscape');
-    return $pdf->download('admin.laporans_reservasi.pdf');
+    return $pdf->download('admin.laporans_penitipan.pdf');
 }
+
+
 
 
 }

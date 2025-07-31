@@ -4,7 +4,7 @@
     <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-2 mb-3">
         <h1 class="m-0 text-title">Data Reservasi</h1>
 
-        <form method="GET" action="{{ route('reservasis') }}" id="searchForm">
+        {{-- <form method="GET" action="{{ route('reservasis') }}" id="searchForm">
             <div class="search-wrapper d-flex align-items-center">
             <i class="fas fa-search search-icon me-2"></i>
             <input
@@ -16,7 +16,7 @@
                 id="input-cari"
             />
             </div>
-        </form>
+        </form> --}}
     </div>
     <hr />
 
@@ -89,38 +89,75 @@
             });
         }
 
-        let typingTimer;
-        const debounceDelay = 500;
 
-        $('#input-cari').on('input', function () {
-        clearTimeout(typingTimer);
-        const search = $(this).val();
+let typingTimer;
+const debounceDelay = 500;
 
-        typingTimer = setTimeout(() => {
-            const params = {
-            cari: search,
-            tgl_awal: $('input[name="tgl_awal"]').val(),
-            tgl_akhir: $('input[name="tgl_akhir"]').val(),
-            gender: $('select[name="gender"]').val(),
-            service: $('select[name="service"]').val(),
-            limit: $('#limitInput').val()
-            };
+$('#input-cari').on('input', function () {
+  clearTimeout(typingTimer);
+  const search = $(this).val();
 
-            $.ajax({
-            url: "{{ route('reservasis') }}",
-            type: "GET",
-            data: params,
-            success: function (data) {
-                // Ambil hanya bagian tabel dan pagination dari hasil response
-                const html = $(data).find('#reservasi-content').html();
-                $('#reservasi-content').html(html);
-            },
-            error: function () {
-                console.error("Gagal memuat data.");
-            }
-            });
-        }, debounceDelay);
-        });
+  typingTimer = setTimeout(() => {
+    const params = {
+      cari: search,
+      tgl_awal: $('input[name="tgl_awal"]').val(),
+      tgl_akhir: $('input[name="tgl_akhir"]').val(),
+      gender: $('select[name="gender"]').val(),
+      service: $('select[name="service"]').val(),
+      limit: $('#limitInput').val()
+    };
+
+    $.ajax({
+      url: "{{ route('laporans_penitipan.index') }}",
+      type: "GET",
+      data: params,
+ success: function (data) {
+  const html = $(data).find('#laporan-content').html();
+  $('#laporan-content').html(html);
+
+  // Isi kembali nilai form agar tetap tampil
+  $('#input-cari').val(params.cari);
+  $('input[name="tgl_awal"]').val(params.tgl_awal);
+  $('input[name="tgl_akhir"]').val(params.tgl_akhir);
+  $('select[name="gender"]').val(params.gender);
+  $('select[name="service"]').val(params.service);
+  $('#limitInput').val(params.limit);
+
+  // Bind ulang event pagination
+  $('#laporan-content').find('.pagination a').on('click', function (e) {
+    e.preventDefault();
+    const url = new URL($(this).attr('href'));
+    const page = url.searchParams.get('page');
+
+    if (page) {
+      params.page = page;
+
+      $.ajax({
+        url: "{{ route('laporans_penitipan.index') }}",
+        type: "GET",
+        data: params,
+        success: function (data) {
+          const html = $(data).find('#laporan-content').html();
+          $('#laporan-content').html(html);
+
+          // Isi ulang form
+          $('#input-cari').val(params.cari);
+          $('input[name="tgl_awal"]').val(params.tgl_awal);
+          $('input[name="tgl_akhir"]').val(params.tgl_akhir);
+          $('select[name="gender"]').val(params.gender);
+          $('select[name="service"]').val(params.service);
+          $('#limitInput').val(params.limit);
+        },
+        error: function () {
+          console.error("Gagal load data halaman baru.");
+        }
+      });
+    }
+  });
+},
+
+
+});
 
 
     </script>

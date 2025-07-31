@@ -208,7 +208,7 @@ $('#input-cari').on('input', function () {
     };
 
     $.ajax({
-      url: "{{ route('laporans_reservasi.index') }}",
+      url: "{{ route('laporans_penitipan.index') }}",
       type: "GET",
       data: params,
  success: function (data) {
@@ -233,7 +233,7 @@ $('#input-cari').on('input', function () {
       params.page = page;
 
       $.ajax({
-        url: "{{ route('laporans_reservasi.index') }}",
+        url: "{{ route('laporans_penitipan.index') }}",
         type: "GET",
         data: params,
         success: function (data) {

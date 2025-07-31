@@ -429,48 +429,68 @@ function batalReservasi(button) {
             const tanggalMerahList = await getTanggalMerah(tahunIni);
 
             if (tglMasukInput && tglKeluarInput) {
-                tglMasukInput.addEventListener("change", function () {
-                    const masukDate = new Date(this.value);
-                    if (isNaN(masukDate)) return;
+               tglMasukInput.addEventListener("change", function () {
+    const masukDate = new Date(this.value);
+    if (isNaN(masukDate)) return;
 
-                    if (selectedLayanan === "bulanan") {
-                        let keluarDate = new Date(masukDate);
-                        keluarDate.setDate(keluarDate.getDate() + 30);
-                        const year = keluarDate.getFullYear();
-                        const month = String(keluarDate.getMonth() + 1).padStart(2, '0');
-                        const day = String(keluarDate.getDate()).padStart(2, '0');
-                        tglKeluarInput.value = `${year}-${month}-${day}`;
-                    } else if (selectedLayanan === "harian") {
-                        tglKeluarInput.value = this.value;
-                        tglKeluarInput.setAttribute('readonly', true);
-                    } else if (selectedLayanan === "khusus") {
-    if (!isWeekendOrHoliday(masukDate, tanggalMerahList)) {
-        Swal.fire({
-            title: 'Tanggal Tidak Valid',
-            text: 'Tanggal masuk untuk layanan khusus hanya boleh hari Sabtu, Minggu, atau tanggal merah.',
-            icon: 'warning',
-            toast: true,
-            position: 'top',
-            confirmButtonText: 'OK',
-            showConfirmButton: true,
-            customClass: {
-                popup: 'small-swal'
-            }
-        });
-        this.value = "";
-        tglKeluarInput.value = "";
-        // tglKeluarInput.setAttribute('readonly', true);
-        return;
+    // ❌ Tidak boleh Sabtu/Minggu untuk layanan harian dan bulanan
+    if (selectedLayanan === "harian" || selectedLayanan === "bulanan") {
+        const day = masukDate.getDay();
+        if (day === 0 || day === 6) {
+            Swal.fire({
+                title: 'Tanggal Tidak Valid',
+                text: 'Layanan harian dan bulanan tidak tersedia pada hari Sabtu atau Minggu.',
+                icon: 'warning',
+                toast: true,
+                position: 'top',
+                confirmButtonText: 'OK',
+                showConfirmButton: true,
+                customClass: {
+                    popup: 'small-swal'
+                }
+            });
+            this.value = "";
+            tglKeluarInput.value = "";
+            return;
+        }
     }
 
-    // ✅ Auto-set tanggal keluar sama dengan masuk
-    const year = masukDate.getFullYear();
-    const month = String(masukDate.getMonth() + 1).padStart(2, '0');
-    const day = String(masukDate.getDate()).padStart(2, '0');
-    tglKeluarInput.value = `${year}-${month}-${day}`;
-    // tglKeluarInput.setAttribute('readonly', true);
-}
+    if (selectedLayanan === "bulanan") {
+        let keluarDate = new Date(masukDate);
+        keluarDate.setDate(keluarDate.getDate() + 30);
+        const year = keluarDate.getFullYear();
+        const month = String(keluarDate.getMonth() + 1).padStart(2, '0');
+        const day = String(keluarDate.getDate()).padStart(2, '0');
+        tglKeluarInput.value = `${year}-${month}-${day}`;
+    } else if (selectedLayanan === "harian") {
+        tglKeluarInput.value = this.value;
+        tglKeluarInput.setAttribute('readonly', true);
+    } else if (selectedLayanan === "khusus") {
+        if (!isWeekendOrHoliday(masukDate, tanggalMerahList)) {
+            Swal.fire({
+                title: 'Tanggal Tidak Valid',
+                text: 'Tanggal masuk untuk layanan khusus hanya boleh hari Sabtu, Minggu, atau tanggal merah.',
+                icon: 'warning',
+                toast: true,
+                position: 'top',
+                confirmButtonText: 'OK',
+                showConfirmButton: true,
+                customClass: {
+                    popup: 'small-swal'
+                }
+            });
+            this.value = "";
+            tglKeluarInput.value = "";
+            return;
+        }
+
+        const year = masukDate.getFullYear();
+        const month = String(masukDate.getMonth() + 1).padStart(2, '0');
+        const day = String(masukDate.getDate()).padStart(2, '0');
+        tglKeluarInput.value = `${year}-${month}-${day}`;
+    }
 });
+
                 tglKeluarInput.addEventListener("input", function () {
                     const keluarDate = new Date(this.value);
                     if (selectedLayanan === "khusus" && !isWeekendOrHoliday(keluarDate, tanggalMerahList)) {

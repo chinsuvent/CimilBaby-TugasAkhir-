@@ -291,6 +291,15 @@ public function store(Request $request)
         'metode_pembayaran' => 'required|string|in:cash,transfer',
     ]);
 
+    $masukDate = Carbon::parse($validated['tgl_masuk']);
+    $layanan = strtolower($validated['jenis_layanan']);
+    $day = $masukDate->dayOfWeek;
+
+    if (in_array($layanan, ['harian', 'bulanan']) && ($day === Carbon::SATURDAY || $day === Carbon::SUNDAY)) {
+        return redirect()->back()->with('error', 'Reservasi layanan harian atau bulanan tidak tersedia pada hari Sabtu atau Minggu.');
+    }
+
+
     $overlap = Reservasi::where('anaks_id', $validated['anaks_id'])
         ->where(function($query) use ($validated) {
             $query->whereBetween('tgl_masuk', [$validated['tgl_masuk'], $validated['tgl_keluar']])
