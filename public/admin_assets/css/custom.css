@@ -4,6 +4,26 @@
     text-align: center;
 }
 
+thead.table-kehadiran th {
+    background-color: #8e7dbe !important;
+    color: white !important;
+    text-align: center;
+}
+
+.table-kehadiran + tbody td {
+    color: grey !important;
+}
+
+
+hr {
+    border: none;
+    color: white;
+    display: none;
+    height: 0;
+}
+
+
+
 .btn-primary {
     background-color: #8e7dbe;
 }

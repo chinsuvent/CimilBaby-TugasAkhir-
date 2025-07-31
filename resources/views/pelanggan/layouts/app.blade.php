@@ -42,6 +42,7 @@
     <link href="{{ asset('admin_assets/css/sb-admin-2.min.css') }}" rel="stylesheet">
 
     <link href="{{ asset('admin_assets/css/custom.css') }}" rel="stylesheet">
+    {{-- <link href="{{ asset('pelanggan_assets/css/custom.css') }}" rel="stylesheet"> --}}
 
 
     {{-- <script>

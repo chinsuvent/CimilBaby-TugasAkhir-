@@ -1,25 +1,16 @@
-@extends('admin.layouts.app')
+@extends('pelanggan.layouts.app') {{-- ganti sesuai layout pelanggan --}}
 
 @section('contents')
 <div class="container-fluid">
-    <h3 class="mb-4">Check-In & Check-Out Anak (Hari Ini)</h3>
-    <hr />
-    @if (session('success'))
-        <script>
-            Swal.fire({
-                icon: 'success',
-                title: 'Berhasil!',
-                text: '{{ session("success") }}',
-                confirmButtonColor: '#3085d6',
-                confirmButtonText: 'OK'
-            });
-        </script>
-    @endif
+    <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-2 mb-3">
+        <h1 class="m-0 text-title text-md-left text-center text-md-h4">Kehadiran Anak</h1>
+    </div>
 
+    <hr />
 
     <div class="table-responsive">
-        <table class="table table-bordered table-hover text-center align-middle shadow-sm">
-            <thead class="table-primary">
+        <table class="table table-bordered table-hover">
+            <thead class="table-kehadiran text-center">
                 <tr>
                     <th>Nama Anak</th>
                     <th>Tanggal Mulai</th>
@@ -38,11 +29,12 @@
                     @endphp
 
                     @if ($today->between($tglMasuk, $tglKeluar))
-                        <tr>
-                            <td>{{ $reservasi->anak->nama_anak }}</td>
-                            <td>{{ $tglMasuk->format('d M Y') }}</td>
-                            <td>{{ $tglKeluar->format('d M Y') }}</td>
-                            <td>{{ $reservasi->layanan->jenis_layanan }}</td>
+                        <tr class="text-center">
+                            {{-- Nama Anak --}}
+                            <td class="align-middle">{{ $reservasi->anak->nama_anak }}</td>
+                            <td class="align-middle">{{ $tglMasuk->format('d M Y') }}</td>
+                            <td class="align-middle">{{ $tglKeluar->format('d M Y') }}</td>
+                            <td class="align-middle">{{ $reservasi->layanan->jenis_layanan }}</td>
 
                             {{-- Check-In --}}
                             <td>
@@ -51,10 +43,7 @@
                                         {{ \Carbon\Carbon::parse($checkinsToday[$reservasi->id]->waktu_checkin)->format('H:i') }}
                                     </span>
                                 @else
-                                    <form method="POST" action="{{ route('checkin', $reservasi->id) }}">
-                                        @csrf
-                                        <button type="submit" class="btn btn-success btn-sm">Check-In</button>
-                                    </form>
+                                    <span class="text-muted">Belum Check-In</span>
                                 @endif
                             </td>
 
@@ -64,23 +53,17 @@
                                     <span class="badge bg-secondary text-white">
                                         {{ \Carbon\Carbon::parse($checkinsToday[$reservasi->id]->waktu_checkout)->format('H:i') }}
                                     </span>
-                                @elseif (isset($checkinsToday[$reservasi->id]))
-                                    <form method="POST" action="{{ route('checkout', $reservasi->id) }}">
-                                        @csrf
-                                        <button type="submit" class="btn btn-warning btn-sm">Check-Out</button>
-                                    </form>
                                 @else
-                                    <span class="text-muted">Belum Check-In</span>
+                                    <span class="text-muted">Belum Check-Out</span>
                                 @endif
                             </td>
                         </tr>
                     @endif
                 @empty
                     <tr>
-                        <td colspan="5" class="text-muted">Data tidak ditemukan.</td>
+                        <td colspan="6" class="text-muted">Data tidak ditemukan.</td>
                     </tr>
                 @endforelse
-
             </tbody>
         </table>
     </div>

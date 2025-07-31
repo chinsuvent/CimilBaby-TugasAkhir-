@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\CheckinCheckout;
 use App\Models\Reservasi;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class CheckinCheckoutController extends Controller
 {
@@ -59,5 +60,24 @@ class CheckinCheckoutController extends Controller
         return redirect()->back()->with('success', 'Berhasil melakukan check-out.');
 
     }
+
+    public function indexOrangtua()
+    {
+        $user = Auth::user();
+
+        $anakIds = \App\Models\Anak::whereHas('orangTua', function ($q) use ($user) {
+            $q->where('users_id', $user->id);
+        })->pluck('id');
+
+        $reservasis = \App\Models\Reservasi::whereIn('anaks_id', $anakIds)->get();
+
+        $checkinsToday = \App\Models\CheckinCheckout::whereDate('created_at', now()->toDateString())
+            ->get()
+            ->keyBy('reservasis_id');
+
+        return view('pelanggan.kehadiran', compact('reservasis', 'checkinsToday'));
+
+    }
+
 
 }

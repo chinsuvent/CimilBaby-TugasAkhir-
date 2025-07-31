@@ -42,8 +42,15 @@ public function index(Request $request)
     }
 
     $laporan = $query->orderBy('tgl_masuk', 'desc')->paginate($limit);
+
+    // ⬇️ Tambahkan bagian ini untuk menangani AJAX
+    if ($request->ajax()) {
+        return view('admin.laporans_reservasi.index', compact('laporan'))->render();
+    }
+
     return view('admin.laporans_reservasi.index', compact('laporan'));
 }
+
 
 
     public function cetak(Request $request)

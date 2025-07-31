@@ -275,6 +275,9 @@ Route::post('/admin/settings/whatsapp', [SettingController::class, 'update'])->n
 
 Route::get('/admin/reservasis/search', [ReservasiController::class, 'search'])->name('admin.reservasis.search');
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/kehadiran-anak', [CheckinCheckoutController::class, 'indexOrangtua'])->name('pelanggan.kehadiran');
+});
 
 
 

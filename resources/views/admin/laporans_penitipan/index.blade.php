@@ -60,63 +60,35 @@
 
 
 
-  <!-- Filter Atas -->
-  <form method="GET" action="{{ route('laporans_penitipan.index') }}" class="mb-3">
-  <div class="row g-2">
-    <!-- Kolom 1: Label + Input Tanggal Awal -->
-    <div class="col-md-3">
-      <label for="tgl_awal" class="form-label px-2 py-1 rounded" style="font-size: 1.3rem;">
-        Tanggal Awal
-      </label>
-      <input type="date" id="tgl_awal" name="tgl_awal" class="form-control" value="{{ request('tgl_awal') }}" style="background-color: #8979FF; color:white;">
-    </div>
-
-    <!-- Kolom 2: Label + Input Tanggal Akhir -->
-    <div class="col-md-3">
-      <label for="tgl_akhir" class="form-label px-2 py-1 rounded" style="font-size:1.3rem">
-        Tanggal Akhir
-      </label>
-      <input type="date" id="tgl_akhir" name="tgl_akhir" class="form-control" value="{{ request('tgl_akhir') }}" style="background-color: #8979FF; color:white;">
-    </div>
-
-    <!-- Kolom 3: Tombol Tampilkan -->
-    <div class="col-md-3 d-flex align-items-end">
-      <button type="submit" class="btn btn-purple w-100">Tampilkan</button>
-    </div>
-
-    <!-- Kolom 4: Tombol Cetak PDF -->
-    <div class="col-md-3 d-flex align-items-end">
-      <a href="{{ route('laporans_penitipan.cetak', request()->all()) }}" target="_blank" class="btn btn-purple w-100">Cetak PDF</a>
-    </div>
+  <div class="row mb-4 align-items-center g-3">
+  <!-- Tombol Cetak PDF -->
+  <div class="col-md-auto ms-auto order-md-3 mr-4">
+    <a href="{{ route('laporans_penitipan.cetak', request()->all()) }}" target="_blank" class="btn btn-purple w-100 w-md-auto">Cetak PDF</a>
   </div>
-</form>
 
-
-
-
-<div class="row mb-4 align-items-center">
-  <div class="col-12 col-md-6 d-flex justify-content-center justify-content-md-start mb-3 mb-md-0" style="gap: 20px;">
-
-    {{-- <div class="dropdown">
-      <button class="btn btn-purple dropdown-toggle d-flex align-items-center" type="button" id="dropdownShow" data-bs-toggle="dropdown" aria-expanded="false">
-        Lihat 10
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="dropdownShow">
-        <li><button type="button" class="dropdown-item" onclick="setShowLimit(10)">10</button></li>
-        <li><button type="button" class="dropdown-item" onclick="setShowLimit(25)">25</button></li>
-        <li><button type="button" class="dropdown-item" onclick="setShowLimit(50)">50</button></li>
-        <li><button type="button" class="dropdown-item" onclick="setShowLimit(100)">100</button></li>
-      </ul>
-    </div> --}}
-
+  <!-- Filter Dropdown -->
+  <div class="col-md-auto order-md-1">
     <div class="dropdown">
-      <button class="btn btn-purple dropdown-toggle d-flex align-items-center" type="button" id="dropdownFilter" data-bs-toggle="dropdown" aria-expanded="false">
+      <button class="btn btn-purple dropdown-toggle d-flex align-items-center ml-4" type="button" id="dropdownFilter" data-bs-toggle="dropdown" aria-expanded="false">
         Filter
       </button>
-      <div class="dropdown-menu p-3" style="min-width: 250px;">
+      <div class="dropdown-menu p-3" style="min-width: 300px;">
         <form id="filterForm" method="GET" action="{{ route('laporans_penitipan.index') }}">
           <input type="hidden" name="limit" id="limitInput" value="{{ request('limit', 10) }}">
 
+          <!-- Tanggal Awal -->
+          <div class="mb-2">
+            <label for="tgl_awal" class="form-label">Tanggal Awal</label>
+            <input type="date" id="tgl_awal" name="tgl_awal" class="form-control" value="{{ request('tgl_awal') }}">
+          </div>
+
+          <!-- Tanggal Akhir -->
+          <div class="mb-2">
+            <label for="tgl_akhir" class="form-label">Tanggal Akhir</label>
+            <input type="date" id="tgl_akhir" name="tgl_akhir" class="form-control" value="{{ request('tgl_akhir') }}">
+          </div>
+
+          <!-- Jenis Kelamin -->
           <div class="mb-2">
             <label class="form-label">Jenis Kelamin</label>
             <select class="form-select" name="gender">
@@ -125,39 +97,43 @@
               <option value="Perempuan" {{ request('gender') == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
             </select>
           </div>
+
+          <!-- Jenis Layanan -->
           <div class="mb-2">
             <label class="form-label">Jenis Layanan</label>
             <select class="form-select" name="service">
               <option value="">Semua</option>
               <option value="Bulanan" {{ request('service') == 'Bulanan' ? 'selected' : '' }}>Bulanan</option>
               <option value="Harian" {{ request('service') == 'Harian' ? 'selected' : '' }}>Harian</option>
+              <option value="Khusus" {{ request('service') == 'Khusus' ? 'selected' : '' }}>Khusus</option>
             </select>
           </div>
+
           <button type="submit" class="btn btn-sm btn-primary w-100 mt-2">Terapkan Filter</button>
           <a href="{{ route('laporans_penitipan.index') }}" class="btn btn-sm btn-secondary w-100 mt-2">Reset</a>
-
         </form>
       </div>
     </div>
   </div>
-    <!-- Kolom 2: Input Cari -->
-    <div class="col-12 col-md-6">
-      <form method="GET" action="{{ route('laporans_penitipan.index') }}" id="searchForm">
-        <div class="search-wrapper d-flex align-items-center">
-          <i class="fas fa-search search-icon me-2"></i>
-          <input
-            type="text"
-            name="cari"
-            class="text-white border-0"
-            placeholder="Cari"
-            value="{{ request('cari') }}"
-            id="input-cari"
-          />
-        </div>
-      </form>
-    </div>
+
+  <!-- Input Cari -->
+  <div class="col-md order-md-2">
+    <form method="GET" action="{{ route('laporans_penitipan.index') }}" id="searchForm">
+      <div class="search-wrapper d-flex align-items-center rounded px-3 py-1">
+        <i class="fas fa-search search-icon ml-3"></i>
+        <input
+          type="text"
+          name="cari"
+          class="form-cari text-white"
+          placeholder="Cari"
+          value="{{ request('cari') }}"
+          id="input-cari"
+        />
+      </div>
+    </form>
   </div>
 </div>
+
 
 
   <!-- Tabel -->
@@ -201,7 +177,7 @@
   </div>
   <div class="d-flex justify-content-center mt-3 mb-4">
           @if ($laporan->hasPages())
-              {{ $laporan->links('pagination::bootstrap-5') }}
+              {{ $laporan->appends(request()->except('page'))->links('pagination::bootstrap-5') }}
           @else
               {{-- Paksa tampil pagination minimal --}}
               <nav>
