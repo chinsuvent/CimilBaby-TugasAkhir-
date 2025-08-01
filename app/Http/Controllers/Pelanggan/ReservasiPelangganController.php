@@ -108,7 +108,7 @@ class ReservasiPelangganController extends Controller
         $tglMasuk = $reservasi->tgl_masuk ?? '-';
         $tglKeluar = $reservasi->tgl_keluar ?? '-';
         $alasan = $request->alasan;
-        $namaAnak = $reservasi->anak->nama ?? '-';
+        $namaAnak = $reservasi->anak->nama_anak ?? '-';
 
         $pesan = "*Permohonan Pembatalan Masuk!*\n\n"
             . "Nama Anak: *{$namaAnak}*\n"
@@ -163,7 +163,7 @@ public function show($id)
 
         // Kirim WhatsApp ke admin
         $layananNama = $reservasi->layanan->jenis_layanan ?? 'Layanan Tidak Diketahui';
-        $namaAnak = $reservasi->anak->nama ?? '-';
+        $namaAnak = $reservasi->anak->nama_anak ?? '-';
 
         $pesan = "*Reservasi Dibatalkan!*\n\n"
             . "Nama Anak: *{$namaAnak}*\n"
@@ -222,7 +222,7 @@ public function show($id)
         // Kirim WhatsApp ke admin setelah berhasil update
         $user = Auth::user();
         $layananNama = $reservasi->layanan->jenis_layanan ?? 'Tidak diketahui';
-        $namaAnak = $reservasi->anak->nama ?? '-';
+        $namaAnak = $reservasi->anak->nama_anak ?? '-';
 
         $pesan = "*Reservasi Diperbarui!*\n\n"
             . "Nama Anak: *{$namaAnak}*\n"
@@ -312,7 +312,7 @@ public function store(Request $request)
         ->first();
 
     if ($overlap) {
-        return redirect()->back()->with('error', 'Sudah ada reservasi untuk anak ini di rentang tanggal tersebut.');
+        return redirect()->back()->with('gagal', 'Sudah ada reservasi untuk anak ini di rentang tanggal tersebut.');
     }
 
     $pelanggan = Auth::user();
@@ -328,7 +328,7 @@ public function store(Request $request)
         'metode_pembayaran' => $validated['metode_pembayaran'],
         'status' => 'Pending',
     ]);
-
+    
     $pesan = "*Reservasi Baru Masuk!*\n\n"
         . "Layanan: {$validated['jenis_layanan']}\n"
         . "Tanggal Masuk: {$validated['tgl_masuk']}\n"

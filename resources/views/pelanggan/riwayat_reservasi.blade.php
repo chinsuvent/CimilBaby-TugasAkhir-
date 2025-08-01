@@ -33,17 +33,6 @@
 
     <hr />
 
-    {{-- @if (session('error'))
-    <div class="alert alert-danger">
-        {{ session('error') }}
-    </div>
-@endif
-
-@if (session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-@endif --}}
 
 
     @push('scripts')
@@ -96,7 +85,7 @@
             });
         @endif
 
-        @if (session('error'))
+        @if (session('gagal'))
             Swal.fire({
                 title: 'Gagal!',
                 text: 'Reservasi Gagal Dibuat. Reservasi Hanya Bisa Dilakukan Satu Kali.',
@@ -134,7 +123,7 @@
                     <th>Nama Anak</th>
                     <th>Jenis Kelamin</th>
                     {{-- <th>Usia</th> --}}
-                    <th>Nama Orang Tua</th>
+                    {{--<th>Nama Orang Tua</th>--}}
                     <th>Jenis Layanan</th>
                     <th>Tanggal Mulai</th>
                     <th>Tanggal Selesai</th>
@@ -160,12 +149,15 @@
                             <td class="align-middle">{{ $rs->anak->nama_anak ?? '-' }}</td>
                             <td class="align-middle">{{ $rs->anak->jenis_kelamin ?? '-' }}</td>
                             {{-- <td class="align-middle">{{ $rs->anak->usia ?? '-' }}</td> --}}
-                            <td class="align-middle">{{ $rs->anak->orangTua->user->name ?? '-' }}</td>
+                            {{--<td class="align-middle">{{ $rs->anak->orangTua->user->name ?? '-' }}</td>--}}
                             <td class="align-middle">{{ $rs->layanan->jenis_layanan ?? '-' }}</td>
                             <td class="align-middle">{{ \Carbon\Carbon::parse($rs->tgl_masuk)->format('d-m-Y') }}</td>
                             <td class="align-middle">{{ \Carbon\Carbon::parse($rs->tgl_keluar)->format('d-m-Y') }}</td>
                             {{-- <td class="align-middle">{{ $rs->hitungDurasi() }}</td> --}}
-                            <td class="align-middle">{{ $rs->layanan->biaya ?? '-' }}</td>
+                            <td class="align-middle">
+    {{ $rs->layanan->biaya ? 'Rp. ' . number_format($rs->layanan->biaya, 0, ',', '.') : '-' }}
+</td>
+
                             <td class="align-middle">{{ $rs->metode_pembayaran }}</td>
                             <td class="align-middle">{{ $rs->status }}</td>
                             <td class="align-middle">
@@ -191,7 +183,7 @@
                                                 Ajukan Pembatalan
                                             </button>
                                         @elseif ($rs->pengajuanPembatalan && $rs->pengajuanPembatalan->status == 'Menunggu')
-                                            <span class="text-muted">Menunggu<br> Konfirmasi <br>Admin</span>
+                                            <span class="text-muted">Menunggu<br> Konfirmasi <br>Pembatalan</span>
                                         @elseif ($rs->pengajuanPembatalan && $rs->pengajuanPembatalan->status == 'Ditolak')
                                             <span class="tetx-muted">Pengajuan Ditolak</span>
                                         @elseif ($rs->pengajuanPembatalan && $rs->pengajuanPembatalan->status == 'Disetujui')
@@ -518,10 +510,11 @@ function batalReservasi(button) {
         modalElement.addEventListener('hidden.bs.modal', function () {
     modalElement.querySelectorAll('input, select, textarea').forEach(function (input) {
         const name = input.getAttribute('name');
-        if (name !== 'name') { // jangan reset field nama
+        if (name !== 'name' && name !== 'jenis_layanan') {
             input.value = '';
             input.removeAttribute('readonly');
         }
+
     });
 });
 
