@@ -119,17 +119,18 @@
   <!-- Input Cari -->
   <div class="col-md order-md-2">
     <form method="GET" action="{{ route('laporans_penitipan.index') }}" id="searchForm">
-      <div class="search-wrapper d-flex align-items-center rounded px-3 py-1">
-        <i class="fas fa-search search-icon ml-3"></i>
-        <input
-          type="text"
-          name="cari"
-          class="form-cari text-white"
-          placeholder="Cari"
-          value="{{ request('cari') }}"
-          id="input-cari"
-        />
-      </div>
+        <div class="search-wrapper d-flex align-items-center rounded px-3 py-1">
+            <i class="fas fa-search search-icon ml-3"></i>
+            <input
+            type="text"
+            name="cari"
+            class="form-cari text-white"
+            placeholder="Cari"
+            value="{{ request('cari') }}"
+            id="input-cari"
+            />
+            <button type="submit" class="btn btn-cari ml-2">Cari</button>
+        </div>
     </form>
   </div>
 </div>

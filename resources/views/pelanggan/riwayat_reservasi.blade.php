@@ -93,6 +93,14 @@
             });
         @endif
 
+        @if (session('batal-sakit'))
+            Swal.fire({
+                title: 'Sukses!',
+                text: 'Reservasi berhasil dibatalkan karena alasan kesehatan.',
+                confirmButtonColor: '#9672F3',
+            });
+        @endif
+
 
         // Harus tetap dimuat selalu
         function hapus(button) {
@@ -431,7 +439,7 @@ function batalReservasi(button) {
         if (day === 0 || day === 6) {
             Swal.fire({
                 title: 'Tanggal Tidak Valid',
-                text: 'Layanan harian dan bulanan tidak tersedia pada hari Sabtu atau Minggu.',
+                text: 'Layanan harian dan bulanan tidak tersedia pada hari Sabtu atau Minggu. Namun tersedia pada layanan khusus.',
                 icon: 'warning',
                 toast: true,
                 position: 'top',

@@ -11,7 +11,7 @@ use App\Models\PengajuanPembatalan;
 use App\Models\Layanan;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
-
+use Illuminate\Support\Str;
 
 
 
@@ -80,48 +80,59 @@ class ReservasiPelangganController extends Controller
 
 
     // Fungsi ajukan pembatalan
-    public function ajukanPembatalan(Request $request, $id)
-    {
-        $request->validate([
-            'alasan' => 'required|string',
-        ]);
 
-        $reservasi = Reservasi::with(['anak', 'layanan'])->where('id', $id)
-            ->where('status', 'Diterima')
-            ->firstOrFail();
+public function ajukanPembatalan(Request $request, $id)
+{
+    $reservasi = Reservasi::findOrFail($id);
+    $user = Auth::user();
 
-        // Cegah duplikat
-        if ($reservasi->pembatalan) {
-            return redirect()->back()->with('error', 'Pembatalan sudah diajukan.');
+    $layanan = $reservasi->layanan->jenis_layanan ?? 'Layanan';
+    $tglMasuk = $reservasi->tgl_masuk ?? '-';
+    $tglKeluar = $reservasi->tgl_keluar ?? '-';
+    $namaAnak = $reservasi->anak->nama_anak ?? '-';
+
+    $alasan = strtolower($request->alasan);
+    $kataKunciLangsungBatal = ['sakit', 'demam', 'flu', 'batuk', 'muntah', 'diare'];
+
+    $langsungBatal = false;
+    foreach ($kataKunciLangsungBatal as $kata) {
+        if (Str::contains($alasan, $kata)) {
+            $langsungBatal = true;
+            break;
         }
+    }
 
-        PengajuanPembatalan::create([
-            'reservasis_id' => $reservasi->id,
-            'alasan' => $request->alasan,
-            'status' => 'Menunggu',
-            'tanggal_pengajuan' => Carbon::now(),
-        ]);
+    if ($langsungBatal) {
+        $reservasi->status = 'Dibatalkan';
+        $reservasi->save();
 
-        // Kirim WhatsApp ke admin
-        $user = Auth::user();
-        $layanan = $reservasi->layanan->jenis_layanan ?? 'Layanan';
-        $tglMasuk = $reservasi->tgl_masuk ?? '-';
-        $tglKeluar = $reservasi->tgl_keluar ?? '-';
-        $alasan = $request->alasan;
-        $namaAnak = $reservasi->anak->nama_anak ?? '-';
-
-        $pesan = "*Permohonan Pembatalan Masuk!*\n\n"
+        $pesan = "*Pembatalan Otomatis!*\n\n"
             . "Nama Anak: *{$namaAnak}*\n"
             . "Layanan: *{$layanan}*\n"
             . "Tanggal Masuk: {$tglMasuk}\n"
             . "Tanggal Keluar: {$tglKeluar}\n"
-            . "*Alasan*: _{$alasan}_\n\n"
-            . "Mohon segera dikonfirmasi!";
+            . "*Alasan*: _{$request->alasan}_\n\n"
+            . "Status: *Dibatalkan secara otomatis karena alasan kesehatan.*";
 
         $this->kirimWhatsappAdmin($pesan);
 
-        return redirect()->back()->with('batal', 'Pengajuan pembatalan berhasil dikirim. Menunggu konfirmasi admin.');
+        return redirect()->back()->with('batal', 'Reservasi berhasil dibatalkan karena alasan kesehatan.');
     }
+
+    // Jika tidak termasuk alasan langsung batal
+    $pesan = "*Permohonan Pembatalan Masuk!*\n\n"
+        . "Nama Anak: *{$namaAnak}*\n"
+        . "Layanan: *{$layanan}*\n"
+        . "Tanggal Masuk: {$tglMasuk}\n"
+        . "Tanggal Keluar: {$tglKeluar}\n"
+        . "*Alasan*: _{$request->alasan}_\n\n"
+        . "Mohon segera dikonfirmasi!";
+
+    $this->kirimWhatsappAdmin($pesan);
+
+    return redirect()->back()->with('batal', 'Pengajuan pembatalan berhasil dikirim. Menunggu konfirmasi admin.');
+}
+
 
 
 public function show($id)
@@ -328,7 +339,7 @@ public function store(Request $request)
         'metode_pembayaran' => $validated['metode_pembayaran'],
         'status' => 'Pending',
     ]);
-    
+
     $pesan = "*Reservasi Baru Masuk!*\n\n"
         . "Layanan: {$validated['jenis_layanan']}\n"
         . "Tanggal Masuk: {$validated['tgl_masuk']}\n"
