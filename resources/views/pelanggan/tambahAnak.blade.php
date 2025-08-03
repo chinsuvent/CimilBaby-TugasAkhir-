@@ -48,7 +48,7 @@
         {{-- Tombol Kirim --}}
         <div class="row">
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <button type="submit" class="btn btn-warning mr-3">Simpan</button>
+                <button type="submit" class="btn btn-warning mr-3 ml-3">Simpan</button>
                 <a href="{{ route('pelanggan.anak') }}" class="btn btn-danger">Batal</a>
 
             </div>

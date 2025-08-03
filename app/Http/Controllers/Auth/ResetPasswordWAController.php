@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 use App\Models\User;
 use App\Models\OrangTua;
 use App\Models\WhatsappConfig;
+use Illuminate\Support\Facades\Auth;
 
 class ResetPasswordWAController extends Controller
 {
@@ -120,4 +121,29 @@ class ResetPasswordWAController extends Controller
 
         Log::info("WA sent to $targetPhone | Message: $message | Response: $response");
     }
+
+
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'password' => 'required|confirmed|min:8',
+        ]);
+
+        $user = Auth::user();
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return back()->withErrors(['current_password' => 'Password saat ini salah.']);
+        }
+
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        Auth::logout(); // Logout user
+        Session::flush(); // Bersihkan session
+
+        return redirect()->route('login')->with('ubahPassword', 'Password berhasil diperbarui. Silakan login kembali.');
+    }
+
+
 }

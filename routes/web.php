@@ -17,6 +17,7 @@ use App\Http\Controllers\Pelanggan\ProfilController;
 use App\Http\Controllers\Pelanggan\AnakPelangganController;
 use App\Http\Controllers\Pelanggan\ReservasiPelangganController;
 use App\Http\Controllers\Auth\ForgotPasswordWAController;
+use App\Http\Controllers\Auth\ResetPasswordWAController;
 use App\Http\Controllers\CheckinCheckoutController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\WhatsappConfigController;
@@ -245,8 +246,10 @@ Route::get('/ubah-password', function () {
     $user = Auth::user();
     return view('auth.reset-password-wa', compact('user'));
 });
+Route::post('/ubah-password', [ResetPasswordWAController::class, 'updatePassword'])->name('ubah-password');
 
-Route::post('/ubah-password', [App\Http\Controllers\Auth\ResetPasswordWAController::class, 'updatePassword']);
+
+
 
 
 Route::get('/wa-lupa-password', [ForgotPasswordWAController::class, 'formLupaPassword'])->name('wa.form.lupa');

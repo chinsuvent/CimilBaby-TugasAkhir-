@@ -469,7 +469,7 @@ function batalReservasi(button) {
         if (!isWeekendOrHoliday(masukDate, tanggalMerahList)) {
             Swal.fire({
                 title: 'Tanggal Tidak Valid',
-                text: 'Tanggal masuk untuk layanan khusus hanya boleh hari Sabtu, Minggu, atau tanggal merah.',
+                text: 'Tanggal mulai untuk layanan khusus hanya tersedia pada hari Sabtu, dan Minggu.',
                 icon: 'warning',
                 toast: true,
                 position: 'top',

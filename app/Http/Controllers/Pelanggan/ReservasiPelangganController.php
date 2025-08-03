@@ -83,49 +83,43 @@ class ReservasiPelangganController extends Controller
 
 public function ajukanPembatalan(Request $request, $id)
 {
-    $reservasi = Reservasi::findOrFail($id);
-    $user = Auth::user();
+    $request->validate([
+        'alasan' => 'required|string',
+    ]);
 
+    $reservasi = Reservasi::with(['anak', 'layanan'])->where('id', $id)
+        ->where('status', 'Diterima')
+        ->firstOrFail();
+
+    // Cek apakah sudah pernah mengajukan pembatalan untuk reservasi ini
+    $sudahAdaPengajuan = PengajuanPembatalan::where('reservasis_id', $reservasi->id)->exists();
+
+    if ($sudahAdaPengajuan) {
+        return redirect()->back()->with('error', 'Anda sudah pernah mengajukan pembatalan untuk reservasi ini.');
+    }
+
+    // Buat pengajuan pembatalan
+    PengajuanPembatalan::create([
+        'reservasis_id' => $reservasi->id,
+        'alasan' => $request->alasan,
+        'status' => 'Menunggu',
+        'tanggal_pengajuan' => Carbon::now(),
+    ]);
+
+    // Kirim WhatsApp ke admin
+    $user = Auth::user();
     $layanan = $reservasi->layanan->jenis_layanan ?? 'Layanan';
     $tglMasuk = $reservasi->tgl_masuk ?? '-';
     $tglKeluar = $reservasi->tgl_keluar ?? '-';
+    $alasan = $request->alasan;
     $namaAnak = $reservasi->anak->nama_anak ?? '-';
 
-    $alasan = strtolower($request->alasan);
-    $kataKunciLangsungBatal = ['sakit', 'demam', 'flu', 'batuk', 'muntah', 'diare'];
-
-    $langsungBatal = false;
-    foreach ($kataKunciLangsungBatal as $kata) {
-        if (Str::contains($alasan, $kata)) {
-            $langsungBatal = true;
-            break;
-        }
-    }
-
-    if ($langsungBatal) {
-        $reservasi->status = 'Dibatalkan';
-        $reservasi->save();
-
-        $pesan = "*Pembatalan Otomatis!*\n\n"
-            . "Nama Anak: *{$namaAnak}*\n"
-            . "Layanan: *{$layanan}*\n"
-            . "Tanggal Masuk: {$tglMasuk}\n"
-            . "Tanggal Keluar: {$tglKeluar}\n"
-            . "*Alasan*: _{$request->alasan}_\n\n"
-            . "Status: *Dibatalkan secara otomatis karena alasan kesehatan.*";
-
-        $this->kirimWhatsappAdmin($pesan);
-
-        return redirect()->back()->with('batal', 'Reservasi berhasil dibatalkan karena alasan kesehatan.');
-    }
-
-    // Jika tidak termasuk alasan langsung batal
     $pesan = "*Permohonan Pembatalan Masuk!*\n\n"
         . "Nama Anak: *{$namaAnak}*\n"
         . "Layanan: *{$layanan}*\n"
         . "Tanggal Masuk: {$tglMasuk}\n"
         . "Tanggal Keluar: {$tglKeluar}\n"
-        . "*Alasan*: _{$request->alasan}_\n\n"
+        . "*Alasan*: _{$alasan}_\n\n"
         . "Mohon segera dikonfirmasi!";
 
     $this->kirimWhatsappAdmin($pesan);

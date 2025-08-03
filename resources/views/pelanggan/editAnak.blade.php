@@ -1,7 +1,7 @@
 @extends('pelanggan.layouts.app')
 
 @section('contents')
-    <h1 class="mb-0 text-title">Edit Pengguna</h1>
+    <h1 class="mb-0 text-title">Edit Anak</h1>
     <hr>
     <form action="{{ route('anak.update', $anak->id) }}" method="POST">
         @csrf
@@ -48,7 +48,7 @@
 
         <div class="row">
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <button type="submit" class="btn btn-warning mr-3">Simpan</button>
+                <button type="submit" class="btn btn-warning mr-3 ml-3">Simpan</button>
                 <a href="{{ route('pelanggan.anak') }}" class="btn btn-danger">Batal</a>
 
             </div>
