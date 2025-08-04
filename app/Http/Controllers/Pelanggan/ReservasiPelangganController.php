@@ -12,6 +12,7 @@ use App\Models\Layanan;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 
 
@@ -242,44 +243,57 @@ public function show($id)
             ->with('edited', 'Reservasi berhasil diperbarui.');
     }
 
-    protected function kirimWhatsappAdmin($message)
+protected function kirimWhatsappAdmin($message)
 {
-    // Ambil data dari whatsapp_configs
-    $config = \App\Models\WhatsappConfig::first();
+    try {
+        // Ambil nomor admin dari tabel settings
+        $adminPhone = DB::table('settings')->where('key', 'admin_whatsapp')->value('value');
+        Log::info('Nomor admin dari settings:', ['adminPhone' => $adminPhone]);
 
-    if (!$config || !$config->api_key || !$config->number) {
-        Log::error('Konfigurasi WhatsApp tidak ditemukan atau belum lengkap.');
-        return;
+        // Ambil token dari whatsapp_configs
+        $token = \App\Models\WhatsappConfig::first()?->api_key;
+        Log::info('Token dari whatsapp_configs:', ['token' => $token]);
+
+        if (!$adminPhone || !$token) {
+            Log::error('Nomor admin atau token WhatsApp tidak ditemukan.');
+            return;
+        }
+
+        // Format nomor: ubah 08xxx jadi 62xxx jika perlu
+        if (str_starts_with($adminPhone, '08')) {
+            $adminPhone = '62' . substr($adminPhone, 1);
+        }
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, [
+            CURLOPT_URL => "https://api.fonnte.com/send",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => [
+                'target' => $adminPhone,
+                'message' => $message,
+            ],
+            CURLOPT_HTTPHEADER => [
+                "Authorization: $token"
+            ],
+        ]);
+
+        $response = curl_exec($curl);
+
+        if (curl_errno($curl)) {
+            Log::error('Curl error:', ['error' => curl_error($curl)]);
+        }
+
+        curl_close($curl);
+
+        Log::info('Fonnte WA response:', ['response' => $response]);
+
+    } catch (\Exception $e) {
+        Log::error('Gagal kirim WA:', ['error' => $e->getMessage()]);
     }
-
-    $adminPhone = $config->number;
-    $token = $config->api_key;
-
-    // Format nomor: ubah 08xxx jadi 62xxx jika perlu
-    if (str_starts_with($adminPhone, '08')) {
-        $adminPhone = '62' . substr($adminPhone, 1);
-    }
-
-    $curl = curl_init();
-
-    curl_setopt_array($curl, [
-        CURLOPT_URL => "https://api.fonnte.com/send",
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_POST => true,
-        CURLOPT_POSTFIELDS => [
-            'target' => $adminPhone,
-            'message' => $message,
-        ],
-        CURLOPT_HTTPHEADER => [
-            "Authorization: $token"
-        ],
-    ]);
-
-    $response = curl_exec($curl);
-    curl_close($curl);
-
-    Log::info('Fonnte WA response:', ['response' => $response]);
 }
+
 
 
 public function store(Request $request)

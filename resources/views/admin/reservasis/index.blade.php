@@ -220,9 +220,13 @@ $('#input-cari').on('input', function () {
                                     @endif
 
                                     @if ($rs->pengajuanPembatalan)
+                                        @if($rs->pengajuanPembatalan->status == 'Ditolak')
+                                        Sudah Ditolak
+                                        @else
                                         <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#konfirmasiPembatalanModal{{ $rs->id }}">
                                             Lihat Pembatalan
                                         </button>
+                                        @endif
                                     @elseif($rs->status != 'Pending')
                                         <span class="text-muted">Sudah dikonfirmasi</span>
                                     @endif

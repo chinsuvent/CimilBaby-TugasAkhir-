@@ -18,7 +18,7 @@
     </style>
 </head>
 <body>
-    <h2>Laporan Reservasi</h2>
+    <h2>Laporan Penitipan</h2>
     <table>
         <thead>
             <tr>

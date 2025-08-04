@@ -41,7 +41,7 @@ class ReservasiController extends Controller
 }
 
 
-       
+
 
     /**
      * Show the form for creating a new resource.
@@ -196,7 +196,9 @@ class ReservasiController extends Controller
         }
 
         if ($request->konfirmasi === 'tolak') {
-            $pengajuan->delete();
+            // $pengajuan->delete();
+            $pengajuan->status = 'ditolak';
+            $pengajuan->save();
 
             if ($noHp) {
                 $message = "Permohonan pembatalan reservasi untuk nama anak *$namaAnak* *DITOLAK*.";

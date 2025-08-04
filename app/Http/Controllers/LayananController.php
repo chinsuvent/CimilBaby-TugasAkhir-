@@ -101,13 +101,31 @@ class LayananController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-    {
-        $layanan = Layanan::findOrFail($id);
+{
+    $layanan = Layanan::findOrFail($id);
 
-        $layanan->update($request->all());
+    $request->validate([
+        'jenis_layanan' => 'required|string|max:255',
+        'biaya' => 'required|numeric',
+        'fasilitas' => 'array|nullable'
+    ]);
 
-        return redirect()->route('layanans')->with('edited', true);
+    $layanan->update([
+        'jenis_layanan' => $request->jenis_layanan,
+        'biaya' => $request->biaya
+    ]);
+
+    // Update fasilitas relasi
+    if ($request->has('fasilitas')) {
+        $layanan->fasilitas()->sync($request->fasilitas);
+    } else {
+        // Jika tidak ada fasilitas yang dicentang, kosongkan relasi
+        $layanan->fasilitas()->sync([]);
     }
+
+    return redirect()->route('layanans')->with('edited', true);
+}
+
 
     /**
      * Remove the specified resource from storage.
