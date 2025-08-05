@@ -318,24 +318,27 @@ public function store(Request $request)
         return redirect()->back()->with('error', 'Reservasi layanan harian atau bulanan tidak tersedia pada hari Sabtu atau Minggu.');
     }
 
+    if($request->jenis_layanan == "Khusus") {
+        
+    } else {
+        $overlap = Reservasi::where('anaks_id', $validated['anaks_id'])
+            ->where(function($query) use ($validated) {
+                $query->whereBetween('tgl_masuk', [$validated['tgl_masuk'], $validated['tgl_keluar']])
+                    ->orWhereBetween('tgl_keluar', [$validated['tgl_masuk'], $validated['tgl_keluar']])
+                    ->orWhere(function ($query2) use ($validated) {
+                        $query2->where('tgl_masuk', '<=', $validated['tgl_masuk'])
+                                ->where('tgl_keluar', '>=', $validated['tgl_keluar']);
+                    });
+            })
+            ->first();
 
-    $overlap = Reservasi::where('anaks_id', $validated['anaks_id'])
-        ->where(function($query) use ($validated) {
-            $query->whereBetween('tgl_masuk', [$validated['tgl_masuk'], $validated['tgl_keluar']])
-                  ->orWhereBetween('tgl_keluar', [$validated['tgl_masuk'], $validated['tgl_keluar']])
-                  ->orWhere(function ($query2) use ($validated) {
-                      $query2->where('tgl_masuk', '<=', $validated['tgl_masuk'])
-                             ->where('tgl_keluar', '>=', $validated['tgl_keluar']);
-                  });
-        })
-        ->first();
-
-    if ($overlap) {
-        return redirect()->back()->with('gagal', 'Sudah ada reservasi untuk anak ini di rentang tanggal tersebut.');
+        if ($overlap) {
+            return redirect()->back()->with('gagal', 'Sudah ada reservasi untuk anak ini di rentang tanggal tersebut.');
+        }
     }
 
     $pelanggan = Auth::user();
-
+    
     Reservasi::create([
         'name' => $validated['name'],
         'anaks_id' => $validated['anaks_id'],
