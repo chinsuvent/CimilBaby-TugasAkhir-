@@ -60,16 +60,16 @@
 
 
 
-  <div class="row mb-4 align-items-center g-3">
-  <!-- Tombol Cetak PDF -->
-  <div class="col-md-auto ms-auto order-md-3 mr-4">
-    <a href="{{ route('laporans_penitipan.cetak', request()->all()) }}" target="_blank" class="btn btn-purple w-100 w-md-auto">Cetak PDF</a>
-  </div>
+  <div class="row mb-4 gy-3 flex-column flex-md-row align-items-start align-items-md-center justify-content-between">
+ 
+
+  
+    
 
   <!-- Filter Dropdown -->
-  <div class="col-md-auto order-md-1">
+  <div class="col-auto">
     <div class="dropdown">
-      <button class="btn btn-purple dropdown-toggle d-flex align-items-center ml-4" type="button" id="dropdownFilter" data-bs-toggle="dropdown" aria-expanded="false">
+      <button class="btn btn-purple dropdown-toggle d-flex align-items-center w-100 w-md-auto" type="button" id="dropdownFilter" data-bs-toggle="dropdown" aria-expanded="false">
         Filter
       </button>
       <div class="dropdown-menu p-3" style="min-width: 300px;">
@@ -117,21 +117,28 @@
   </div>
 
   <!-- Input Cari -->
-  <div class="col-md order-md-2">
+  <div class="col w-100 w-md-auto">
     <form method="GET" action="{{ route('laporans_penitipan.index') }}" id="searchForm">
-        <div class="search-wrapper d-flex align-items-center rounded px-3 py-1">
-            <i class="fas fa-search search-icon ml-3"></i>
-            <input
+      <div class="search-wrapper d-flex flex-column flex-sm-row align-items-stretch gap-2 rounded px-3 py-2">
+        <div class="d-flex align-items-center w-100">
+          <i class="fas fa-search search-icon ml-3"></i>
+          <input
             type="text"
             name="cari"
-            class="form-cari text-white"
+            class="form-cari text-white w-100 mr-3"
             placeholder="Cari"
             value="{{ request('cari') }}"
             id="input-cari"
-            />
-            <button type="submit" class="btn btn-cari ml-2">Cari</button>
+          />
         </div>
+        <button type="submit" class="btn btn-cari">Cari</button>
+      </div>
     </form>
+  </div>
+
+  <!-- Tombol Cetak PDF -->
+  <div class="col-auto">
+    <a href="{{ route('laporans_penitipan.cetak', request()->all()) }}" target="_blank" class="btn btn-purple w-100 w-md-auto">Cetak PDF</a>
   </div>
 </div>
 
