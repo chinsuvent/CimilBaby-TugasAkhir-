@@ -12,7 +12,7 @@
         <table class="table table-bordered table-hover">
             <thead class="table-kehadiran text-center">
                 <tr>
-                    <th>Nama Anak</th>
+                    <th >Nama Anak</th>
                     <th>Tanggal Mulai</th>
                     <th>Tanggal Selesai</th>
                     <th>Layanan</th>
@@ -31,10 +31,10 @@
                     @if ($today->between($tglMasuk, $tglKeluar))
                         <tr class="text-center">
                             {{-- Nama Anak --}}
-                            <td class="align-middle">{{ $reservasi->anak->nama_anak }}</td>
-                            <td class="align-middle">{{ $tglMasuk->format('d M Y') }}</td>
-                            <td class="align-middle">{{ $tglKeluar->format('d M Y') }}</td>
-                            <td class="align-middle">{{ $reservasi->layanan->jenis_layanan }}</td>
+                            <td class="align-middle text-muted">{{ $reservasi->anak->nama_anak }}</td>
+                            <td class="align-middle text-muted">{{ $tglMasuk->format('d M Y') }}</td>
+                            <td class="align-middle text-muted">{{ $tglKeluar->format('d M Y') }}</td>
+                            <td class="align-middle text-muted">{{ $reservasi->layanan->jenis_layanan }}</td>
 
                             {{-- Check-In --}}
                             <td>

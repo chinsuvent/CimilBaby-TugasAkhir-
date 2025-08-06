@@ -47,15 +47,15 @@
     </div>
        <div class="table-responsive">
             <table class="table table-hover table-bordered">
-                <thead class="table-primary text-center">
+                <thead class="table-primary text-center" style='background-color: #8e7dbe !important; color: white;text-align: center;'>
                     <tr>
-                        <th>No</th>
-                        <th>Nama Anak</th>
-                        <th>Tempat Lahir</th>
-                        <th>Tanggal Lahir</th>
-                        <th>Jenis Kelamin</th>
-                        <th>Usia</th>
-                        <th>Alergi</th>
+                        <th style='background-color: #8e7dbe !important; color: white;text-align: center;'>No</th>
+                        <th style='background-color: #8e7dbe !important; color: white;text-align: center;'>Nama Anak</th>
+                        <th style='background-color: #8e7dbe !important; color: white;text-align: center;'>Tempat Lahir</th>
+                        <th style='background-color: #8e7dbe !important; color: white;text-align: center;'>Tanggal Lahir</th>
+                        <th style='background-color: #8e7dbe !important; color: white;text-align: center;'>Jenis Kelamin</th>
+                        <th style='background-color: #8e7dbe !important; color: white;text-align: center;'>Usia</th>
+                        <th style='background-color: #8e7dbe !important; color: white;text-align: center;'>Alergi</th>
                         {{-- <th>Aksi</th> --}}
                     </tr>
                 </thead>
@@ -63,13 +63,13 @@
                 @if ($anakList->count() > 0)
                     @foreach ($anakList as $an)
                         <tr class="text-center">
-                            <td class="align-middle">{{ $loop->iteration + ($anakList->currentPage()-1)*$anakList->perPage() }}</td>
-                            <td class="align-middle">{{ $an->nama_anak }}</td>
-                            <td class="align-middle">{{ $an->tempat_lahir }}</td>
-                            <td class="align-middle">{{ $an->tanggal_lahir }}</td>
-                            <td class="align-middle">{{ $an->jenis_kelamin }}</td>
-                            <td class="align-middle">{{ $an->hitungUsia() }}</td>
-                            <td class="align-middle">{{ $an->alergi }}</td>
+                            <td class="align-middle text-muted">{{ $loop->iteration + ($anakList->currentPage()-1)*$anakList->perPage() }}</td>
+                            <td class="align-middle text-muted">{{ $an->nama_anak }}</td>
+                            <td class="align-middle text-muted">{{ $an->tempat_lahir }}</td>
+                            <td class="align-middle text-muted">{{ $an->tanggal_lahir }}</td>
+                            <td class="align-middle text-muted">{{ $an->jenis_kelamin }}</td>
+                            <td class="align-middle text-muted">{{ $an->hitungUsia() }}</td>
+                            <td class="align-middle text-muted">{{ $an->alergi }}</td>
                         </tr>
                     @endforeach
                 @else

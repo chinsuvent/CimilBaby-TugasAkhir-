@@ -4,31 +4,32 @@
     <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-2 mb-3">
         <h1 class="m-0 text-title text-md-left text-center text-md-h4">Data Reservasi</h1>
     </div>
-    <div class="mt-2 d-flex flex-wrap gap-3">
-        <button type="button" class="btn btn-tambah mr-3"
-            data-bs-toggle="modal"
-            data-bs-target="#reservasiModal"
-            data-layanan="Harian"
-            data-biaya="{{ $layanans['Harian']->biaya }}">
-            Buat Reservasi Harian
-        </button>
+    <div class="mt-2 d-flex flex-column flex-sm-row flex-wrap gap-2">
+    <button type="button" class="btn btn-tambah"
+        data-bs-toggle="modal"
+        data-bs-target="#reservasiModal"
+        data-layanan="Harian"
+        data-biaya="{{ $layanans['Harian']->biaya }}">
+        Buat Reservasi Harian
+    </button>
 
-        <button type="button" class="btn btn-success mr-3"
-            data-bs-toggle="modal"
-            data-bs-target="#reservasiModal"
-            data-layanan="Bulanan"
-            data-biaya="{{ $layanans['Bulanan']->biaya }}">
-            Buat Reservasi Bulanan
-        </button>
+    <button type="button" class="btn btn-success"
+        data-bs-toggle="modal"
+        data-bs-target="#reservasiModal"
+        data-layanan="Bulanan"
+        data-biaya="{{ $layanans['Bulanan']->biaya }}">
+        Buat Reservasi Bulanan
+    </button>
 
-        <button type="button" class="btn btn-warning text-white"
-            data-bs-toggle="modal"
-            data-bs-target="#reservasiModal"
-            data-layanan="Khusus"
-            data-biaya="{{ $layanans['Khusus']->biaya }}">
-            Buat Reservasi Khusus
-        </button>
-    </div>
+    <button type="button" class="btn btn-warning text-white"
+        data-bs-toggle="modal"
+        data-bs-target="#reservasiModal"
+        data-layanan="Khusus"
+        data-biaya="{{ $layanans['Khusus']->biaya }}">
+        Buat Reservasi Khusus
+    </button>
+</div>
+
 
 
     <hr />
@@ -127,19 +128,19 @@
         <table class="table table-hover table-bordered">
             <thead class="table-primary text-center">
                 <tr>
-                    <th>No</th>
-                    <th>Nama Anak</th>
-                    <th>Jenis Kelamin</th>
+                    <th style='background-color: #8e7dbe !important; color: white;text-align: center;'>No</th>
+                    <th style='background-color: #8e7dbe !important; color: white;text-align: center;'>Nama Anak</th>
+                    <th style='background-color: #8e7dbe !important; color: white;text-align: center;'>Jenis Kelamin</th>
                     {{-- <th>Usia</th> --}}
                     {{--<th>Nama Orang Tua</th>--}}
-                    <th>Jenis Layanan</th>
-                    <th>Tanggal Mulai</th>
-                    <th>Tanggal Selesai</th>
+                    <th style='background-color: #8e7dbe !important; color: white;text-align: center;'>Jenis Layanan</th>
+                    <th style='background-color: #8e7dbe !important; color: white;text-align: center;'>Tanggal Mulai</th>
+                    <th style='background-color: #8e7dbe !important; color: white;text-align: center;'>Tanggal Selesai</th>
                     {{-- <th>Durasi</th> --}}
-                    <th>Total</th>
-                    <th>Metode Pembayaran</th>
-                    <th>Status</th>
-                    <th>Aksi</th>
+                    <th style='background-color: #8e7dbe !important; color: white;text-align: center;'>Total</th>
+                    <th style='background-color: #8e7dbe !important; color: white;text-align: center;'>Metode Pembayaran</th>
+                    <th style='background-color: #8e7dbe !important; color: white;text-align: center;'>Status</th>
+                    <th style='background-color: #8e7dbe !important; color: white;text-align: center;'>Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -153,22 +154,22 @@
                         @endphp
 
                         <tr class="text-center">
-                            <td class="align-middle">{{ $loop->iteration + ($reservasi->currentPage()-1)*$reservasi->perPage() }}</td>
-                            <td class="align-middle">{{ $rs->anak->nama_anak ?? '-' }}</td>
-                            <td class="align-middle">{{ $rs->anak->jenis_kelamin ?? '-' }}</td>
-                            {{-- <td class="align-middle">{{ $rs->anak->usia ?? '-' }}</td> --}}
-                            {{--<td class="align-middle">{{ $rs->anak->orangTua->user->name ?? '-' }}</td>--}}
-                            <td class="align-middle">{{ $rs->layanan->jenis_layanan ?? '-' }}</td>
-                            <td class="align-middle">{{ \Carbon\Carbon::parse($rs->tgl_masuk)->format('d-m-Y') }}</td>
-                            <td class="align-middle">{{ \Carbon\Carbon::parse($rs->tgl_keluar)->format('d-m-Y') }}</td>
-                            {{-- <td class="align-middle">{{ $rs->hitungDurasi() }}</td> --}}
-                            <td class="align-middle">
+                            <td class="align-middle text-muted">{{ $loop->iteration + ($reservasi->currentPage()-1)*$reservasi->perPage() }}</td>
+                            <td class="align-middle text-muted">{{ $rs->anak->nama_anak ?? '-' }}</td>
+                            <td class="align-middle text-muted">{{ $rs->anak->jenis_kelamin ?? '-' }}</td>
+                            {{-- <td class="align-middle text-muted">{{ $rs->anak->usia ?? '-' }}</td> --}}
+                            {{--<td class="align-middle text-muted">{{ $rs->anak->orangTua->user->name ?? '-' }}</td>--}}
+                            <td class="align-middle text-muted">{{ $rs->layanan->jenis_layanan ?? '-' }}</td>
+                            <td class="align-middle text-muted">{{ \Carbon\Carbon::parse($rs->tgl_masuk)->format('d-m-Y') }}</td>
+                            <td class="align-middle text-muted">{{ \Carbon\Carbon::parse($rs->tgl_keluar)->format('d-m-Y') }}</td>
+                            {{-- <td class="align-middle text-muted">{{ $rs->hitungDurasi() }}</td> --}}
+                            <td class="align-middle text-muted">
     {{ $rs->layanan->biaya ? 'Rp. ' . number_format($rs->layanan->biaya, 0, ',', '.') : '-' }}
 </td>
 
-                            <td class="align-middle">{{ $rs->metode_pembayaran }}</td>
-                            <td class="align-middle">{{ $rs->status }}</td>
-                            <td class="align-middle">
+                            <td class="align-middle text-muted">{{ $rs->metode_pembayaran }}</td>
+                            <td class="align-middle text-muted">{{ $rs->status }}</td>
+                            <td class="align-middle text-muted">
                                 <div class="d-flex justify-content-center gap-2">
                                     @if ($rs->status === 'Selesai')
                                         <span class="text-muted">Reservasi Selesai</span>

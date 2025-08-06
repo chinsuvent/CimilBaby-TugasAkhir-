@@ -171,7 +171,7 @@ class ReservasiController extends Controller
 
     public function konfirmasiPembatalan(Request $request, $id)
     {
-        // Eager loading anak dan orangTua saja (tidak perlu pengguna)
+
         $reservasi = Reservasi::with('anak.orangTua')->findOrFail($id);
         $pengajuan = $reservasi->pengajuanPembatalan;
 
@@ -179,7 +179,7 @@ class ReservasiController extends Controller
             return back()->with('error', 'Pengajuan tidak ditemukan.');
         }
 
-        $namaAnak = $reservasi->anak->nama_anak ?? 'Anak Anda'; // Pastikan nama kolom sesuai di DB
+        $namaAnak = $reservasi->anak->nama_anak ?? 'Anak Anda'; 
         $noHp = $reservasi->anak?->orangTua?->no_hp;
 
         if ($request->konfirmasi === 'terima') {

@@ -212,52 +212,58 @@ $('#input-cari').on('input', function () {
       url: "{{ route('laporans_penitipan.index') }}",
       type: "GET",
       data: params,
- success: function (data) {
-  const html = $(data).find('#laporan-content').html();
-  $('#laporan-content').html(html);
+      success: function (data) {
+        const html = $(data).find('#laporan-content').html();
+        $('#laporan-content').html(html);
 
-  // Isi kembali nilai form agar tetap tampil
-  $('#input-cari').val(params.cari);
-  $('input[name="tgl_awal"]').val(params.tgl_awal);
-  $('input[name="tgl_akhir"]').val(params.tgl_akhir);
-  $('select[name="gender"]').val(params.gender);
-  $('select[name="service"]').val(params.service);
-  $('#limitInput').val(params.limit);
+        // Isi kembali nilai form agar tetap tampil
+        $('#input-cari').val(params.cari);
+        $('input[name="tgl_awal"]').val(params.tgl_awal);
+        $('input[name="tgl_akhir"]').val(params.tgl_akhir);
+        $('select[name="gender"]').val(params.gender);
+        $('select[name="service"]').val(params.service);
+        $('#limitInput').val(params.limit);
 
-  // Bind ulang event pagination
-  $('#laporan-content').find('.pagination a').on('click', function (e) {
-    e.preventDefault();
-    const url = new URL($(this).attr('href'));
-    const page = url.searchParams.get('page');
+        // Bind ulang event pagination
+        $('#laporan-content').find('.pagination a').on('click', function (e) {
+          e.preventDefault();
+          const url = new URL($(this).attr('href'));
+          const page = url.searchParams.get('page');
 
-    if (page) {
-      params.page = page;
+          if (page) {
+            params.page = page;
 
-      $.ajax({
-        url: "{{ route('laporans_penitipan.index') }}",
-        type: "GET",
-        data: params,
-        success: function (data) {
-          const html = $(data).find('#laporan-content').html();
-          $('#laporan-content').html(html);
+            $.ajax({
+              url: "{{ route('laporans_penitipan.index') }}",
+              type: "GET",
+              data: params,
+              success: function (data) {
+                const html = $(data).find('#laporan-content').html();
+                $('#laporan-content').html(html);
 
-          // Isi ulang form
-          $('#input-cari').val(params.cari);
-          $('input[name="tgl_awal"]').val(params.tgl_awal);
-          $('input[name="tgl_akhir"]').val(params.tgl_akhir);
-          $('select[name="gender"]').val(params.gender);
-          $('select[name="service"]').val(params.service);
-          $('#limitInput').val(params.limit);
-        },
-        error: function () {
-          console.error("Gagal load data halaman baru.");
-        }
-      });
-    }
-  });
-},
+                // Isi ulang form
+                $('#input-cari').val(params.cari);
+                $('input[name="tgl_awal"]').val(params.tgl_awal);
+                $('input[name="tgl_akhir"]').val(params.tgl_akhir);
+                $('select[name="gender"]').val(params.gender);
+                $('select[name="service"]').val(params.service);
+                $('#limitInput').val(params.limit);
+              },
+              error: function () {
+                console.error("Gagal load data halaman baru.");
+              }
+            });
+          }
+        });
 
-
+      },
+      error: function () {
+        console.error("Gagal memuat data.");
+      }
+    });
+  }, debounceDelay); // <<<<< ini penutup untuk setTimeout
 });
 </script>
+
+
 @endsection

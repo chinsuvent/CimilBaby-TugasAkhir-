@@ -55,28 +55,28 @@
         <table class="table table-hover table-bordered">
             <thead class="table-primary text-center">
                 <tr>
-                    <th>No</th>
-                    <th>Nama Anak</th>
-                    <th>Tempat Lahir</th>
-                    <th>Tanggal Lahir</th>
-                    <th>Jenis Kelamin</th>
-                    <th>Usia</th>
-                    <th>Alergi</th>
-                    <th>Aksi</th>
+                    <th style='background-color: #8e7dbe !important; color: white;text-align: center;'>No</th>
+                    <th style='background-color: #8e7dbe !important; color: white;text-align: center;'>Nama Anak</th>
+                    <th style='background-color: #8e7dbe !important; color: white;text-align: center;'>Tempat Lahir</th>
+                    <th style='background-color: #8e7dbe !important; color: white;text-align: center;'>Tanggal Lahir</th>
+                    <th style='background-color: #8e7dbe !important; color: white;text-align: center;'>Jenis Kelamin</th>
+                    <th style='background-color: #8e7dbe !important; color: white;text-align: center;'>Usia</th>
+                    <th style='background-color: #8e7dbe !important; color: white;text-align: center;'>Alergi</th>
+                    <th style='background-color: #8e7dbe !important; color: white;text-align: center;'>Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 @if ($anak->count() > 0)
                     @foreach ($anak as $an)
                         <tr class="text-center">
-                            <td class="align-middle">{{ $loop->iteration + ($anak->currentPage()-1)*$anak->perPage() }}</td>
-                            <td class="align-middle">{{ $an->nama_anak }}</td>
-                            <td class="align-middle">{{ $an->tempat_lahir }}</td>
-                            <td class="align-middle">{{ \Carbon\Carbon::parse($an->tanggal_lahir)->format('d F Y') }}</td>
-                            <td class="align-middle">{{ $an->jenis_kelamin }}</td>
-                            <td class="align-middle">{{ $an->hitungUsia() }}</td>
-                            <td class="align-middle">{{ $an->alergi }}</td>
-                            <td class="align-middle">
+                            <td class="align-middle text-muted">{{ $loop->iteration + ($anak->currentPage()-1)*$anak->perPage() }}</td>
+                            <td class="align-middle text-muted">{{ $an->nama_anak }}</td>
+                            <td class="align-middle text-muted">{{ $an->tempat_lahir }}</td>
+                            <td class="align-middle text-muted">{{ \Carbon\Carbon::parse($an->tanggal_lahir)->format('d F Y') }}</td>
+                            <td class="align-middle text-muted">{{ $an->jenis_kelamin }}</td>
+                            <td class="align-middle text-muted">{{ $an->hitungUsia() }}</td>
+                            <td class="align-middle text-muted">{{ $an->alergi }}</td>
+                            <td class="align-middle text-muted">
                                 <div class="d-flex justify-content-center">
                                     <!-- Tombol Edit -->
                                     <a href="{{ route('anak.edit', $an->id) }}" class="btn btn-warning d-flex align-items-center justify-content-center" title="Edit"

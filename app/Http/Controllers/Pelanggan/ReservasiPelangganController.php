@@ -92,14 +92,12 @@ public function ajukanPembatalan(Request $request, $id)
         ->where('status', 'Diterima')
         ->firstOrFail();
 
-    // Cek apakah sudah pernah mengajukan pembatalan untuk reservasi ini
     $sudahAdaPengajuan = PengajuanPembatalan::where('reservasis_id', $reservasi->id)->exists();
 
     if ($sudahAdaPengajuan) {
         return redirect()->back()->with('error', 'Anda sudah pernah mengajukan pembatalan untuk reservasi ini.');
     }
 
-    // Buat pengajuan pembatalan
     PengajuanPembatalan::create([
         'reservasis_id' => $reservasi->id,
         'alasan' => $request->alasan,
@@ -128,31 +126,7 @@ public function ajukanPembatalan(Request $request, $id)
     return redirect()->back()->with('batal', 'Pengajuan pembatalan berhasil dikirim. Menunggu konfirmasi admin.');
 }
 
-
-
-public function show($id)
-{
-    return redirect()->route('pelanggan.reservasi')->with('info', 'Halaman tidak tersedia.');
-}
-
-
-   public function beranda()
-    {
-        $layanan = Layanan::all();
-
-        $anakUser = null;
-        if (Auth::check()) {
-            $anakUser = Auth::user()->anak()->get();
-        }
-
-        return view('beranda', compact('layanan', 'anakUser'));
-    }
-
-
-
-
-
-    public function cancel($id)
+ public function cancel($id)
     {
         $orangTua = Auth::user()->orangTua;
         $anakIds = $orangTua->anaks->pluck('id');
@@ -182,6 +156,32 @@ public function show($id)
 
         return redirect()->route('pelanggan.reservasi')->with('cancel', 'Reservasi berhasil dibatalkan.');
     }
+
+
+
+public function show($id)
+{
+    return redirect()->route('pelanggan.reservasi')->with('info', 'Halaman tidak tersedia.');
+}
+
+
+   public function beranda()
+    {
+        $layanan = Layanan::all();
+
+        $anakUser = null;
+        if (Auth::check()) {
+            $anakUser = Auth::user()->anak()->get();
+        }
+
+        return view('beranda', compact('layanan', 'anakUser'));
+    }
+
+
+
+
+
+
 
     public function edit($id)
     {
@@ -246,11 +246,11 @@ public function show($id)
 protected function kirimWhatsappAdmin($message)
 {
     try {
-        // Ambil nomor admin dari tabel settings
+
         $adminPhone = DB::table('settings')->where('key', 'admin_whatsapp')->value('value');
         Log::info('Nomor admin dari settings:', ['adminPhone' => $adminPhone]);
 
-        // Ambil token dari whatsapp_configs
+
         $token = \App\Models\WhatsappConfig::first()?->api_key;
         Log::info('Token dari whatsapp_configs:', ['token' => $token]);
 
@@ -259,7 +259,6 @@ protected function kirimWhatsappAdmin($message)
             return;
         }
 
-        // Format nomor: ubah 08xxx jadi 62xxx jika perlu
         if (str_starts_with($adminPhone, '08')) {
             $adminPhone = '62' . substr($adminPhone, 1);
         }
@@ -319,7 +318,7 @@ public function store(Request $request)
     }
 
     if($request->jenis_layanan == "Khusus") {
-        
+
     } else {
         $overlap = Reservasi::where('anaks_id', $validated['anaks_id'])
             ->where(function($query) use ($validated) {
@@ -338,7 +337,7 @@ public function store(Request $request)
     }
 
     $pelanggan = Auth::user();
-    
+
     Reservasi::create([
         'name' => $validated['name'],
         'anaks_id' => $validated['anaks_id'],
@@ -362,9 +361,5 @@ public function store(Request $request)
 
     return redirect()->back()->with('success', 'Reservasi berhasil dikirim!');
 }
-
-
-
-
 
 }

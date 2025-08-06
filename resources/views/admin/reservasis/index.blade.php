@@ -156,7 +156,7 @@ $('#input-cari').on('input', function () {
   });
 },
 
-
+    });
 });
 
 
@@ -255,7 +255,11 @@ $('#input-cari').on('input', function () {
                                             <p>Setujui permintaan pembatalan ini?</p>
                                         </div>
                                         <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                            @if(\Illuminate\Support\Str::contains(strtolower($rs->pengajuanPembatalan->alasan), 'sakit'))
+                                            @else
                                             <button name="konfirmasi" value="tolak" type="submit" class="btn btn-danger">Tolak</button>
+                                            @endif
                                             <button name="konfirmasi" value="terima" type="submit" class="btn btn-success">Terima</button>
                                         </div>
                                     </form>
