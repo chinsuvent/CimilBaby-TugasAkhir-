@@ -19,64 +19,40 @@ use Illuminate\Support\Facades\DB;
 class ReservasiPelangganController extends Controller
 {
 
-    public function index()
-    {
-        $orangTua = Auth::user()->orangTua;
+    public function index(Request $request)
+{
+    $query = Reservasi::query();
+    $limit = $request->input('limit', 10);
 
-        if (!$orangTua) {
-            return back()->with('error', 'Data orang tua tidak ditemukan. Silakan lengkapi profil terlebih dahulu.');
-        }
+    // Cek dan update status otomatis
+    Reservasi::where('status', 'Pending')
+        ->whereDate('tgl_masuk', '<', now()->toDateString())
+        ->update(['status' => 'Ditolak']);
 
-        $anakUser = $orangTua->anaks;
-
-        $reservasi = Reservasi::with('pengajuanPembatalan')->whereIn('anaks_id', function ($query) use ($orangTua) {
-            $query->select('id')
-                ->from('anaks')
-                ->where('orang_tua_id', $orangTua->id);
-        })->orderBy('created_at', 'desc')->get();
-
-        $reservasi_diterima = Reservasi::with('pengajuanPembatalan')
-        ->where('status', 'Diterima')
-        ->whereIn('anaks_id', function ($query) use ($orangTua) {
-            $query->select('id')
-                ->from('anaks')
-                ->where('orang_tua_id', $orangTua->id);
-        })
-        ->orderBy('created_at', 'desc')
-        ->get();
-
-        $today = Carbon::today();
-
-        foreach ($reservasi_diterima as $rs) {
-            if (
-                $rs->status === 'Diterima' &&
-                Carbon::parse($rs->tgl_masuk)->lt($today) &&
-                Carbon::parse($rs->tgl_keluar)->lt($today)
-            ) {
-                $rs->status = 'Selesai';
-                $rs->save();
-            }
-        }
-
-        $paginator = Reservasi::with('pengajuanPembatalan')
-        ->whereIn('anaks_id', function ($query) use ($orangTua) {
-            $query->select('id')
-                ->from('anaks')
-                ->where('orang_tua_id', $orangTua->id);
-        })
-        ->orderBy('created_at', 'desc')
-        ->paginate(10);
-
-
-        // Ambil biaya layanan
-        $layanans = Layanan::all()->keyBy('jenis_layanan');
-
-        return view('pelanggan.riwayat_reservasi', [
-            'reservasi' => $paginator,
-            'anakUser' => $anakUser,
-            'layanans' => $layanans
-        ]);
+    // Filter pencarian
+    if ($request->filled('cari')) {
+        $search = $request->cari;
+        $query->where(function ($q) use ($search) {
+            $q->whereHas('anak', function ($q3) use ($search) {
+                $q3->where('nama_anak', 'like', "%$search%");
+            });
+        });
     }
+
+    // Ambil data reservasi
+    $reservasi = $query->with([
+        'anak.orangTua.user',
+        'pengguna',
+        'layanan',
+        'pengajuanPembatalan'
+    ])
+    ->orderBy('created_at', 'desc')
+    ->paginate($limit);
+
+    $pembatalans = PengajuanPembatalan::with('reservasi.pengguna')->get();
+
+    return view('admin.reservasis.index', compact('reservasi', 'pembatalans'));
+}
 
 
 

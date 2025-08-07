@@ -20,6 +20,25 @@ class ReservasiController extends Controller
     public function index(Request $request)
 {
     $query = Reservasi::query();
+    $today = Carbon::today();
+
+$expired = Reservasi::with('anak.orangTua')
+    ->where('status', 'Pending')
+    ->whereDate('tgl_masuk', '<', $today)
+    ->get();
+
+foreach ($expired as $reservasi) {
+    $reservasi->status = 'Ditolak';
+    $reservasi->save();
+
+    $namaAnak = $reservasi->anak->nama_anak ?? 'Anak Anda';
+    $noHp = $reservasi->anak?->orangTua?->no_hp;
+
+    if ($noHp) {
+        $message = "Reservasi dengan nama anak *$namaAnak* *DITOLAK* karena tidak dikonfirmasi sebelum tanggal masuk. Silakan ajukan reservasi baru jika masih diperlukan.";
+        $this->kirimWhatsapp($noHp, $message);
+    }
+}
     $limit = $request->input('limit', 10);
 
     if ($request->filled('cari')) {
@@ -179,7 +198,7 @@ class ReservasiController extends Controller
             return back()->with('error', 'Pengajuan tidak ditemukan.');
         }
 
-        $namaAnak = $reservasi->anak->nama_anak ?? 'Anak Anda'; 
+        $namaAnak = $reservasi->anak->nama_anak ?? 'Anak Anda';
         $noHp = $reservasi->anak?->orangTua?->no_hp;
 
         if ($request->konfirmasi === 'terima') {
