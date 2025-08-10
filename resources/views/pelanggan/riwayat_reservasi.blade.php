@@ -183,7 +183,7 @@
                                             @csrf
                                             @method('PATCH')
                                             <button type="submit" class="btn btn-sm btn-danger d-flex align-items-center justify-content-center" title="Batalkan Reservasi" onclick="batalReservasi(this)">
-                                                <i class="bi bi-x-circle"></i>Batal
+                                                Batal
                                             </button>
                                         </form>
                                     @elseif ($rs->status == 'Diterima')

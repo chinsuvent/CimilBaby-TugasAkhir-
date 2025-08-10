@@ -19,23 +19,28 @@ use Illuminate\Support\Facades\DB;
 class ReservasiPelangganController extends Controller
 {
 
-    public function index(Request $request)
+
+
+public function index(Request $request)
 {
-    $query = Reservasi::query();
     $limit = $request->input('limit', 10);
+    $userId = Auth::id();
 
     // Cek dan update status otomatis
     Reservasi::where('status', 'Pending')
         ->whereDate('tgl_masuk', '<', now()->toDateString())
         ->update(['status' => 'Ditolak']);
 
+    // Query hanya reservasi milik anak dari user yang login
+    $query = Reservasi::whereHas('anak.orangTua.user', function ($q) use ($userId) {
+        $q->where('id', $userId);
+    });
+
     // Filter pencarian
     if ($request->filled('cari')) {
         $search = $request->cari;
-        $query->where(function ($q) use ($search) {
-            $q->whereHas('anak', function ($q3) use ($search) {
-                $q3->where('nama_anak', 'like', "%$search%");
-            });
+        $query->whereHas('anak', function ($q3) use ($search) {
+            $q3->where('nama_anak', 'like', "%$search%");
         });
     }
 
@@ -51,8 +56,18 @@ class ReservasiPelangganController extends Controller
 
     $pembatalans = PengajuanPembatalan::with('reservasi.pengguna')->get();
 
-    return view('admin.reservasis.index', compact('reservasi', 'pembatalans'));
+    // Ambil semua layanan dan simpan dalam array asosiatif berdasarkan nama layanan
+    $layanans = Layanan::all()->keyBy('jenis_layanan');
+    $anakUser = Anak::whereHas('orangTua.user', function ($q) {
+    $q->where('id', Auth::id());
+})->get();
+
+
+
+    return view('pelanggan.riwayat_reservasi', compact('reservasi', 'pembatalans', 'layanans','anakUser'));
 }
+
+
 
 
 

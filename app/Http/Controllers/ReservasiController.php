@@ -130,7 +130,7 @@ foreach ($expired as $reservasi) {
         return redirect()->route('reservasis.index')->with('deleted', true);
     }
 
-    protected function kirimWhatsapp($targetPhone, $message)
+protected function kirimWhatsapp($targetPhone, $message)
 {
     $config = WhatsappConfig::first(); // ambil konfigurasi pertama
 

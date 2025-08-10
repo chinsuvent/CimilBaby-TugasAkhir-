@@ -25,7 +25,7 @@ class AuthController extends Controller
             'email' => 'required|email',
             // 'no_hp' => 'required',
             // 'alamat' => 'required',
-            'password' => 'required'
+            'password' => 'required|min:8|max:20'
         ])->validate();
 
         User::create([

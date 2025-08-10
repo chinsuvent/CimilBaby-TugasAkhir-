@@ -10,13 +10,14 @@ use Illuminate\Support\Facades\Auth;
 
 class CheckinCheckoutController extends Controller
 {
-    public function index()
+public function index()
 {
     $today = Carbon::today();
 
-    // Ambil reservasi yang aktif hari ini
+    // Ambil reservasi yang aktif hari ini & status diterima
     $reservasis = Reservasi::whereDate('tgl_masuk', '<=', $today)
         ->whereDate('tgl_keluar', '>=', $today)
+        ->where('status', 'Diterima') // ✅ hanya yang diterima
         ->with(['anak', 'layanan'])
         ->get();
 
@@ -27,6 +28,7 @@ class CheckinCheckoutController extends Controller
 
     return view('admin.checkin_checkout.index', compact('reservasis', 'checkinsToday'));
 }
+
 
 
 
@@ -62,22 +64,24 @@ class CheckinCheckoutController extends Controller
     }
 
     public function indexOrangtua()
-    {
-        $user = Auth::user();
+{
+    $user = Auth::user();
 
-        $anakIds = \App\Models\Anak::whereHas('orangTua', function ($q) use ($user) {
-            $q->where('users_id', $user->id);
-        })->pluck('id');
+    $anakIds = \App\Models\Anak::whereHas('orangTua', function ($q) use ($user) {
+        $q->where('users_id', $user->id);
+    })->pluck('id');
 
-        $reservasis = \App\Models\Reservasi::whereIn('anaks_id', $anakIds)->get();
+    $reservasis = \App\Models\Reservasi::whereIn('anaks_id', $anakIds)
+        ->where('status', 'Diterima') // ✅ hanya yang status diterima
+        ->get();
 
-        $checkinsToday = \App\Models\CheckinCheckout::whereDate('created_at', now()->toDateString())
-            ->get()
-            ->keyBy('reservasis_id');
+    $checkinsToday = \App\Models\CheckinCheckout::whereDate('created_at', now()->toDateString())
+        ->get()
+        ->keyBy('reservasis_id');
 
-        return view('pelanggan.kehadiran', compact('reservasis', 'checkinsToday'));
+    return view('pelanggan.kehadiran', compact('reservasis', 'checkinsToday'));
+}
 
-    }
 
 
 }
