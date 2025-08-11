@@ -23,12 +23,19 @@
                         <ul class="d-flex flex-column align-items-center p-0" style="list-style: none;">
                         <li>
                             @if ($waSetting && $waSetting->value)
-                                <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $waSetting->value) }}" target="_blank" class="text-white">
+                                @php
+                                    $cleanNumber = preg_replace('/[^0-9]/', '', $waSetting->value); // hapus spasi/tanda
+                                    if (substr($cleanNumber, 0, 1) === '0') {
+                                        $cleanNumber = '62' . substr($cleanNumber, 1); // ubah 08... jadi 628...
+                                    }
+                                @endphp
+                                <a href="https://wa.me/{{ $cleanNumber }}" target="_blank" class="text-white">
                                     <i class="bi bi-whatsapp me-2" style="font-size: 1em;"></i>{{ $waSetting->value }}
                                 </a>
                             @else
                                 <span class="text-white">Nomor tidak tersedia</span>
                             @endif
+
                         </li>
 
                         <li>

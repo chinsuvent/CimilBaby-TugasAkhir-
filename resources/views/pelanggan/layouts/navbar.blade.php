@@ -3,7 +3,7 @@
 
                     <!-- Sidebar Toggle (Topbar) -->
                     <button id="sidebarToggleTop" class="btn btn-link rounded-circle mr-3 d-md-none" onclick="toggleSidebar()">
-                        <i class="fa fa-bars"></i>
+                         <i class="fa-solid fa-bars"></i>
                     </button>
 
                     <!-- Topbar Navbar -->
