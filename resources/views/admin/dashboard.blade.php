@@ -88,7 +88,7 @@
     <div class="text-center mt-4 mb-4" style="color: #7D65EC; font-weight: 700;">
         <h3>Reservasi Belum Dikonfirmasi</h3>
     </div>
-    <div class="table-responsive mb-4">
+    <div class="table-responsive mb-1">
         <table class="table table-hover table-bordered">
             <thead class="table-primary text-center">
                 <tr>
@@ -145,6 +145,12 @@
             </tbody>
 
         </table>
+    </div>
+
+    <div class="text-center mb-4">
+        <a href="{{ route('reservasis') }}" class="btn btn-selengkapnya" style="background-color: #7D65EC; color: white; font-weight: 700;">
+            Selengkapnya
+        </a>
     </div>
 
     <div class="container-fluid">

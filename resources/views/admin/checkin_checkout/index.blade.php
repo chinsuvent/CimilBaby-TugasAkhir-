@@ -2,8 +2,14 @@
 
 @section('contents')
 <div class="container-fluid">
-    <h3 class="mb-4">Check-In & Check-Out Anak (Hari Ini)</h3>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>Check-In & Check-Out Anak (Hari Ini)</h3>
+        <a href="{{ route('laporan.checkinout.pdf') }}" target="_blank" class="btn btn-purple">
+            <i class="fas fa-file-pdf"></i> Cetak PDF
+        </a>
+    </div>
     <hr />
+
     @if (session('success'))
         <script>
             Swal.fire({
@@ -15,7 +21,6 @@
             });
         </script>
     @endif
-
 
     <div class="table-responsive">
         <table class="table table-bordered table-hover text-center align-middle shadow-sm">
@@ -77,10 +82,9 @@
                     @endif
                 @empty
                     <tr>
-                        <td colspan="5" class="text-muted">Data tidak ditemukan.</td>
+                        <td colspan="6" class="text-muted">Data tidak ditemukan.</td>
                     </tr>
                 @endforelse
-
             </tbody>
         </table>
     </div>

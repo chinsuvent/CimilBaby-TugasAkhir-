@@ -40,6 +40,10 @@ class LaporanPenitipanController extends Controller
         });
     }
 
+    if ($request->filled('status')) {
+        $query->where('status', $request->status);
+    }
+
     $laporan = $query->orderBy('tgl_masuk', 'desc')->paginate($limit);
 
     return view('admin.laporans_penitipan.index', compact('laporan'));
@@ -75,6 +79,11 @@ public function cetak(Request $request)
             $q->where('jenis_layanan', $request->service);
         });
     }
+
+    if ($request->status) {
+        $query->where('status', $request->status);
+    }
+
 
     $laporan = $query->orderBy('tgl_masuk', 'desc')->get();
     $totalReservasi = $laporan->count();

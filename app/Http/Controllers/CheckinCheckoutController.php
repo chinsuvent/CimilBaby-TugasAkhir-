@@ -7,6 +7,7 @@ use App\Models\CheckinCheckout;
 use App\Models\Reservasi;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class CheckinCheckoutController extends Controller
 {
@@ -80,6 +81,30 @@ public function index()
         ->keyBy('reservasis_id');
 
     return view('pelanggan.kehadiran', compact('reservasis', 'checkinsToday'));
+}
+
+
+
+public function cetakPdf()
+{
+    $today = Carbon::today();
+
+    // Ambil reservasi yang aktif hari ini & status diterima
+    $reservasis = Reservasi::whereDate('tgl_masuk', '<=', $today)
+        ->whereDate('tgl_keluar', '>=', $today)
+        ->where('status', 'Diterima') // ✅ sama seperti index
+        ->with(['anak', 'layanan'])
+        ->get();
+
+    // Ambil semua data checkin-checkout HANYA untuk hari ini
+    $checkinsToday = CheckinCheckout::whereDate('created_at', $today)
+        ->get()
+        ->keyBy('reservasis_id'); // ✅ sama dengan index
+
+    $pdf = Pdf::loadView('admin.checkin_checkout.checkinout_pdf', compact('reservasis', 'checkinsToday', 'today'))
+              ->setPaper('A4', 'landscape');
+
+    return $pdf->stream('Laporan_Checkinout_'.$today->format('d-m-Y').'.pdf');
 }
 
 

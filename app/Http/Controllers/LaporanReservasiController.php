@@ -41,6 +41,10 @@ public function index(Request $request)
         });
     }
 
+        if ($request->filled('status')) {
+        $query->where('status', $request->status);
+    }
+
     $laporan = $query->orderBy('tgl_masuk', 'desc')->paginate($limit);
 
     // ⬇️ Tambahkan bagian ini untuk menangani AJAX
@@ -80,6 +84,10 @@ public function cetak(Request $request)
         $query->whereHas('layanan', function ($q) use ($request) {
             $q->where('jenis_layanan', $request->service);
         });
+    }
+
+        if ($request->filled('status')) {
+        $query->where('status', $request->status);
     }
 
     $laporan = $query->orderBy('tgl_masuk', 'desc')->get();

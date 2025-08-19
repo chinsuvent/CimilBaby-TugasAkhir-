@@ -316,6 +316,7 @@ public function store(Request $request)
 
     } else {
         $overlap = Reservasi::where('anaks_id', $validated['anaks_id'])
+            ->whereIn('status', ['Pending', 'Diterima']) // ✅ hanya cek reservasi aktif
             ->where(function($query) use ($validated) {
                 $query->whereBetween('tgl_masuk', [$validated['tgl_masuk'], $validated['tgl_keluar']])
                     ->orWhereBetween('tgl_keluar', [$validated['tgl_masuk'], $validated['tgl_keluar']])
@@ -325,6 +326,7 @@ public function store(Request $request)
                     });
             })
             ->first();
+
 
         if ($overlap) {
             return redirect()->back()->with('gagal', 'Sudah ada reservasi untuk anak ini di rentang tanggal tersebut.');

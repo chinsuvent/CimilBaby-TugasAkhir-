@@ -15,7 +15,7 @@
     </style>
 </head>
 <body>
-    <h2>Laporan Reservasi</h2>
+    <h2>Laporan Penitipan Anak Bulan</h2>
 
     <table>
         <thead>

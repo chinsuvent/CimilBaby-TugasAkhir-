@@ -47,10 +47,6 @@
                 <th colspan="5" style="text-align: right;">Total Anak</th>
                 <th>{{ $totalAnak }}</th>
             </tr>
-            <tr>
-                <th colspan="5" style="text-align: right;">Total Biaya</th>
-                <th> Rp {{ number_format($totalBiaya, 0, ',', '.') }}</th>
-            </tr>
         </tfoot>
 
     </table>

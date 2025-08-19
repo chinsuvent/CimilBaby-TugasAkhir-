@@ -111,6 +111,18 @@
             </select>
           </div>
 
+              <div class="mb-2">
+                <label class="form-label">Status</label>
+                <select class="form-select" name="status">
+                    <option value="">Semua</option>
+                    <option value="Pending" {{ request('status') == 'Pending' ? 'selected' : '' }}>Pending</option>
+                    <option value="Diterima" {{ request('status') == 'Diterima' ? 'selected' : '' }}>Diterima</option>
+                    <option value="Selesai" {{ request('status') == 'Selesai' ? 'selected' : '' }}>Selesai</option>
+                    <option value="Dibatalkan" {{ request('status') == 'Dibatalkan' ? 'selected' : '' }}>Dibatalkan</option>
+                    <option value="Ditolak" {{ request('status') == 'Ditolak' ? 'selected' : '' }}>Ditolak</option>
+                </select>
+            </div>
+
           <button type="submit" class="btn btn-sm btn-primary w-100 mt-2">Terapkan Filter</button>
           <a href="{{ route('laporans_reservasi.index') }}" class="btn btn-sm btn-secondary w-100 mt-2">Reset</a>
         </form>
@@ -220,6 +232,7 @@ $('#input-cari').on('input', function () {
       tgl_akhir: $('input[name="tgl_akhir"]').val(),
       gender: $('select[name="gender"]').val(),
       service: $('select[name="service"]').val(),
+      status: $('select[name="status"]').val(),
       limit: $('#limitInput').val()
     };
 
@@ -237,6 +250,7 @@ $('#input-cari').on('input', function () {
         $('input[name="tgl_akhir"]').val(params.tgl_akhir);
         $('select[name="gender"]').val(params.gender);
         $('select[name="service"]').val(params.service);
+        $('select[name="status"]').val(params.status);
         $('#limitInput').val(params.limit);
 
         // Bind ulang event pagination
@@ -262,6 +276,7 @@ $('#input-cari').on('input', function () {
                 $('input[name="tgl_akhir"]').val(params.tgl_akhir);
                 $('select[name="gender"]').val(params.gender);
                 $('select[name="service"]').val(params.service);
+                $('select[name="status"]').val(params.status);
                 $('#limitInput').val(params.limit);
               },
               error: function () {

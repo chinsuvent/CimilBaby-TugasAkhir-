@@ -60,6 +60,8 @@ Route::controller(AuthController::class)->group(function () {
 Route::get('/admin/checkin-checkout', [CheckinCheckoutController::class, 'index'])->name('checkin_checkout.index');
 Route::post('/checkin/{id}', [CheckinCheckoutController::class, 'checkIn'])->name('checkin');
 Route::post('/checkout/{id}', [CheckinCheckoutController::class, 'checkOut'])->name('checkout');
+Route::get('/admin/checkin-checout/pdf', [CheckinCheckoutController::class, 'cetakPdf'])->name('laporan.checkinout.pdf');
+
 
 
 
