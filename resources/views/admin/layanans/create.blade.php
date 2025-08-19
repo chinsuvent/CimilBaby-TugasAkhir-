@@ -8,10 +8,10 @@
 
         {{-- Tempat dan Tanggal Lahir --}}
         <div class="row mb-3">
-            <div class="col">
+            <div class="col-6">
                 <input type="text" name="jenis_layanan" class="form-control" placeholder="Jenis Layanan">
             </div>
-            
+
         </div>
 
 
@@ -23,7 +23,7 @@
                     <option value="1 bulan">1 Bulan</option>
                 </select>
             </div> --}}
-            <div class="col">
+            <div class="col-6">
                 <input type="number" name="biaya" class="form-control" placeholder="Biaya" required>
             </div>
         </div>
@@ -33,7 +33,7 @@
             <label class="form-label">Pilih Fasilitas</label>
             <div class="row">
                 @foreach($fasilitas as $f)
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="form-check">
                             <input type="checkbox" name="fasilitas[]" value="{{ $f->id }}" class="form-check-input" id="fasilitas{{ $f->id }}">
                             <label class="form-check-label" for="fasilitas{{ $f->id }}">{{ $f->nama_fasilitas }}</label>

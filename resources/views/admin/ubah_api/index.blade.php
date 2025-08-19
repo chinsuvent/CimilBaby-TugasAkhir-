@@ -7,18 +7,20 @@
     <form action="{{ route('admin.whatsapp.update') }}" method="POST">
         @csrf
 
-        <div class="mb-3">
+        <div class="col-6 mb-3">
             <label for="number" class="form-label">Nomor WhatsApp</label>
             <input type="text" id="number" name="number" value="{{ $config->display_number ?? '' }}" class="form-control" required>
 
         </div>
 
-        <div class="mb-3">
+        <div class="col-6 mb-3">
             <label for="api_key" class="form-label">API Key Fonnte</label>
             <input type="text" id="api_key" name="api_key" value="{{ $config->api_key ?? '' }}" class="form-control" required>
         </div>
 
-        <button type="submit" class="btn btn-primary">Simpan</button>
+        <div class="col-6">
+            <button type="submit" class="btn btn-simpan" style="background-color: #8e7dbe; color: white;">Simpan</button>
+        </div>
     </form>
 </div>
 @endsection

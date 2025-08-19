@@ -8,14 +8,14 @@
         @method('PUT')
 
         <div class="row">
-            <div class="col mb-3">
+            <div class="col-6 mb-3">
                 <label class="form-label">Jenis Layanan</label>
                 <input type="text" name="jenis_layanan" class="form-control" placeholder="Jenis Layanan" value="{{ $layanan->jenis_layanan }}">
             </div>
         </div>
 
         <div class="row">
-            <div class="col mb-3">
+            <div class="col-6 mb-3">
                 <label class="form-label">Biaya</label>
                 <input type="text" name="biaya" class="form-control" placeholder="Biaya" value="{{ $layanan->biaya }}">
             </div>
@@ -26,13 +26,13 @@
             <label class="form-label">Pilih Fasilitas</label>
             <div class="row">
                 @foreach($fasilitas as $f)
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="form-check">
-                            <input 
-                                type="checkbox" 
-                                name="fasilitas[]" 
-                                value="{{ $f->id }}" 
-                                class="form-check-input" 
+                            <input
+                                type="checkbox"
+                                name="fasilitas[]"
+                                value="{{ $f->id }}"
+                                class="form-check-input"
                                 id="fasilitas{{ $f->id }}"
                                 {{ $layanan->fasilitas->contains($f->id) ? 'checked' : '' }}>
                             <label class="form-check-label" for="fasilitas{{ $f->id }}">{{ $f->nama_fasilitas }}</label>

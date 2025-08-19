@@ -69,7 +69,7 @@ class ForgotPasswordWAController extends Controller
     public function simpanPasswordBaru(Request $request)
     {
         $request->validate([
-            'password' => 'required|min:6|confirmed'
+            'password' => 'required|min:8|confirmed'
         ]);
 
         $user = User::find(Session::get('wa_reset_user_id'));

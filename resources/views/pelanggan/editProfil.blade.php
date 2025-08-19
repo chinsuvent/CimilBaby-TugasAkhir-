@@ -7,27 +7,27 @@
     @csrf
     @method('PUT')
         <div class="row">
-            <div class="col mb-3">
+            <div class="col-6 mb-3">
                 <label class="form-label">Nama Lengkap</label>
                 <input type="text" name="name" class="form-control" placeholder="Nama Lengkap" value="{{ $user->name }}">
             </div>
-            <div class="col mb-3">
+            <div class="col-6 mb-3">
                 <label class="form-label">Username</label>
                 <input type="text" name="username" class="form-control" placeholder="Username" value="{{ $user->username }}">
             </div>
         </div>
         <div class="row">
-            <div class="col mb-3">
+            <div class="col-6 mb-3">
                 <label class="form-label">Email</label>
                 <input type="email" name="email" class="form-control" placeholder="Email" value="{{ $user->email }}">
             </div>
         </div>
         <div class="row">
-            <div class="col mb-3">
+            <div class="col-6 mb-3">
                 <label class="form-label">No. HP</label>
                 <input type="text" name="no_hp" class="form-control" placeholder="No. HP" value="{{ $orangTua->no_hp }}">
             </div>
-            <div class="col mb-3">
+            <div class="col-6 mb-3">
                 <label class="form-label">Alamat</label>
                 <input type="text" name="alamat" class="form-control" placeholder="Alamat" value="{{ $orangTua->alamat }}">
             </div>

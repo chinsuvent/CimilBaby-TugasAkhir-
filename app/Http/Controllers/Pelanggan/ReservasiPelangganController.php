@@ -26,12 +26,17 @@ public function index(Request $request)
     $limit = $request->input('limit', 10);
     $userId = Auth::id();
 
-    // Cek dan update status otomatis
+    // Update status dari Pending ke Ditolak jika tgl_masuk sudah lewat hari ini
     Reservasi::where('status', 'Pending')
         ->whereDate('tgl_masuk', '<', now()->toDateString())
         ->update(['status' => 'Ditolak']);
 
-    // Query hanya reservasi milik anak dari user yang login
+    // Update status dari Diterima ke Selesai jika tgl_keluar sudah lewat hari ini
+    Reservasi::where('status', 'Diterima')
+        ->whereDate('tgl_keluar', '<', now()->toDateString())
+        ->update(['status' => 'Selesai']);
+
+    // Query reservasi milik user yang login
     $query = Reservasi::whereHas('anak.orangTua.user', function ($q) use ($userId) {
         $q->where('id', $userId);
     });
@@ -44,7 +49,7 @@ public function index(Request $request)
         });
     }
 
-    // Ambil data reservasi
+    // Ambil data reservasi dengan relasi
     $reservasi = $query->with([
         'anak.orangTua.user',
         'pengguna',
@@ -56,16 +61,15 @@ public function index(Request $request)
 
     $pembatalans = PengajuanPembatalan::with('reservasi.pengguna')->get();
 
-    // Ambil semua layanan dan simpan dalam array asosiatif berdasarkan nama layanan
     $layanans = Layanan::all()->keyBy('jenis_layanan');
+
     $anakUser = Anak::whereHas('orangTua.user', function ($q) {
-    $q->where('id', Auth::id());
-})->get();
-
-
+        $q->where('id', Auth::id());
+    })->get();
 
     return view('pelanggan.riwayat_reservasi', compact('reservasi', 'pembatalans', 'layanans','anakUser'));
 }
+
 
 
 

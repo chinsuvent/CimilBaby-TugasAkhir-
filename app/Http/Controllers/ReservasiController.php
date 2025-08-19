@@ -22,23 +22,30 @@ class ReservasiController extends Controller
     $query = Reservasi::query();
     $today = Carbon::today();
 
-$expired = Reservasi::with('anak.orangTua')
-    ->where('status', 'Pending')
-    ->whereDate('tgl_masuk', '<', $today)
-    ->get();
+    // Update status Pending ke Ditolak jika tgl_masuk sudah lewat hari ini
+    $expired = Reservasi::with('anak.orangTua')
+        ->where('status', 'Pending')
+        ->whereDate('tgl_masuk', '<', $today)
+        ->get();
 
-foreach ($expired as $reservasi) {
-    $reservasi->status = 'Ditolak';
-    $reservasi->save();
+    foreach ($expired as $reservasi) {
+        $reservasi->status = 'Ditolak';
+        $reservasi->save();
 
-    $namaAnak = $reservasi->anak->nama_anak ?? 'Anak Anda';
-    $noHp = $reservasi->anak?->orangTua?->no_hp;
+        $namaAnak = $reservasi->anak->nama_anak ?? 'Anak Anda';
+        $noHp = $reservasi->anak?->orangTua?->no_hp;
 
-    if ($noHp) {
-        $message = "Reservasi dengan nama anak *$namaAnak* *DITOLAK* karena tidak dikonfirmasi sebelum tanggal masuk. Silakan ajukan reservasi baru jika masih diperlukan.";
-        $this->kirimWhatsapp($noHp, $message);
+        if ($noHp) {
+            $message = "Reservasi dengan nama anak *$namaAnak* *DITOLAK* karena tidak dikonfirmasi sebelum tanggal masuk. Silakan ajukan reservasi baru jika masih diperlukan.";
+            $this->kirimWhatsapp($noHp, $message);
+        }
     }
-}
+
+    // Update status Diterima ke Selesai jika tgl_keluar sudah lewat hari ini
+    Reservasi::where('status', 'Diterima')
+        ->whereDate('tgl_keluar', '<', $today)
+        ->update(['status' => 'Selesai']);
+
     $limit = $request->input('limit', 10);
 
     if ($request->filled('cari')) {

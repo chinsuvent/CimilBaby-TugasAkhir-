@@ -8,16 +8,16 @@
 
         {{-- Tempat dan Tanggal Lahir --}}
         <div class="row mb-3">
-            <div class="col">
+            <div class="col-6">
                 <input type="text" name="nama_fasilitas" class="form-control" placeholder="Nama Fasilitas">
             </div>
-            
+
         </div>
 
 
         <div class="row mb-3">
-            <div class="col">
-                <textarea id="deskripsi" name="deskripsi" rows="2" cols="132" placeholder="Tulis deskripsi di sini..." class="form-control"></textarea>
+            <div class="col-6">
+                <textarea id="deskripsi" name="deskripsi" rows="4" cols="132" placeholder="Tulis deskripsi di sini..." class="form-control"></textarea>
             </div>
         </div>
 

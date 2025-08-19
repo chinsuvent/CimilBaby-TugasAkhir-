@@ -590,6 +590,10 @@ hr {
         background-color: #0a58ca;
     }
 
+.btn-simpan {
+
+}
+
 
 
 @media (max-width: 768px) {
@@ -722,10 +726,10 @@ hr {
   .sidebar.toggled .nav-item .nav-link span {
     display: none !important;
   }
-  
+
 }
 
 
 
 
-  
+
