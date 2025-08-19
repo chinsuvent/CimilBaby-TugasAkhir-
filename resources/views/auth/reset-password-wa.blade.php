@@ -25,17 +25,17 @@
     <form method="POST" action="{{ route('ubah-password') }}">
         @csrf
 
-        <div class="mb-3">
+        <div class="col-6 mb-3">
             <label>Password Saat Ini</label>
             <input type="password" name="current_password" class="form-control" required>
         </div>
 
-        <div class="mb-3">
+        <div class="col-6 mb-3">
             <label>Password Baru</label>
             <input type="password" name="password" class="form-control" required>
         </div>
 
-        <div class="mb-3">
+        <div class="col-6 mb-3">
             <label>Konfirmasi Password Baru</label>
             <input type="password" name="password_confirmation" class="form-control" required>
         </div>

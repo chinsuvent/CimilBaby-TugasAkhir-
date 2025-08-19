@@ -35,7 +35,7 @@
 
 
         <div class="row">
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end px-3">
+            <div class="d-grid gap-2 d-md-flex justify-content-md-start px-3">
                 <button type="submit" class="btn btn-warning  mr-3">Simpan</button>
             <a href="{{ route('pelanggan.profil') }}" class="btn btn-danger">Batal</a>
 

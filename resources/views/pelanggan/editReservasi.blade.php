@@ -18,13 +18,13 @@
             @method('PUT')
 
             <!-- Nama Anak -->
-            <div class="mb-3">
+            <div class="col-6 mb-3">
                 <label class="form-label" for="anak">Nama Anak</label>
                 <input type="text" class="form-control" value="{{ $reservasi->anak->nama_anak }}" readonly>
             </div>
 
             <!-- Jenis Layanan -->
-            <div class="mb-3">
+            <div class="col-6 mb-3">
                 <label class="form-label" for="layanans_id">Jenis Layanan</label>
                 <select name="layanans_id" class="form-select" disabled>
                     @foreach ($layanans as $layanan)
@@ -35,21 +35,24 @@
                 </select>
             </div>
 
-
+            <div class="d-flex">
             <!-- Tanggal Masuk -->
-            <div class="mb-3">
+            <div class="col-3 mb-3">
                 <label class="form-label" for="tgl_masuk">Tanggal Masuk</label>
                 <input type="date" name="tgl_masuk" class="form-control" value="{{ old('tgl_masuk', $reservasi->tgl_masuk->format('Y-m-d')) }}" required>
             </div>
 
-            <!-- Tanggal Keluar -->
-            <div class="mb-3">
-                <label class="form-label" for="tgl_keluar">Tanggal Keluar</label>
+                 <!-- Tanggal Keluar -->
+            <div class="col-3 mb-3">
+                 <label class="form-label" for="tgl_keluar">Tanggal Keluar</label>
                 <input type="date" name="tgl_keluar" class="form-control" value="{{ old('tgl_keluar', $reservasi->tgl_keluar->format('Y-m-d')) }}" required>
             </div>
+        </div>
+
+
 
             <!-- Metode Pembayaran -->
-            <div class="mb-4">
+            <div class="col-6 mb-4">
                 <label class="form-label" for="metode_pembayaran">Metode Pembayaran</label>
                 <select name="metode_pembayaran" class="form-select" required>
                     <option value="cash" {{ $reservasi->metode_pembayaran == 'cash' ? 'selected' : '' }}>Cash</option>
@@ -57,7 +60,7 @@
                 </select>
             </div>
 
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
                 <button type="submit" class="btn btn-warning mr-3">Simpan Perubahan</button>
                 <a href="{{ route('pelanggan.reservasi') }}" class="btn btn-secondary">Batal</a>
             </div>
