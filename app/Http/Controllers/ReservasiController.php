@@ -171,27 +171,50 @@ protected function kirimWhatsapp($targetPhone, $message)
 
 
 
-    public function konfirmasi(Request $request, $id)
-    {
-        $request->validate([
-            'status' => 'required|in:Diterima,Ditolak',
-        ]);
+   public function konfirmasi(Request $request, $id)
+{
+    $request->validate([
+        'status' => 'required|in:Diterima,Ditolak',
+    ]);
 
-        $reservasi = Reservasi::with('anak.orangTua')->findOrFail($id);
-        $reservasi->status = $request->status;
-        $reservasi->save();
+    $reservasi = Reservasi::with('anak.orangTua')->findOrFail($id);
+    $reservasi->status = $request->status;
+    $reservasi->save();
 
-        $namaAnak = $reservasi->anak->nama_anak ?? 'Anak Anda';
-        $status = $request->status;
-        $noHp = $reservasi->anak?->orangTua?->no_hp;
+    $namaAnak = $reservasi->anak->nama_anak ?? 'Anak Anda';
+    $jenisLayanan = $reservasi->layanan->jenis_layanan;
+    $namaOrangTua = $reservasi->anak->orangTua->user->name;
+    $tglMasuk = Carbon::parse($reservasi->tgl_masuk)->format('d-m-Y');
+    $tglKeluar = Carbon::parse($reservasi->tgl_keluar)->format('d-m-Y');
+    $status = $request->status;
+    $noHp = $reservasi->anak?->orangTua?->no_hp;
 
-        if ($noHp) {
-            $message = "Reservasi dengan nama anak *$namaAnak* telah *$status*. Terima kasih telah menggunakan layanan kami.";
-            $this->kirimWhatsapp($noHp, $message);
+    if ($noHp) {
+        if ($status === 'Diterima') {
+            $message = "Halo *$namaOrangTua*,\n\n" .
+                "Reservasi layanan penitipan anak dengan layanan *{$jenisLayanan}* untuk anak bernama *{$namaAnak}* " .
+                "pada tanggal *{$tglMasuk}* sampai *{$tglKeluar}* telah *{$status}*.\n\n" .
+                "Silakan datang sesuai dengan jadwal yang telah ditentukan. Jika ada pertanyaan lebih lanjut, " .
+                "jangan ragu untuk menghubungi kami.\n\n" .
+                "Terima kasih atas kepercayaan Anda menggunakan layanan *Ci’mil Baby*.\n\n" .
+                "Hormat kami,\nCi’mil Baby";
+
+        } else {
+            $message = "Halo *$namaOrangTua*,\n\n" .
+           "Mohon maaf, reservasi layanan penitipan anak dengan layanan *{$jenisLayanan}* untuk anak bernama *{$namaAnak}* " .
+           "pada tanggal *{$tglMasuk}* sampai *{$tglKeluar}* telah *Ditolak*.\n\n" .
+           "Untuk informasi lebih lanjut, silakan hubungi pihak administrasi.\n\n" .
+           "Terima kasih atas pengertian Anda.\n\n" .
+           "Hormat kami,\nCi’mil Baby";
+
         }
 
-        return redirect()->back()->with('edited', 'Reservasi berhasil dikonfirmasi.');
+        $this->kirimWhatsapp($noHp, $message);
     }
+
+    return redirect()->back()->with('edited', 'Reservasi berhasil dikonfirmasi.');
+}
+
 
 
 
@@ -208,13 +231,23 @@ protected function kirimWhatsapp($targetPhone, $message)
         $namaAnak = $reservasi->anak->nama_anak ?? 'Anak Anda';
         $noHp = $reservasi->anak?->orangTua?->no_hp;
 
+       $namaOrangTua = $reservasi->anak->orangTua->user->name;
+        $namaAnak = $reservasi->anak->nama_anak ?? 'Anak Anda';
+        $layanan = $reservasi->layanan->jenis_layanan ?? '-';
+        $tglMasuk = \Carbon\Carbon::parse($reservasi->tgl_masuk)->translatedFormat('d-m-Y');
+        $tglKeluar = \Carbon\Carbon::parse($reservasi->tgl_keluar)->translatedFormat('d-m-Y');
+
         if ($request->konfirmasi === 'terima') {
             $reservasi->status = 'dibatalkan';
             $reservasi->save();
             $pengajuan->delete();
 
             if ($noHp) {
-                $message = "Permohonan pembatalan reservasi dengan nama anak *$namaAnak* telah *DITERIMA*. Reservasi dibatalkan.";
+                $message = "Halo *$namaOrangTua*,\n\n" .
+                        "Permohonan *pembatalan reservasi* untuk anak *$namaAnak* pada layanan *$layanan* " .
+                        "dari tanggal *$tglMasuk* sampai *$tglKeluar* telah *DITERIMA*.\n\n" .
+                        "Reservasi resmi dibatalkan. Terima kasih atas konfirmasi Anda.\n\n" .
+                        "Hormat kami,\nManajemen Ci’mil Baby";
                 $this->kirimWhatsapp($noHp, $message);
             }
 
@@ -222,17 +255,22 @@ protected function kirimWhatsapp($targetPhone, $message)
         }
 
         if ($request->konfirmasi === 'tolak') {
-            // $pengajuan->delete();
             $pengajuan->status = 'ditolak';
             $pengajuan->save();
 
             if ($noHp) {
-                $message = "Permohonan pembatalan reservasi untuk nama anak *$namaAnak* *DITOLAK*.";
+                $message = "Halo *$namaOrangTua*,\n\n" .
+                        "Permohonan *pembatalan reservasi* untuk anak *$namaAnak* pada layanan *$layanan* " .
+                        "dari tanggal *$tglMasuk* sampai *$tglKeluar* telah *DITOLAK*.\n\n" .
+                        "Reservasi tetap berlaku sesuai jadwal. Untuk informasi lebih lanjut, silakan hubungi pihak administrasi.\n\n" .
+                        "Hormat kami,\nManajemen Ci’mil Baby";
                 $this->kirimWhatsapp($noHp, $message);
             }
 
             return back()->with('info', 'Pengajuan pembatalan ditolak.');
         }
+
+
 
         return back()->with('error', 'Aksi tidak valid.');
     }

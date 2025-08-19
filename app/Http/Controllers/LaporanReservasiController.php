@@ -61,16 +61,24 @@ public function cetak(Request $request)
 {
     $query = Reservasi::query();
 
+    // Filter per bulan & tahun
+    $bulan = $request->input('bulan', date('m'));
+    $tahun = $request->input('tahun', date('Y'));
+
+    if ($request->filled('bulan') && $request->filled('tahun')) {
+        $query->whereMonth('tgl_masuk', $bulan)
+              ->whereYear('tgl_masuk', $tahun);
+    }
+
+    // Filter tanggal range
     if ($request->filled('tgl_awal') && $request->filled('tgl_akhir')) {
         $query->whereBetween('tgl_masuk', [$request->tgl_awal, $request->tgl_akhir]);
     }
 
     if ($request->filled('cari')) {
         $search = $request->cari;
-        $query->where(function ($q) use ($search) {
-            $q->whereHas('anak', function ($q3) use ($search) {
-                $q3->where('nama_anak', 'like', "%$search%");
-            });
+        $query->whereHas('anak', function ($q) use ($search) {
+            $q->where('nama_anak', 'like', "%$search%");
         });
     }
 
@@ -86,16 +94,28 @@ public function cetak(Request $request)
         });
     }
 
-        if ($request->filled('status')) {
+    if ($request->filled('status')) {
         $query->where('status', $request->status);
     }
 
     $laporan = $query->orderBy('tgl_masuk', 'desc')->get();
     $totalReservasi = $laporan->count();
 
-    $pdf = Pdf::loadView('admin.laporans_reservasi.pdf', compact('laporan', 'totalReservasi'))
-        ->setPaper('A4', 'landscape');
-    return $pdf->download('admin.laporans_reservasi.pdf');
+    // Nama bulan (Bahasa Indonesia)
+    $namaBulan = null;
+    if ($request->filled('bulan') && $request->filled('tahun')) {
+        $namaBulan = \Carbon\Carbon::createFromDate($tahun, $bulan, 1)->locale('id')->translatedFormat('F');
+    }
+
+    $pdf = Pdf::loadView('admin.laporans_reservasi.pdf', compact(
+        'laporan',
+        'totalReservasi',
+        'bulan',
+        'tahun',
+        'namaBulan'
+    ))->setPaper('A4', 'landscape');
+
+    return $pdf->download('Laporan_Reservasi_' . ($namaBulan ?? 'Semua') . '.pdf');
 }
 
 

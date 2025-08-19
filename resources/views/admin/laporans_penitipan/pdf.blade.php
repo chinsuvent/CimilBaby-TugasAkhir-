@@ -1,9 +1,13 @@
 @php
-    $totalAnak = $laporan->count();
-    $totalBiaya = $laporan->sum(function($item) {
-        return $item->layanan->biaya;
-    });
+    use Carbon\Carbon;
+    $totalReservasi = $laporan->count();
+
+    // Pakai createFromDate biar fix
+    $namaBulan = Carbon::createFromDate($tahun, $bulan, 1)->translatedFormat('F');
 @endphp
+
+
+
 
 <!DOCTYPE html>
 <html>
@@ -18,7 +22,8 @@
     </style>
 </head>
 <body>
-    <h2>Laporan Penitipan</h2>
+    <h2>Laporan Penitipan Anak Bulan {{ $namaBulan }} {{ $tahun }}</h2>
+
     <table>
         <thead>
             <tr>
@@ -28,6 +33,7 @@
                 <th>Jenis Kelamin</th>
                 <th>Layanan</th>
                 <th>Tanggal Mulai</th>
+                <th>Status</th>
             </tr>
         </thead>
         <tbody>
@@ -39,16 +45,16 @@
                     <td>{{ $item->anak->jenis_kelamin ?? '-' }}</td>
                     <td>{{ $item->layanan->jenis_layanan ?? '-' }}</td>
                     <td>{{ \Carbon\Carbon::parse($item->tgl_masuk)->format('d-m-Y') }}</td>
+                    <td>{{ ucfirst($item->status ?? '-') }}</td>
                 </tr>
             @endforeach
         </tbody>
         <tfoot>
             <tr>
-                <th colspan="5" style="text-align: right;">Total Anak</th>
-                <th>{{ $totalAnak }}</th>
+                <th colspan="6" style="text-align: right;">Total Reservasi</th>
+                <th>{{ $totalReservasi }}</th>
             </tr>
         </tfoot>
-
     </table>
 </body>
 </html>
