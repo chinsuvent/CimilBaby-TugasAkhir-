@@ -191,7 +191,7 @@ protected function kirimWhatsapp($targetPhone, $message)
 
     if ($noHp) {
         if ($status === 'Diterima') {
-            $message = "Halo *$namaOrangTua*,\n\n" .
+            $message = "Halo Bapak/Ibu *$namaOrangTua*,\n\n" .
                 "Reservasi layanan penitipan anak dengan layanan *{$jenisLayanan}* untuk anak bernama *{$namaAnak}* " .
                 "pada tanggal *{$tglMasuk}* sampai *{$tglKeluar}* telah *{$status}*.\n\n" .
                 "Silakan datang sesuai dengan jadwal yang telah ditentukan. Jika ada pertanyaan lebih lanjut, " .
@@ -200,7 +200,7 @@ protected function kirimWhatsapp($targetPhone, $message)
                 "Hormat kami,\nCi’mil Baby";
 
         } else {
-            $message = "Halo *$namaOrangTua*,\n\n" .
+            $message = "Halo Bapak/Ibu *$namaOrangTua*,\n\n" .
            "Mohon maaf, reservasi layanan penitipan anak dengan layanan *{$jenisLayanan}* untuk anak bernama *{$namaAnak}* " .
            "pada tanggal *{$tglMasuk}* sampai *{$tglKeluar}* telah *Ditolak*.\n\n" .
            "Untuk informasi lebih lanjut, silakan hubungi pihak administrasi.\n\n" .
@@ -259,7 +259,7 @@ protected function kirimWhatsapp($targetPhone, $message)
             $pengajuan->save();
 
             if ($noHp) {
-                $message = "Halo *$namaOrangTua*,\n\n" .
+                $message = "Halo Bapak/Ibu *$namaOrangTua*,\n\n" .
                         "Permohonan *pembatalan reservasi* untuk anak *$namaAnak* pada layanan *$layanan* " .
                         "dari tanggal *$tglMasuk* sampai *$tglKeluar* telah *DITOLAK*.\n\n" .
                         "Reservasi tetap berlaku sesuai jadwal. Untuk informasi lebih lanjut, silakan hubungi pihak administrasi.\n\n" .
